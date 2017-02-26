@@ -16,6 +16,8 @@
     <title>categories | Linzh&#39;s Blog | Waking Dream</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
+    <meta name="theme-color" content="#3F51B5">
+    
     
     <meta name="keywords" content="undefined">
     <meta name="description" content="Waking Dream">
@@ -29,7 +31,9 @@
 <meta name="twitter:title" content="categories">
 <meta name="twitter:description" content="Waking Dream">
     
-    <link rel="shortcut icon" href="/">
+        <link rel="alternative" href="/atom.xml" title="Linzh&#39;s Blog" type="application/atom+xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
     <link rel="stylesheet" href="/css/style.css?v=1.4.8">
     <script>window.lazyScripts=[]</script>
 </head>
@@ -37,7 +41,7 @@
 <body>
     <div id="loading" class="active"></div>
 
-    <aside id="menu"  >
+    <aside id="menu" class="hide" >
   <div class="inner flex-row-vertical">
     <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
         <i class="icon icon-lg icon-close"></i>
@@ -45,7 +49,7 @@
     <div class="brand-wrap">
       <div class="brand">
         <a href="/" class="avatar waves-effect waves-circle waves-light">
-          <img src="/">
+          <img src="/img/linzh.jpg">
         </a>
         <hgroup class="introduce">
           <h5 class="nickname">Linzh</h5>
@@ -55,6 +59,55 @@
     </div>
     <div class="scroll-wrap flex-col">
       <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                Home Page
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect active">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/ZehaoLin" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://www.weibo.com/L_Ceylon" target="_blank" >
+                <i class="icon icon-lg icon-weibo"></i>
+                Weibo
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/" target="_blank" >
+                <i class="icon icon-lg icon-link"></i>
+                About
+              </a>
+            </li>
         
       </ul>
     </div>
@@ -69,6 +122,20 @@
         </a>
         <div class="flex-col header-title ellipsis">categories</div>
         
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
         
     </div>
 </header>
@@ -93,11 +160,85 @@
         </div>
 
         
+        <div class="card page-about-me flex-row">
+            <a href="/" class="avatar waves-effect waves-circle waves-light"><img src="/img/linzh.jpg"></a>
+            <div class="content flex-col">
+                <p><strong>Linzh</strong></p>
+                <p><em>Waking Dream</em></p>
+                <p>用户页面中作者相关的描述性文字，如不需要设为 false</p>
+            </div>
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://linzhs.cm/categories/&title=《categories》 — Linzh's Blog&pic=http://linzhs.cm/img/linzh.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://linzhs.cm/categories/&title=《categories》 — Linzh's Blog&source=Waking Dream" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://linzhs.cm/categories/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《categories》 — Linzh's Blog&url=http://linzhs.cm/categories/&via=http://linzhs.cm" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://linzhs.cm/categories/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+        
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
 
         
 
+<div class="comments" id="comments">
+    <div class="ds-thread" data-thread-key="hexo-page-categories" data-title="categories" data-url="http://linzhs.cm/categories/"></div>
+</div>
+<script>
+lazyScripts.push('//cdn.bootcss.com/marked/0.3.6/marked.min.js');
 
-        
+var duoshuoQuery = {short_name:'ysblog', theme: 'none'};
+lazyScripts.push('/js/embed.min.js?v=1.4.8');
+
+
+</script>
 
 
 
@@ -107,22 +248,55 @@
 
     </article>
     
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        �Thanks
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <ul class="reward-items">
+        
+        <li>
+            <img src="/img/wechat.jpg" title="微信打赏二维码" alt="微信打赏二维码">
+            <p>微信</p>
+        </li>
+        
+
+        
+        <li>
+            <img src="/img/alipay.jpg" title="支付宝打赏二维码" alt="支付宝打赏二维码">
+            <p>支付宝</p>
+        </li>
+        
+    </ul>
+</div>
+
 
 </div>
 
         <footer class="footer">
     <div class="top">
         
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
 
         <p>
-            <span><a href="" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
             <span>博客内容遵循 <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">知识共享 署名 - 非商业性 - 相同方式共享 4.0协议</a></span>
         </p>
     </div>
     <div class="bottom">
         <p>
             <span>Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a></span>
-            <span>Linzh's Blog &copy; 2017</span>
+            <span>Linzh's Blog &copy; 2015 - 2017</span>
         </p>
     </div>
 </footer>
@@ -132,9 +306,55 @@
 <a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
 
 
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://linzhs.cm/categories/&title=《categories》 — Linzh's Blog&pic=http://linzhs.cm/img/linzh.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://linzhs.cm/categories/&title=《categories》 — Linzh's Blog&source=Waking Dream" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://linzhs.cm/categories/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《categories》 — Linzh's Blog&url=http://linzhs.cm/categories/&via=http://linzhs.cm" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://linzhs.cm/categories/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAK4AAACuCAAAAACKZ2kyAAABxElEQVR42u3aQY7DIBAEwP3/p73XSFFINxg2WRWnyMa4nMOImeHnJx7Xw1ifma82OXBxcZe513A8znk1/3nO8/rj64kBFxf3PLddbu7Z8ZXoU3Fxcb+EO17h+S4uLu5/4r6aP/6MPwtkuLi4y9z8BePkpJ25MVfDxcVd4OZVyn2/t9R3cXFxp7jX8kg+L9kYRe/CxcU9wm2DTn63LZsWqREuLu5m7nr6MZcIzbVbcHFxT3LnShjtxuWGpAgXF/cINwlJeVqSN0jau1GVFxcX9yZukoqs1DDbABf9o7i4uEe46yWP/Hp7903yg4uLu4G7fowyn79+sAMXF/ckd325IgDFhY83nR9cXNxt3HGK0oa8tsnaNmZwcXE/h5sXSpJwlm+D3pwTwcXF3cZdaXzmW6L2qagggouLu43bFkHakNdy6yYrLi7uBm7bxkhwSctkrnGLi4t7hnuVY66hMrfdqc964OLi3sTNx9wRjTYstiEPFxd3Hzdvo951PGupRIKLi3uQW5zXKK+02xdcXNzv4iYbnbweM3loAxcX98O4O5KlNinCxcU9yb0r+VlhFafJcHFxN3PzwDSXGuXN12QmLi7uZu4veDMlC3Ch2uMAAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
     <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
 <script>
-var BLOG = { ROOT: '/', SHARE: , REWARD: false };
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
 
 
 
@@ -143,9 +363,31 @@ var BLOG = { ROOT: '/', SHARE: , REWARD: false };
 <script src="/js/main.min.js?v=1.4.8"></script>
 
 
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.4.8" async></script>
 
 
 
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
 
 </body>
