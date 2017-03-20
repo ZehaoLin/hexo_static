@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://linzhs.cm/"/>
-  <updated>2017-03-10T19:00:06.997Z</updated>
+  <updated>2017-03-10T19:03:42.974Z</updated>
   <id>http://linzhs.cm/</id>
   
   <author>
@@ -19,8 +19,8 @@
     <title>CentOS-7个人静态博客Hexo搭建（适合新手）</title>
     <link href="http://linzhs.cm/2017/03/11/HowToBuildHexoBlog/"/>
     <id>http://linzhs.cm/2017/03/11/HowToBuildHexoBlog/</id>
-    <published>2017-03-10T19:00:07.010Z</published>
-    <updated>2017-03-10T19:00:06.997Z</updated>
+    <published>2017-03-10T19:03:42.989Z</published>
+    <updated>2017-03-10T19:03:42.974Z</updated>
     
     <content type="html"><![CDATA[<h1 id="CentOS-7个人静态博客Hexo搭建（适合新手）"><a href="#CentOS-7个人静态博客Hexo搭建（适合新手）" class="headerlink" title="CentOS-7个人静态博客Hexo搭建（适合新手）"></a>CentOS-7个人静态博客Hexo搭建（适合新手）</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近，借助网上强大的博客资源，自己在个人服务器上搭建了hexo静态博客。在整个搭建的过程中间学到了很多，虽然过程并不是一帆风顺。现写下自己的经验，来与大家分享，希望能够起到作用。</p>
 <h2 id="个人服务器和域名准备"><a href="#个人服务器和域名准备" class="headerlink" title="个人服务器和域名准备"></a>个人服务器和域名准备</h2><p>（本文操作基于个人服务器和GitHub）这里的个人服务器是指虚拟服务器（VPS），一般需要购买。现在国内比较有名的VPS供应商是<a href="https://www.aliyun.com/" target="_blank" rel="external">阿里云</a>和<a href="https://www.qcloud.com/" target="_blank" rel="external">腾讯云</a>。国外的服务器可以考虑AWS，现在支持12月免费体验，当然也可以选择搬瓦</p>
@@ -207,6 +207,8 @@ $  ~/hexo_blog/hexo_git_deploy.sh
     
     </summary>
     
+    
+      <category term="hexo" scheme="http://linzhs.cm/tags/hexo/"/>
     
   </entry>
   
