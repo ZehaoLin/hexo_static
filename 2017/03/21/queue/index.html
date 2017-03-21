@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>数据结构与算法理论学习 -- 队列 | Linzh&#39;s Blog | Waking Dream</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="DataStructure&amp;Algorithem">
+    <meta name="description" content="队列(Queue)基本概念队列(Queue)是一种先进先出(FIFO)的数据结构，编程中可通过使用数组或者链表来实现。
+基本操作Enqueue        入队，向队列尾部添加一个元素Dequeue        出队，在队列头部移除一个元素isEmpty        检查队列是否为空size        查看队列大小
+常见应用普通队列在现实计算机当中应用非常广泛，比如播放器的播放列表，数据">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据结构与算法理论学习 -- 队列">
+<meta property="og:url" content="http://linzhs.cm/2017/03/21/queue/index.html">
+<meta property="og:site_name" content="Linzh's Blog">
+<meta property="og:description" content="队列(Queue)基本概念队列(Queue)是一种先进先出(FIFO)的数据结构，编程中可通过使用数组或者链表来实现。
+基本操作Enqueue        入队，向队列尾部添加一个元素Dequeue        出队，在队列头部移除一个元素isEmpty        检查队列是否为空size        查看队列大小
+常见应用普通队列在现实计算机当中应用非常广泛，比如播放器的播放列表，数据">
+<meta property="og:updated_time" content="2017-03-21T02:58:10.594Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="数据结构与算法理论学习 -- 队列">
+<meta name="twitter:description" content="队列(Queue)基本概念队列(Queue)是一种先进先出(FIFO)的数据结构，编程中可通过使用数组或者链表来实现。
+基本操作Enqueue        入队，向队列尾部添加一个元素Dequeue        出队，在队列头部移除一个元素isEmpty        检查队列是否为空size        查看队列大小
+常见应用普通队列在现实计算机当中应用非常广泛，比如播放器的播放列表，数据">
+    
+        <link rel="alternative" href="/atom.xml" title="Linzh&#39;s Blog" type="application/atom+xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.4.8">
+    <script>window.lazyScripts=[]</script>
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/linzh.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Linzh</h5>
+          <a href="mailto:lzh_547590520@163.com" title="lzh_547590520@163.com" class="mail">lzh_547590520@163.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                Home Page
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/ZehaoLin" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://www.weibo.com/L_Ceylon" target="_blank" >
+                <i class="icon icon-lg icon-weibo"></i>
+                Weibo
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/" target="_blank" >
+                <i class="icon icon-lg icon-link"></i>
+                About
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">数据结构与算法理论学习 -- 队列</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">数据结构与算法理论学习 -- 队列</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-03-21T02:58:10.000Z" itemprop="datePublished" class="page-time">
+  2017-03-21
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#队列-Queue"><span class="post-toc-number">1.</span> <span class="post-toc-text">队列(Queue)</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#基本概念"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">基本概念</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#基本操作"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">基本操作</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#常见应用"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">常见应用</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#队列的常见衍生版本"><span class="post-toc-number">2.</span> <span class="post-toc-text">队列的常见衍生版本</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#1-循环队列"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">1.循环队列</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#2-双端队列"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">2.双端队列</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#3-优先队列-堆-Heap"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">3.优先队列(堆, Heap)</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#总结"><span class="post-toc-number">3.</span> <span class="post-toc-text">总结</span></a></li></ol>
+        </nav>
+    </aside>
+    
+<article id="post-queue"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">数据结构与算法理论学习 -- 队列</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017年03月21日 10:58" datetime="2017-03-21T02:58:10.000Z"  itemprop="datePublished">2017-03-21</time>
+
+            
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h2 id="队列-Queue"><a href="#队列-Queue" class="headerlink" title="队列(Queue)"></a>队列(Queue)</h2><h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><p>队列(Queue)是一种先进先出(FIFO)的数据结构，编程中可通过使用数组或者链表来实现。</p>
+<h3 id="基本操作"><a href="#基本操作" class="headerlink" title="基本操作"></a>基本操作</h3><p>Enqueue        入队，向队列尾部添加一个元素<br>Dequeue        出队，在队列头部移除一个元素<br>isEmpty        检查队列是否为空<br>size        查看队列大小</p>
+<h3 id="常见应用"><a href="#常见应用" class="headerlink" title="常见应用"></a>常见应用</h3><p>普通队列在现实计算机当中应用非常广泛，比如播放器的播放列表，数据流对象，异步数据传输结构(文件IO，管道通信，套接字等)，<br>多线程中的阻塞队列，打印机队列，消息队列等等。</p>
+<h2 id="队列的常见衍生版本"><a href="#队列的常见衍生版本" class="headerlink" title="队列的常见衍生版本"></a>队列的常见衍生版本</h2><h3 id="1-循环队列"><a href="#1-循环队列" class="headerlink" title="1.循环队列"></a>1.循环队列</h3><p>在普通队列的基础上，将队列的头部和尾部相连接，就构成了循环队列这种数据结构。循环队列可以充分利用结构的空间，克服<br>队列的“假溢出”这种现象。循环队列可以通过数据和链表来实现。<br>    循环队列的一些基本的判断条件和性质：</p>
+<pre><code>初始化条件为：队头指针是front，队尾是rear，队列的最大长度为QueueSize
+1.队列为空                      rear == front
+2.队列满                        (rear + 1) % QueueSize == front
+3.队列的长度                    n = (rear - front + 1) % QueueSize
+4.入队后rear指向                (rear + 1) % QueueSize
+5.出队后front指向               (front + 1) % QueueSize
+</code></pre><h3 id="2-双端队列"><a href="#2-双端队列" class="headerlink" title="2.双端队列"></a>2.双端队列</h3><p>双端队列是一种同时具有队列和栈的性质的一种数据结构，在队列的两头都可以进行插入和删除的操作，同时也可以对双端<br>队列做一些限制。</p>
+<pre><code>输入受限的双端队列是指只能从队列一端输入，但可以从两端输出的双端队列；
+输出受限的双端队列是指只能从队列一端输出，但可以从两端输入的双端队列；
+如果双端队列允许从一端输入，从一端输出，则是普通的队列，如果双端队列只允许从一端输入和输出则是栈，
+因此说双端队列同时具有队列和栈两种数据结构的性质。
+</code></pre><h3 id="3-优先队列-堆-Heap"><a href="#3-优先队列-堆-Heap" class="headerlink" title="3.优先队列(堆, Heap)"></a>3.优先队列(堆, Heap)</h3><p>堆也是队列，但强调的是“<a href="">优先</a>”二字，每个在队列中取出的元素都具备最高优先权，若是最大堆，则每次取出必定是当前堆中<br>最大的元素，同理，若是最小堆而取出元素为最小。<br>堆有着广泛的应用，比如抢占式优先级的系统等。<br>堆还有着各种衍生结构，这里就不在详细说明，有关堆的知识，将专门开一篇文章来了解。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本文所述的队列知识比较简单，队列在数据结构中确实算是比较简单的，但是应用却是非常广泛。文章很遗憾没有上代码，希望能尽快完成代码并且贴上来。</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2017-03-21T02:58:10.594Z" itemprop="dateUpdated">2017年3月21日 10:58</time>
+</span><br>
+
+
+        这里写留言或版权声明：<a href="/2017/03/21/queue/" target="_blank" rel="external">http://linzhs.cm/2017/03/21/queue/</a>
+    </div>
+    <footer>
+        <a href="http://linzhs.cm">
+            <img src="/img/linzh.jpg" alt="Linzh">
+            Linzh
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DataStructure-Algorithem/">DataStructure&Algorithem</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://linzhs.cm/2017/03/21/queue/&title=《数据结构与算法理论学习 -- 队列》 — Linzh's Blog&pic=http://linzhs.cm/img/linzh.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://linzhs.cm/2017/03/21/queue/&title=《数据结构与算法理论学习 -- 队列》 — Linzh's Blog&source=Waking Dream" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://linzhs.cm/2017/03/21/queue/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《数据结构与算法理论学习 -- 队列》 — Linzh's Blog&url=http://linzhs.cm/2017/03/21/queue/&via=http://linzhs.cm" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://linzhs.cm/2017/03/21/queue/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/03/20/stack/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">数据结构与算法理论学习 -- 栈</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+<div class="comments" id="comments">
+    <div class="ds-thread" data-thread-key="queue" data-title="数据结构与算法理论学习 -- 队列" data-url="http://linzhs.cm/2017/03/21/queue/"></div>
+</div>
+<script>
+lazyScripts.push('//cdn.bootcss.com/marked/0.3.6/marked.min.js');
+
+var duoshuoQuery = {short_name:'ysblog', theme: 'none'};
+lazyScripts.push('/js/embed.min.js?v=1.4.8');
+
+
+</script>
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        �Thanks
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <ul class="reward-items">
+        
+        <li>
+            <img src="/img/wechat.jpg" title="微信打赏二维码" alt="微信打赏二维码">
+            <p>微信</p>
+        </li>
+        
+
+        
+        <li>
+            <img src="/img/alipay.jpg" title="支付宝打赏二维码" alt="支付宝打赏二维码">
+            <p>支付宝</p>
+        </li>
+        
+    </ul>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            <span>博客内容遵循 <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">知识共享 署名 - 非商业性 - 相同方式共享 4.0协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p>
+            <span>Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a></span>
+            <span>Linzh's Blog &copy; 2017</span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://linzhs.cm/2017/03/21/queue/&title=《数据结构与算法理论学习 -- 队列》 — Linzh's Blog&pic=http://linzhs.cm/img/linzh.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://linzhs.cm/2017/03/21/queue/&title=《数据结构与算法理论学习 -- 队列》 — Linzh's Blog&source=Waking Dream" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://linzhs.cm/2017/03/21/queue/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《数据结构与算法理论学习 -- 队列》 — Linzh's Blog&url=http://linzhs.cm/2017/03/21/queue/&via=http://linzhs.cm" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://linzhs.cm/2017/03/21/queue/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAK4AAACuCAAAAACKZ2kyAAABy0lEQVR42u3aS3KDMBAFQN//0s4BEuC9AclJqrVyUShqspjSfF6veL1PV77r+/PXioWLi3ubm1DOnyTo5Hf078DFxd3IbY85/7AkYB3turDh4uL+Ym4Szs7/Mi4u7v/jHuGS57i4uH+F215c2qvPB3I1XFzcG9y8Srnu95L6Li4u7oj7LleewLRXouh0XFzcLdw8oMyaK/kVJz8XFxd3D/doc5II1UWNuMVykfzg4uIu5uaDU3eGq2bl1MO4i4uLu4z7Hq2njq9HOnBxcTdy7wepthSSX2h+CGS4uLiLue2GO2/mBZGLN3FxcRdz719cirpLUGq58ODi4m7hzkqls/LorOF6GM5wcXGXcWcjFPnHtCXXYdzFxcV9lJsPZeYflrPaUgsuLu5Obj5OkQ9gzYJXUTDFxcXdzm0LoHmzpE2BolwNFxd3MbdFtE3ZB97BxcVdzJ2NZM1asHlbpdiAi4u7gNsOXbUt0jYUnp+Li4u7k/vUKFUe7PKCyGsWO3FxcR/itknRneGtNvkpqji4uLgf4s5asO0wVl01wcXF/QXcqCFaDltE4xq4uLgbuW3hox3SmiVUuLi4n+LmweWp8JS3bW7Vd3FxcSfcL2JtkJ87cFv8AAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.4.8"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.4.8" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+</body>
+</html>
