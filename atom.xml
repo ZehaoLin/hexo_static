@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title>Linzh&#39;s Blog</title>
-  <subtitle>Waking Dream</subtitle>
+  <subtitle>Standing on Shoulders of Giants</subtitle>
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://linzhs.cm/"/>
-  <updated>2017-03-22T12:05:45.114Z</updated>
+  <updated>2017-03-24T11:46:36.020Z</updated>
   <id>http://linzhs.cm/</id>
   
   <author>
@@ -14,6 +14,189 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title></title>
+    <link href="http://linzhs.cm/2017/03/24/stack/"/>
+    <id>http://linzhs.cm/2017/03/24/stack/</id>
+    <published>2017-03-24T11:46:36.099Z</published>
+    <updated>2017-03-24T11:46:36.020Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="taStructure-amp-Algorithm"><a href="#taStructure-amp-Algorithm" class="headerlink" title="taStructure&amp;Algorithm"></a>taStructure&amp;Algorithm</h2><h1 id="栈-Stack"><a href="#栈-Stack" class="headerlink" title="栈 (Stack)"></a>栈 (Stack)</h1><h2 id="1-栈的概念"><a href="#1-栈的概念" class="headerlink" title="1. 栈的概念"></a>1. 栈的概念</h2><p>栈是一种先进后出(First in last off, FILO/LIFO)线性数据结构。很多人叫栈为堆栈，但是堆和栈是不同的数据结构。</p>
+<h2 id="2-栈的实现"><a href="#2-栈的实现" class="headerlink" title="2. 栈的实现"></a>2. 栈的实现</h2><p>栈可以用数组和链表来实现。栈的基本操作有入栈、出栈、查看栈顶、判空等。</p>
+<h2 id="3-栈的常见应用"><a href="#3-栈的常见应用" class="headerlink" title="3. 栈的常见应用"></a>3. 栈的常见应用</h2><p>栈的应用很广泛，比如编译器中的词法分析器、Java虚拟机、软件中的撤销操作、<br>浏览器中的回退操作、编译器中的函数调用实现、表达式的计算等。<a href="http://www.cnblogs.com/yangecnu/p/Introduction-Stack-and-Queue.html" target="_blank" rel="external">相关介绍深度好文推荐。</a></p>
+<h3 id="3-1-线程栈"><a href="#3-1-线程栈" class="headerlink" title="3.1 线程栈"></a>3.1 线程栈</h3><p>线程栈是操作系统分配的一块内存区域。通常CPU上有一个特殊的称之为堆指针的寄存器。</p>
+<h3 id="3-2-Object-C和OpenGL中的“绘图上下文”"><a href="#3-2-Object-C和OpenGL中的“绘图上下文”" class="headerlink" title="3.2 Object-C和OpenGL中的“绘图上下文”"></a>3.2 Object-C和OpenGL中的“绘图上下文”</h3><h3 id="3-3-用户按下键盘过滤无效按键"><a href="#3-3-用户按下键盘过滤无效按键" class="headerlink" title="3.3 用户按下键盘过滤无效按键"></a>3.3 用户按下键盘过滤无效按键</h3><h3 id="3-4-算术表达式的计算-此文重点"><a href="#3-4-算术表达式的计算-此文重点" class="headerlink" title="3.4 算术表达式的计算(此文重点)"></a>3.4 算术表达式的计算(<a href="">此文重点</a>)</h3><h2 id="编程中算术表达式计算"><a href="#编程中算术表达式计算" class="headerlink" title="编程中算术表达式计算"></a>编程中算术表达式计算</h2><p>在此主要介绍栈在编程语言中的一大用处。<br>编程语言中，算术表达式有前缀、中缀、后缀之分，他们都是对算术表达式的编程语言表达、记忆方式。</p>
+<h4 id="举例："><a href="#举例：" class="headerlink" title="举例："></a>举例：</h4><pre><code>前缀表达式: - * + 3 4 5 6
+中缀表达式: (3 + 4) * 5 - 6
+后缀表达式: 3 4 + 5 * 6 -
+</code></pre><p>如上面例子所示，前中后缀表达式各不相同，其中很容易发现，中缀表达式是人在数学中所常用，且习惯的一种。<br>算术表达式中，主要由算术运算符和操作数组成，前中后缀表达式也是由此来区分的，也导致了表示的顺序不一样。</p>
+<h4 id="概念："><a href="#概念：" class="headerlink" title="概念："></a>概念：</h4><pre><code>前缀表达式：算术运算符在前，操作数在后，不包含括号; 为纪念波兰数学家、此表达式发明者Jan Lukasiewicz，此表达式也成为&quot;波兰表达式&quot;；
+中缀表达式：算术运算符在操作数中间，相比前后缀表达式，多了表示优先级的括号；
+后缀表达式：算术运算符在后，操作数在前，正好与前缀相反，所以也成为&quot;逆波兰表达式&quot;。
+</code></pre><h4 id="传统算术表达式的运算规则"><a href="#传统算术表达式的运算规则" class="headerlink" title="传统算术表达式的运算规则"></a>传统算术表达式的运算规则</h4><p>中缀表达式是人类最容易理解的和分析的表达方式，回忆我们对中缀表达式的运算规则：</p>
+<pre><code>1.在有括号的情况下，括号优先级最高，优先计算括号内的内容；
+2.在无括号的情况下，按运算符优先级进行先后计算，先乘除，后加减；
+3.在相同优先级的情况下，从左到右计算。
+</code></pre><h4 id="各表达式的优缺点"><a href="#各表达式的优缺点" class="headerlink" title="各表达式的优缺点"></a>各表达式的优缺点</h4><ul>
+<li><p>在中缀表达式的计算当中，需要不断遍历找出表达式中的括号和优先级较高的运算符，并且考虑操作出现的先后，这对于<br>人来说是简而易举的，但是对于计算机这种一根筋，只能处理0和1的机器来说，显然太复杂了，就算是实现了，时间复杂度<br>也是很恐怖的，毕竟运算符和操作数不可能总是只有几个，这时候出现的前缀和后缀表达式就很有用处了，也是专门为计算机<br>设计的。</p>
+</li>
+<li><p>在前缀和后缀表达式中，计算顺序不必随着运算符和括号不断变换，而是从左到右或是从右到左顺序遍历一次，不需要考虑<br>括号对运算的影响，再辅之的数据结构(Stack)，可完美完成计算，大大降低了计算的时间复杂度，也符合计算机的工作方式。<br>前缀和后缀表达式大大提高了计算机计算的性能，但对于人来说是不易理解的，特别是对于没有编程基础的人来说，所以在<br>输入和输出表达式给计算机计算的时候需要进行表达式转换，中缀(输入) -&gt; 前缀/后缀(计算) -&gt; 结果(输出)。</p>
+</li>
+</ul>
+<h4 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h4><p>1.中缀表达式 -&gt; 后缀表达式 [ 例子：a + b * c - (d + e) ]</p>
+<pre><code>人工转换：
+    1.给中缀表达式的所有运算加上括号    ( (a + (b * c)) - (d + e) )
+    2.将运算符放到括号后面        ( (a (b c)*)+ (de)+ )-
+    3.去除括号            a b c * + d e + -
+
+计算机转换(用栈辅助)：
+    1.建立运算符栈(大小合适，这里只存储运算符)；
+    2.从左到右遍历中缀表达式：
+        如果遇到操作数，则直接输出；
+        如果遇到运算符，则与栈顶的运算符比较优先级：
+            若栈为空，或者栈顶的运算符的优先级低于当前的运算符，则将当前的运算符入栈；
+            若栈顶运算符的优先级不低于(高于或相同)当前的运算符，则将栈顶的运算符输出，直到出现上一种情况为止(即为：栈为
+            空，或者栈顶的运算符的优先级低于当前的运算符)。
+        如果遇到括号：
+            若为 &quot;(&quot; ，则直接入栈；
+            若为 &quot;)&quot; ，记录，弹出所有运算符，直到在栈中找到&quot;(&quot;，才同时把 &quot;()&quot; 删除。
+</code></pre><p>计算机转换模拟 [ 例子：a + b * c - (d + e) ]</p>
+<pre><code>输出终端                    运算符栈(栈底 -&gt; 栈顶)
+a            |    
+a            |    +
+ab            |    +
+ab            |    +*
+abc            |    +*
+abc*                |    +
+abc*+                |    
+abc*+                |    -
+abc*+                |    -(
+abc*+                |    -(+
+abc*+d                |    -(+
+abc*+de                |    -(+
+abc*+de+            |    -(
+abc*+de+            |    -
+abc*+de+-            |
+</code></pre><p>2.中缀表达式 -&gt; 前缀表达式 [ 例子：a + b * c - (d + e) ]</p>
+<pre><code>人工转换：
+    1.给中缀表达式的所有运算加上括号    ( (a + (b * c)) - (d + e) )
+    2.将运算符放到括a号前面        ( -(+(a *(bc)) +(de) )
+    3.去除括号                - + a * b c + d e
+
+计算机转换(用栈辅助):
+    1.建立运算符栈和输出栈(大小合适)，其中输出栈用于存储输出数据，完成遍历后出栈的元素顺序即为前缀表达式；
+    2.从右向左遍历中缀表达式:
+        如果遇到操作数，则直接输出;
+        如果遇到运算符，则与栈顶的运算符比较优先级：
+            若栈为空，或者栈顶的运算符的优先级低于当前的运算符，则将当前的运算符入栈；
+            若栈顶运算符的优先级不低于(高于或相同)当前的运算符，则将栈顶的运算符输出，直到出现上一种情况为止(即为：栈为
+            空，或者栈顶的运算符的优先级低于当前的运算符)。
+        如果遇到括号：
+            若为 &quot;)&quot; ，则直接入栈；
+            若为 &quot;(&quot; ，记录，弹出所有运算符，直到在栈中找到&quot;)&quot;，才同时把 &quot;()&quot; 删除。
+</code></pre><p>计算机转换模拟 [ 例子：a + b * c - (d + e) ]</p>
+<pre><code>输出栈(栈底 -&gt; 栈顶)        运算符栈(栈底 -&gt; 栈顶)
+            |    )
+e            |    
+e            |    )+
+ed+            |    
+ed+            |    -
+ed+c                |    -    
+ed+c                |    -*
+ed+cb            |    -
+ed+cb*            |    -
+ed+cb*            |    -+
+ed+cb*a            |    -+
+ed+cb*a+        |    -
+ed+cb*a+-        |    
+
+所以，输出的前缀表达式为-+a*bc+de。
+</code></pre><p>3.构建表达式树</p>
+<pre><code>下面将表达式和二叉树的知识结合，将后缀表达式转换为二叉树 [ 例子: a b c * + d e + - ]
+    1.建立栈，大小为操作数个数，这里为5；
+    2.将操作数从左到右入栈，若遇到操作符，则将前面两个元素弹出，并用当前栈顶指向形成的二叉树的根节点；
+    3.最终合并二叉树。
+演示：
+    1. a b c
+    2. a         |
+            |
+           / \
+          b   c
+    3.                    +
+                /   \
+                a    *
+                    / \
+                   b   c
+    4.                                  +                d e
+                            /   \
+                            a        *
+                                / \
+                               b   c
+    5.                                                +            +
+                                        /   \           / \
+                                        a        *        d   e
+                                            / \
+                                           b   c
+    6.                                                            -
+                                                        /    \
+                                                       /      \        
+                                                      /        \
+                                                      +        +
+                                                    /   \       / \     
+                                                    a    *    d   e    
+                                                        / \           
+                                                       b   c       
+</code></pre><h2 id="Coding时刻"><a href="#Coding时刻" class="headerlink" title="Coding时刻"></a>Coding时刻</h2><ul>
+<li>栈的实现</li>
+</ul>
+<p>接下来来实现栈，这里使用Java级数组来实现，当然，你也可以应该链表来搭建栈结构及其相关操作。</p>
+<p>下面为要实现的操作方法API：</p>
+<blockquote>
+<p>Stack<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">public class Stack&lt;T&gt; &#123;</div><div class="line">    public Stack();</div><div class="line">    public void push(T item);</div><div class="line">    public boolean isEmpty();</div><div class="line">    public int size();</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+</blockquote>
+<p>在写出最终的实现代码之前，我们必须考虑应用数组或者其他形式来实现栈这种数据结构怎么样才能让其功能和性能最优。下面为重点考虑的几点：</p>
+<blockquote>
+<ol>
+<li><p>支持泛型。原因要使栈所支持的数据类型更加广泛通用，而不是需要String的时候写一遍栈的实现，再需要Integer类型的时候又重新写一遍针对Integer的实现。</p>
+</li>
+<li><p>支持数组大小自动调节。对于数组来说，没法动态调节大小是一大缺点，随机查找是它的优势，若存入有效的元素过多导致数组容纳不下，或者存入有效元素很少（有可能为空）且数组大小较大，这些情况在实际应用当中都是非常不合理的，所以我们需要实现数组大小的动态调节。这里采用流行的调节方法，在数组容纳不下的时候将大小调节为原先的2倍，若数组的有效元素为数组的大小的1/4时将大小调节为原先的1/2。</p>
+</li>
+<li><p>避免对象游离现象。Java的垃圾回收策略是回收所有无法被访问的对象的内存。在我们实现的栈当前，每一个pop弹出栈顶元素，栈顶指针向栈底移动一位（栈元素足够），但是实际这个被弹出的元素还存留在数组当前，也就是相应的占用这部分内存，GC无法回收。避免对象游离的办法其实很简单，在每次pop的时候将弹出的元素空间置为空。</p>
+</li>
+<li><p>支持迭代。支持foreach迭代，可以使代码更加整洁。迭代器接口还需要实现remove方法，这个在实现的时候可以不处理，也可以抛出UnsupportedOperationException异常，在实现next方法时候栈为空，则可不处理或者抛出NoSuchElementException。</p>
+</li>
+</ol>
+</blockquote>
+<p>解决完以上考虑的问题，即可构建出一个不错的栈结构，具体代码实现：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div></pre></td><td class="code"><pre><div class="line">import java.util.Iterator;//Java迭代器接口所属包</div><div class="line"></div><div class="line">public class Stack&lt;T&gt; implements Iterable&lt;T&gt; &#123;</div><div class="line">    private T[] arr;</div><div class="line">    private int len;</div><div class="line"></div><div class="line">    public Stack() &#123;//默认构造器</div><div class="line">        arr = (T)new Object[1];//Java中不支持泛型对象数组 这里采用强制类型转换办法</div><div class="line">        len = 0;//默认元素数量</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public void push(T item) &#123;//入栈</div><div class="line">        if (arr.len == len) </div><div class="line">            resize(2 * arr.length);</div><div class="line">        arr[len++] = item;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public T pop() &#123;//出栈</div><div class="line">        T t = arr[--len];</div><div class="line">        arr[len] = null;//避免对象游离</div><div class="line">        if (len &gt; 0 &amp;&amp; len == arr.length / 4)</div><div class="line">            resize(arr.length / 2);</div><div class="line">        return t;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public boolean isEmpty() &#123;//检查栈是否为空</div><div class="line">        return len == 0;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public int size() &#123;//查看栈大小</div><div class="line">        return len;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    private void resize(int max) &#123;//重新分配数组大小</div><div class="line">        T[] t = (T[])new Object[max];</div><div class="line">        for (int i = 0; i &lt; len; i++) &#123;</div><div class="line">            t[i] = arr[i];</div><div class="line">        &#125;</div><div class="line">        arr = t;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public Iterator&lt;T&gt; iterator() &#123;</div><div class="line">        return new ReverseArrayIterator();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    private class ReverseArrayIterator implements Iterator&lt;T&gt; &#123;//内部类，实现迭代器接口</div><div class="line">        //支持先进后出迭代</div><div class="line">        private int i = len;</div><div class="line">        public boolean hasNext() &#123; return i &gt; 0; &#125;</div><div class="line">        public T next() &#123; return arr[--i]; &#125;</div><div class="line">        public void remove &#123; &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<ul>
+<li>Dijkstra算法 - 双栈算法表达式求值</li>
+</ul>
+<p>使用两个栈来实现中缀表达式的求值，这里考虑的是理想情况，将所有运算都加上括号，输入为字符串的形式，实现加减乘除开方操作。基本的思路：</p>
+<blockquote>
+<ol>
+<li><p>将操作数压入操作数栈</p>
+</li>
+<li><p>将操作符压入操作符栈</p>
+</li>
+<li><p>忽略左括号</p>
+</li>
+<li><p>遇到右括号时，弹出一个运算符，弹出运算所需的操作数，并将运算完的结果压入操作数栈</p>
+</li>
+</ol>
+</blockquote>
+<p>具体代码实现：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">public class DijkstraTwoStack &#123;</div><div class="line">    </div><div class="line">    private Stack&lt;Character&gt; ops = new Stack&lt;&gt;();</div><div class="line">    private Stack&lt;Double&gt; vals = new Stack&lt;&gt;();</div><div class="line"></div><div class="line">    public DijkstraTwoStack &#123;</div><div class="line"></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public static int cal(String expr) &#123;</div><div class="line">        if (expr == null || expr.length &lt;= 1) return 0;</div><div class="line">        for (char c : expr) &#123;</div><div class="line">            if (c.equals(&apos;(&apos;)) ;</div><div class="line">            else if (c.equals(&apos;+&apos;) || c.equals(&apos;-&apos;) || c.equals(&apos;*&apos;) || c.equals(&apos;/&apos;) || c.equals(&apos;s&apos;))//用s表示开方 </div><div class="line">                ops.push(c);</div><div class="line">            else if (c.equals(&apos;)&apos;)) &#123;</div><div class="line">                char op = ops.pop();</div><div class="line">                double v = vals.pop();</div><div class="line">                if (op.equals(&apos;+&apos;)) v = vals.pop() + v;</div><div class="line">                else if (op.equals(&apos;-&apos;)) v = vals.pop() - v;</div><div class="line">                else if (op.equals(&apos;*&apos;)) v = vals.pop() * v;</div><div class="line">                else if (op.equals(&apos;/&apos;)) v = vals.pop() / v;</div><div class="line">                else if (op.equals(&apos;s&apos;)) v = Math.sqrt(v);</div><div class="line">                vals.push(v);</div><div class="line">            &#125; else &#123;</div><div class="line">                vals.push(Double.parseDouble(c));//操作数字符转换为double类型入栈</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本文以栈为中心，主要介绍了栈的应用及算术表达式在编程语言中的表达形式。栈在大数据结构中用处很广，在其他数据结构中也能作为很好<br>的辅助，比如迭代版的二叉树遍历、深度优先搜索和广度优先搜索等等。学好栈和队列的时候是算法设计的一大基础，务必要扎实学好。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;taStructure-amp-Algorithm&quot;&gt;&lt;a href=&quot;#taStructure-amp-Algorithm&quot; class=&quot;headerlink&quot; title=&quot;taStructure&amp;amp;Algorithm&quot;&gt;&lt;/a&gt;taStructure
+    
+    </summary>
+    
+    
+  </entry>
   
   <entry>
     <title>Java中方法(函数)参数的传递</title>
@@ -123,153 +306,6 @@ public static void main(String[] args) {
     <summary type="html">
     
       &lt;h2 id=&quot;队列-Queue&quot;&gt;&lt;a href=&quot;#队列-Queue&quot; class=&quot;headerlink&quot; title=&quot;队列(Queue)&quot;&gt;&lt;/a&gt;队列(Queue)&lt;/h2&gt;&lt;h3 id=&quot;基本概念&quot;&gt;&lt;a href=&quot;#基本概念&quot; class=&quot;headerlink
-    
-    </summary>
-    
-    
-      <category term="DataStructure&amp;Algorithm" scheme="http://linzhs.cm/tags/DataStructure-Algorithm/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>数据结构与算法理论学习 -- 栈</title>
-    <link href="http://linzhs.cm/2017/03/20/stack/"/>
-    <id>http://linzhs.cm/2017/03/20/stack/</id>
-    <published>2017-03-20T13:54:45.074Z</published>
-    <updated>2017-03-20T13:54:45.055Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="栈-Stack"><a href="#栈-Stack" class="headerlink" title="栈 (Stack)"></a>栈 (Stack)</h1><h2 id="1-栈的概念"><a href="#1-栈的概念" class="headerlink" title="1. 栈的概念"></a>1. 栈的概念</h2><p>栈是一种先进后出(First in last off, FILO/LIFO)线性数据结构。很多人叫栈为堆栈，但是堆和栈是不同的数据结构。</p>
-<h2 id="2-栈的实现"><a href="#2-栈的实现" class="headerlink" title="2. 栈的实现"></a>2. 栈的实现</h2><p>栈可以用数组和链表来实现。栈的基本操作有入栈、出栈、查看栈顶、判空等。</p>
-<h2 id="3-栈的常见应用"><a href="#3-栈的常见应用" class="headerlink" title="3. 栈的常见应用"></a>3. 栈的常见应用</h2><p>栈的应用很广泛，比如编译器中的词法分析器、Java虚拟机、软件中的撤销操作、<br>浏览器中的回退操作、编译器中的函数调用实现、表达式的计算等。<a href="http://www.cnblogs.com/yangecnu/p/Introduction-Stack-and-Queue.html" target="_blank" rel="external">相关介绍深度好文推荐。</a></p>
-<h3 id="3-1-线程栈"><a href="#3-1-线程栈" class="headerlink" title="3.1 线程栈"></a>3.1 线程栈</h3><p>线程栈是操作系统分配的一块内存区域。通常CPU上有一个特殊的称之为堆指针的寄存器。</p>
-<h3 id="3-2-Object-C和OpenGL中的“绘图上下文”"><a href="#3-2-Object-C和OpenGL中的“绘图上下文”" class="headerlink" title="3.2 Object-C和OpenGL中的“绘图上下文”"></a>3.2 Object-C和OpenGL中的“绘图上下文”</h3><h3 id="3-3-用户按下键盘过滤无效按键"><a href="#3-3-用户按下键盘过滤无效按键" class="headerlink" title="3.3 用户按下键盘过滤无效按键"></a>3.3 用户按下键盘过滤无效按键</h3><h3 id="3-4-算术表达式的计算-此文重点"><a href="#3-4-算术表达式的计算-此文重点" class="headerlink" title="3.4 算术表达式的计算(此文重点)"></a>3.4 算术表达式的计算(<a href="">此文重点</a>)</h3><h2 id="编程中算术表达式计算"><a href="#编程中算术表达式计算" class="headerlink" title="编程中算术表达式计算"></a>编程中算术表达式计算</h2><p>在此主要介绍栈在编程语言中的一大用处。<br>编程语言中，算术表达式有前缀、中缀、后缀之分，他们都是对算术表达式的编程语言表达、记忆方式。</p>
-<h4 id="举例："><a href="#举例：" class="headerlink" title="举例："></a>举例：</h4><pre><code>前缀表达式: - * + 3 4 5 6
-中缀表达式: (3 + 4) * 5 - 6
-后缀表达式: 3 4 + 5 * 6 -
-</code></pre><p>如上面例子所示，前中后缀表达式各不相同，其中很容易发现，中缀表达式是人在数学中所常用，且习惯的一种。<br>算术表达式中，主要由算术运算符和操作数组成，前中后缀表达式也是由此来区分的，也导致了表示的顺序不一样。</p>
-<h4 id="概念："><a href="#概念：" class="headerlink" title="概念："></a>概念：</h4><pre><code>前缀表达式：算术运算符在前，操作数在后，不包含括号; 为纪念波兰数学家、此表达式发明者Jan Lukasiewicz，此表达式也成为&quot;波兰表达式&quot;；
-中缀表达式：算术运算符在操作数中间，相比前后缀表达式，多了表示优先级的括号；
-后缀表达式：算术运算符在后，操作数在前，正好与前缀相反，所以也成为&quot;逆波兰表达式&quot;。
-</code></pre><h4 id="传统算术表达式的运算规则"><a href="#传统算术表达式的运算规则" class="headerlink" title="传统算术表达式的运算规则"></a>传统算术表达式的运算规则</h4><p>中缀表达式是人类最容易理解的和分析的表达方式，回忆我们对中缀表达式的运算规则：</p>
-<pre><code>1.在有括号的情况下，括号优先级最高，优先计算括号内的内容；
-2.在无括号的情况下，按运算符优先级进行先后计算，先乘除，后加减；
-3.在相同优先级的情况下，从左到右计算。
-</code></pre><h4 id="各表达式的优缺点"><a href="#各表达式的优缺点" class="headerlink" title="各表达式的优缺点"></a>各表达式的优缺点</h4><ul>
-<li><p>在中缀表达式的计算当中，需要不断遍历找出表达式中的括号和优先级较高的运算符，并且考虑操作出现的先后，这对于<br>人来说是简而易举的，但是对于计算机这种一根筋，只能处理0和1的机器来说，显然太复杂了，就算是实现了，时间复杂度<br>也是很恐怖的，毕竟运算符和操作数不可能总是只有几个，这时候出现的前缀和后缀表达式就很有用处了，也是专门为计算机<br>设计的。</p>
-</li>
-<li><p>在前缀和后缀表达式中，计算顺序不必随着运算符和括号不断变换，而是从左到右或是从右到左顺序遍历一次，不需要考虑<br>括号对运算的影响，再辅之的数据结构(Stack)，可完美完成计算，大大降低了计算的时间复杂度，也符合计算机的工作方式。<br>前缀和后缀表达式大大提高了计算机计算的性能，但对于人来说是不易理解的，特别是对于没有编程基础的人来说，所以在<br>输入和输出表达式给计算机计算的时候需要进行表达式转换，中缀(输入) -&gt; 前缀/后缀(计算) -&gt; 结果(输出)。</p>
-</li>
-</ul>
-<h4 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h4><p>1.中缀表达式 -&gt; 后缀表达式 [ 例子：a + b * c - (d + e) ]</p>
-<pre><code>人工转换：
-    1.给中缀表达式的所有运算加上括号    ( (a + (b * c)) - (d + e) )
-    2.将运算符放到括号后面        ( (a (b c)*)+ (de)+ )-
-    3.去除括号            a b c * + d e + -
-
-计算机转换(用栈辅助)：
-    1.建立运算符栈(大小合适，这里只存储运算符)；
-    2.从左到右遍历中缀表达式：
-        如果遇到操作数，则直接输出；
-        如果遇到运算符，则与栈顶的运算符比较优先级：
-            若栈为空，或者栈顶的运算符的优先级低于当前的运算符，则将当前的运算符入栈；
-            若栈顶运算符的优先级不低于(高于或相同)当前的运算符，则将栈顶的运算符输出，直到出现上一种情况为止(即为：栈为
-            空，或者栈顶的运算符的优先级低于当前的运算符)。
-        如果遇到括号：
-            若为 &quot;(&quot; ，则直接入栈；
-            若为 &quot;)&quot; ，记录，弹出所有运算符，直到在栈中找到&quot;(&quot;，才同时把 &quot;()&quot; 删除。
-</code></pre><p>计算机转换模拟 [ 例子：a + b * c - (d + e) ]</p>
-<pre><code>输出终端                    运算符栈(栈底 -&gt; 栈顶)
-a            |    
-a            |    +
-ab            |    +
-ab            |    +*
-abc            |    +*
-abc*                |    +
-abc*+                |    
-abc*+                |    -
-abc*+                |    -(
-abc*+                |    -(+
-abc*+d                |    -(+
-abc*+de                |    -(+
-abc*+de+            |    -(
-abc*+de+            |    -
-abc*+de+-            |
-</code></pre><p>2.中缀表达式 -&gt; 前缀表达式 [ 例子：a + b * c - (d + e) ]</p>
-<pre><code>人工转换：
-    1.给中缀表达式的所有运算加上括号    ( (a + (b * c)) - (d + e) )
-    2.将运算符放到括a号前面                ( -(+(a *(bc)) +(de) )
-    3.去除括号                            - + a * b c + d e
-
-计算机转换(用栈辅助):
-    1.建立运算符栈和输出栈(大小合适)，其中输出栈用于存储输出数据，完成遍历后出栈的元素顺序即为前缀表达式；
-    2.从右向左遍历中缀表达式:
-        如果遇到操作数，则直接输出;
-        如果遇到运算符，则与栈顶的运算符比较优先级：
-            若栈为空，或者栈顶的运算符的优先级低于当前的运算符，则将当前的运算符入栈；
-            若栈顶运算符的优先级不低于(高于或相同)当前的运算符，则将栈顶的运算符输出，直到出现上一种情况为止(即为：栈为
-            空，或者栈顶的运算符的优先级低于当前的运算符)。
-        如果遇到括号：
-            若为 &quot;)&quot; ，则直接入栈；
-            若为 &quot;(&quot; ，记录，弹出所有运算符，直到在栈中找到&quot;)&quot;，才同时把 &quot;()&quot; 删除。
-</code></pre><p>计算机转换模拟 [ 例子：a + b * c - (d + e) ]</p>
-<pre><code>输出栈(栈底 -&gt; 栈顶)        运算符栈(栈底 -&gt; 栈顶)
-            |    )
-e            |    
-e            |    )+
-ed+            |    
-ed+            |    -
-ed+c                |    -    
-ed+c                |    -*
-ed+cb            |    -
-ed+cb*            |    -
-ed+cb*            |    -+
-ed+cb*a            |    -+
-ed+cb*a+        |    -
-ed+cb*a+-        |    
-
-所以，输出的前缀表达式为-+a*bc+de。
-</code></pre><p>3.构建表达式树</p>
-<pre><code>下面将表达式和二叉树的知识结合，将后缀表达式转换为二叉树 [ 例子: a b c * + d e + - ]
-    1.建立栈，大小为操作数个数，这里为5；
-    2.将操作数从左到右入栈，若遇到操作符，则将前面两个元素弹出，并用当前栈顶指向形成的二叉树的根节点；
-    3.最终合并二叉树。
-演示：
-    1. a b c
-    2. a         |
-            |
-           / \
-          b   c
-    3.                    +
-                /   \
-                a    *
-                    / \
-                   b   c
-    4.                                  +                d e
-                            /   \
-                            a        *
-                                / \
-                               b   c
-    5.                                                +            +
-                                        /   \           / \
-                                        a        *        d   e
-                                            / \
-                                           b   c
-    6.                                                            -
-                                                        /    \
-                                                       /      \        
-                                                      /        \
-                                                      +        +
-                                                    /   \       / \     
-                                                    a    *    d   e    
-                                                        / \           
-                                                       b   c       
-</code></pre><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本文以栈为中心，主要介绍了栈的应用及算术表达式在编程语言中的表达形式。栈在大数据结构中用处很广，在其他数据结构中也能作为很好<br>的辅助，比如迭代版的二叉树遍历、深度优先搜索和广度优先搜索等等。</p>
-<p>本文很遗憾没有给出自己的代码实现，希望尽快实现，然后把代码贴出来。</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;栈-Stack&quot;&gt;&lt;a href=&quot;#栈-Stack&quot; class=&quot;headerlink&quot; title=&quot;栈 (Stack)&quot;&gt;&lt;/a&gt;栈 (Stack)&lt;/h1&gt;&lt;h2 id=&quot;1-栈的概念&quot;&gt;&lt;a href=&quot;#1-栈的概念&quot; class=&quot;headerli
     
     </summary>
     
