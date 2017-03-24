@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://linzhs.cm/"/>
-  <updated>2017-03-24T11:46:36.020Z</updated>
+  <updated>2017-03-24T11:48:10.738Z</updated>
   <id>http://linzhs.cm/</id>
   
   <author>
@@ -16,13 +16,13 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title></title>
+    <title>数据结构与算法理论学习 -- 栈</title>
     <link href="http://linzhs.cm/2017/03/24/stack/"/>
     <id>http://linzhs.cm/2017/03/24/stack/</id>
-    <published>2017-03-24T11:46:36.099Z</published>
-    <updated>2017-03-24T11:46:36.020Z</updated>
+    <published>2017-03-24T11:48:10.749Z</published>
+    <updated>2017-03-24T11:48:10.738Z</updated>
     
-    <content type="html"><![CDATA[<h2 id="taStructure-amp-Algorithm"><a href="#taStructure-amp-Algorithm" class="headerlink" title="taStructure&amp;Algorithm"></a>taStructure&amp;Algorithm</h2><h1 id="栈-Stack"><a href="#栈-Stack" class="headerlink" title="栈 (Stack)"></a>栈 (Stack)</h1><h2 id="1-栈的概念"><a href="#1-栈的概念" class="headerlink" title="1. 栈的概念"></a>1. 栈的概念</h2><p>栈是一种先进后出(First in last off, FILO/LIFO)线性数据结构。很多人叫栈为堆栈，但是堆和栈是不同的数据结构。</p>
+    <content type="html"><![CDATA[<h1 id="栈-Stack"><a href="#栈-Stack" class="headerlink" title="栈 (Stack)"></a>栈 (Stack)</h1><h2 id="1-栈的概念"><a href="#1-栈的概念" class="headerlink" title="1. 栈的概念"></a>1. 栈的概念</h2><p>栈是一种先进后出(First in last off, FILO/LIFO)线性数据结构。很多人叫栈为堆栈，但是堆和栈是不同的数据结构。</p>
 <h2 id="2-栈的实现"><a href="#2-栈的实现" class="headerlink" title="2. 栈的实现"></a>2. 栈的实现</h2><p>栈可以用数组和链表来实现。栈的基本操作有入栈、出栈、查看栈顶、判空等。</p>
 <h2 id="3-栈的常见应用"><a href="#3-栈的常见应用" class="headerlink" title="3. 栈的常见应用"></a>3. 栈的常见应用</h2><p>栈的应用很广泛，比如编译器中的词法分析器、Java虚拟机、软件中的撤销操作、<br>浏览器中的回退操作、编译器中的函数调用实现、表达式的计算等。<a href="http://www.cnblogs.com/yangecnu/p/Introduction-Stack-and-Queue.html" target="_blank" rel="external">相关介绍深度好文推荐。</a></p>
 <h3 id="3-1-线程栈"><a href="#3-1-线程栈" class="headerlink" title="3.1 线程栈"></a>3.1 线程栈</h3><p>线程栈是操作系统分配的一块内存区域。通常CPU上有一个特殊的称之为堆指针的寄存器。</p>
@@ -191,10 +191,12 @@ ed+cb*a+-        |
     
     <summary type="html">
     
-      &lt;h2 id=&quot;taStructure-amp-Algorithm&quot;&gt;&lt;a href=&quot;#taStructure-amp-Algorithm&quot; class=&quot;headerlink&quot; title=&quot;taStructure&amp;amp;Algorithm&quot;&gt;&lt;/a&gt;taStructure
+      &lt;h1 id=&quot;栈-Stack&quot;&gt;&lt;a href=&quot;#栈-Stack&quot; class=&quot;headerlink&quot; title=&quot;栈 (Stack)&quot;&gt;&lt;/a&gt;栈 (Stack)&lt;/h1&gt;&lt;h2 id=&quot;1-栈的概念&quot;&gt;&lt;a href=&quot;#1-栈的概念&quot; class=&quot;headerli
     
     </summary>
     
+    
+      <category term="DataStructure&amp;Algorithm" scheme="http://linzhs.cm/tags/DataStructure-Algorithm/"/>
     
   </entry>
   
