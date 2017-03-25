@@ -25,12 +25,12 @@
 3. 栈的常见应用栈的应用很广泛，比如编译器中的词法分析器、Java虚拟机、软件中的撤销操作、浏览器中的回退操作、编译器中的函数调用实现、表达式">
 <meta property="og:type" content="article">
 <meta property="og:title" content="数据结构与算法理论学习 -- 栈">
-<meta property="og:url" content="http://linzhs.cm/2017/03/24/stack/index.html">
+<meta property="og:url" content="http://linzhs.cm/2017/03/25/stack/index.html">
 <meta property="og:site_name" content="Linzh's Blog">
 <meta property="og:description" content="栈 (Stack)1. 栈的概念栈是一种先进后出(First in last off, FILO/LIFO)线性数据结构。很多人叫栈为堆栈，但是堆和栈是不同的数据结构。
 2. 栈的实现栈可以用数组和链表来实现。栈的基本操作有入栈、出栈、查看栈顶、判空等。
 3. 栈的常见应用栈的应用很广泛，比如编译器中的词法分析器、Java虚拟机、软件中的撤销操作、浏览器中的回退操作、编译器中的函数调用实现、表达式">
-<meta property="og:updated_time" content="2017-03-24T11:48:10.738Z">
+<meta property="og:updated_time" content="2017-03-25T06:25:40.557Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="数据结构与算法理论学习 -- 栈">
 <meta name="twitter:description" content="栈 (Stack)1. 栈的概念栈是一种先进后出(First in last off, FILO/LIFO)线性数据结构。很多人叫栈为堆栈，但是堆和栈是不同的数据结构。
@@ -151,8 +151,8 @@
         <h1 class="title">数据结构与算法理论学习 -- 栈</h1>
         <h5 class="subtitle">
             
-                <time datetime="2017-03-24T11:48:10.749Z" itemprop="datePublished" class="page-time">
-  2017-03-24
+                <time datetime="2017-03-25T06:25:40.600Z" itemprop="datePublished" class="page-time">
+  2017-03-25
 </time>
 
 
@@ -180,7 +180,7 @@
     <div class="post-card">
         <h1 class="post-card-title">数据结构与算法理论学习 -- 栈</h1>
         <div class="post-meta">
-            <time class="post-time" title="2017年03月24日 19:48" datetime="2017-03-24T11:48:10.749Z"  itemprop="datePublished">2017-03-24</time>
+            <time class="post-time" title="2017年03月25日 14:25" datetime="2017-03-25T06:25:40.600Z"  itemprop="datePublished">2017-03-25</time>
 
             
 
@@ -321,9 +321,9 @@ ed+cb*a+-        |
                                                         / \           
                                                        b   c       
 </code></pre><h2 id="Coding时刻"><a href="#Coding时刻" class="headerlink" title="Coding时刻"></a>Coding时刻</h2><ul>
-<li>栈的实现</li>
+<li>栈的数组实现</li>
 </ul>
-<p>接下来来实现栈，这里使用Java级数组来实现，当然，你也可以应该链表来搭建栈结构及其相关操作。</p>
+<p>接下来来实现栈，这里先使用Java级数组来实现，下面再使用链表来搭建栈结构及其相关操作。</p>
 <p>下面为要实现的操作方法API：</p>
 <blockquote>
 <p>Stack<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">public class Stack&lt;T&gt; &#123;</div><div class="line">    public Stack();</div><div class="line">    public void push(T item);</div><div class="line">    public boolean isEmpty();</div><div class="line">    public int size();</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
@@ -342,6 +342,10 @@ ed+cb*a+-        |
 </ol>
 </blockquote>
 <p>解决完以上考虑的问题，即可构建出一个不错的栈结构，具体代码实现：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div></pre></td><td class="code"><pre><div class="line">import java.util.Iterator;//Java迭代器接口所属包</div><div class="line"></div><div class="line">public class Stack&lt;T&gt; implements Iterable&lt;T&gt; &#123;</div><div class="line">    private T[] arr;</div><div class="line">    private int len;</div><div class="line"></div><div class="line">    public Stack() &#123;//默认构造器</div><div class="line">        arr = (T)new Object[1];//Java中不支持泛型对象数组 这里采用强制类型转换办法</div><div class="line">        len = 0;//默认元素数量</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public void push(T item) &#123;//入栈</div><div class="line">        if (arr.len == len) </div><div class="line">            resize(2 * arr.length);</div><div class="line">        arr[len++] = item;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public T pop() &#123;//出栈</div><div class="line">        T t = arr[--len];</div><div class="line">        arr[len] = null;//避免对象游离</div><div class="line">        if (len &gt; 0 &amp;&amp; len == arr.length / 4)</div><div class="line">            resize(arr.length / 2);</div><div class="line">        return t;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public boolean isEmpty() &#123;//检查栈是否为空</div><div class="line">        return len == 0;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public int size() &#123;//查看栈大小</div><div class="line">        return len;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    private void resize(int max) &#123;//重新分配数组大小</div><div class="line">        T[] t = (T[])new Object[max];</div><div class="line">        for (int i = 0; i &lt; len; i++) &#123;</div><div class="line">            t[i] = arr[i];</div><div class="line">        &#125;</div><div class="line">        arr = t;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public Iterator&lt;T&gt; iterator() &#123;</div><div class="line">        return new ReverseArrayIterator();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    private class ReverseArrayIterator implements Iterator&lt;T&gt; &#123;//内部类，实现迭代器接口</div><div class="line">        //支持先进后出迭代</div><div class="line">        private int i = len;</div><div class="line">        public boolean hasNext() &#123; return i &gt; 0; &#125;</div><div class="line">        public T next() &#123; return arr[--i]; &#125;</div><div class="line">        public void remove &#123; &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<ul>
+<li>栈的链表实现</li>
+</ul>
+<p>相比数组来实现栈，链表的优势在于可以很方便的插入删除元素，长度也不会受限，但是它的缺点是随机访问的能力变差了很多，所示访问的结点在末尾，那就等于每次都要遍历一次链表，效率是比较低的。这里在pop出元素的时候，Java程序员无需关心结点成为孤儿后会不会导致内存占用，GC会帮你完成收尾工作。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line">public class Stack&lt;T&gt; &#123;</div><div class="line">    </div><div class="line">    private Node first;</div><div class="line">    private int N;</div><div class="line">    </div><div class="line">    private class Node &#123;</div><div class="line">        public T item;</div><div class="line">        public Node next;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public  Stack() &#123;</div><div class="line"></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public boolean isEmpty() &#123;</div><div class="line">        return first == null;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public int size() &#123;</div><div class="line">        return N;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public void push(T item) &#123;</div><div class="line">        Node oldfirst = first;</div><div class="line">        first = new Node();</div><div class="line">        first.item = item;</div><div class="line">        first.next = oldfirst;</div><div class="line">        N++;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public Item pop() &#123;</div><div class="line">        T item = first.item;</div><div class="line">        first = first.next;</div><div class="line">        N--;</div><div class="line">        return item;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <ul>
 <li>Dijkstra算法 - 双栈算法表达式求值</li>
 </ul>
@@ -367,11 +371,11 @@ ed+cb*a+-        |
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2017-03-24T11:48:10.738Z" itemprop="dateUpdated">2017年3月24日 19:48</time>
+    最后更新时间：<time datetime="2017-03-25T06:25:40.557Z" itemprop="dateUpdated">2017年3月25日 14:25</time>
 </span><br>
 
 
-        这里写留言或版权声明：<a href="/2017/03/24/stack/" target="_blank" rel="external">http://linzhs.cm/2017/03/24/stack/</a>
+        这里写留言或版权声明：<a href="/2017/03/25/stack/" target="_blank" rel="external">http://linzhs.cm/2017/03/25/stack/</a>
     </div>
     <footer>
         <a href="http://linzhs.cm">
@@ -400,7 +404,7 @@ ed+cb*a+-        |
 <div class="page-share" id="pageShare">
     <ul class="reset share-icons">
       <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://linzhs.cm/2017/03/24/stack/&title=《数据结构与算法理论学习 -- 栈》 — Linzh's Blog&pic=http://linzhs.cm/img/linzh.jpg" data-title="微博">
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://linzhs.cm/2017/03/25/stack/&title=《数据结构与算法理论学习 -- 栈》 — Linzh's Blog&pic=http://linzhs.cm/img/linzh.jpg" data-title="微博">
           <i class="icon icon-weibo"></i>
         </a>
       </li>
@@ -410,22 +414,22 @@ ed+cb*a+-        |
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://linzhs.cm/2017/03/24/stack/&title=《数据结构与算法理论学习 -- 栈》 — Linzh's Blog&source=Standing on Shoulders of Giants" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://linzhs.cm/2017/03/25/stack/&title=《数据结构与算法理论学习 -- 栈》 — Linzh's Blog&source=Standing on Shoulders of Giants" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
       <li>
-        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://linzhs.cm/2017/03/24/stack/" data-title=" Facebook">
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://linzhs.cm/2017/03/25/stack/" data-title=" Facebook">
           <i class="icon icon-facebook"></i>
         </a>
       </li>
       <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《数据结构与算法理论学习 -- 栈》 — Linzh's Blog&url=http://linzhs.cm/2017/03/24/stack/&via=http://linzhs.cm" data-title=" Twitter">
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《数据结构与算法理论学习 -- 栈》 — Linzh's Blog&url=http://linzhs.cm/2017/03/25/stack/&via=http://linzhs.cm" data-title=" Twitter">
           <i class="icon icon-twitter"></i>
         </a>
       </li>
       <li>
-        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://linzhs.cm/2017/03/24/stack/" data-title=" Google+">
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://linzhs.cm/2017/03/25/stack/" data-title=" Google+">
           <i class="icon icon-google-plus"></i>
         </a>
       </li>
@@ -445,7 +449,14 @@ ed+cb*a+-        |
     </div>
 
     
-<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2017/03/25/queue/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">数据结构与算法理论学习 -- 队列</h4>
+      </a>
+    </div>
   
 
   
@@ -463,7 +474,7 @@ ed+cb*a+-        |
     
 
 <div class="comments" id="comments">
-    <div class="ds-thread" data-thread-key="stack" data-title="数据结构与算法理论学习 -- 栈" data-url="http://linzhs.cm/2017/03/24/stack/"></div>
+    <div class="ds-thread" data-thread-key="stack" data-title="数据结构与算法理论学习 -- 栈" data-url="http://linzhs.cm/2017/03/25/stack/"></div>
 </div>
 <script>
 lazyScripts.push('//cdn.bootcss.com/marked/0.3.6/marked.min.js');
@@ -545,7 +556,7 @@ lazyScripts.push('/js/embed.min.js?v=1.4.8');
 <div class="global-share" id="globalShare">
     <ul class="reset share-icons">
       <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://linzhs.cm/2017/03/24/stack/&title=《数据结构与算法理论学习 -- 栈》 — Linzh's Blog&pic=http://linzhs.cm/img/linzh.jpg" data-title="微博">
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://linzhs.cm/2017/03/25/stack/&title=《数据结构与算法理论学习 -- 栈》 — Linzh's Blog&pic=http://linzhs.cm/img/linzh.jpg" data-title="微博">
           <i class="icon icon-weibo"></i>
         </a>
       </li>
@@ -555,22 +566,22 @@ lazyScripts.push('/js/embed.min.js?v=1.4.8');
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://linzhs.cm/2017/03/24/stack/&title=《数据结构与算法理论学习 -- 栈》 — Linzh's Blog&source=Standing on Shoulders of Giants" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://linzhs.cm/2017/03/25/stack/&title=《数据结构与算法理论学习 -- 栈》 — Linzh's Blog&source=Standing on Shoulders of Giants" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
       <li>
-        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://linzhs.cm/2017/03/24/stack/" data-title=" Facebook">
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://linzhs.cm/2017/03/25/stack/" data-title=" Facebook">
           <i class="icon icon-facebook"></i>
         </a>
       </li>
       <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《数据结构与算法理论学习 -- 栈》 — Linzh's Blog&url=http://linzhs.cm/2017/03/24/stack/&via=http://linzhs.cm" data-title=" Twitter">
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《数据结构与算法理论学习 -- 栈》 — Linzh's Blog&url=http://linzhs.cm/2017/03/25/stack/&via=http://linzhs.cm" data-title=" Twitter">
           <i class="icon icon-twitter"></i>
         </a>
       </li>
       <li>
-        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://linzhs.cm/2017/03/24/stack/" data-title=" Google+">
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://linzhs.cm/2017/03/25/stack/" data-title=" Google+">
           <i class="icon icon-google-plus"></i>
         </a>
       </li>
@@ -581,7 +592,7 @@ lazyScripts.push('/js/embed.min.js?v=1.4.8');
 <div class="page-modal wx-share" id="wxShare">
     <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
-    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAK4AAACuCAAAAACKZ2kyAAABzklEQVR42u3awY7CMAxFUf7/p8t2JNRwnx2HjnSzQqC2pywi+zmvF17Xx/r7fe2q9bWtJVeu3Db3Wq67B6Ro8nltkCtX7nkuf8zdq64RnfvLlSv3+Vx+69pLypUr979zSVGSFkxy5cp9Dpc0P+TxhH6oV5MrV26Dy1PKuc8j+a5cuXJL3CtctRELKX3Q0+XKlXuEyzcU3sDUShz+XLly5U5zeftBwg4UauARy5f/Va5cuWPczmgkDS9qcWqw78qVK3crtxZ6pke4+FVo0CJXrtxhbhp/1Fqj9eYYFFJy5cod5va3rTT6JIFIsIXJlSt3gJseo9wVlJAS58s95cqV+yMuCUd4w1MbuKJeTa5cuVu5tZvybY5HrugbuXLlHuGmpyLTYxO8eErHtHLlyp3mpoEFKXpqo5cg35UrV+5BLt+SauPStAW6TXnlypV7kMuHqTxgDSosXoXJlSt3jHuFK72WH+JE7ZBcuXKPcPkitya/pvlG8WXkypXb5nZC0s5whQ9dtmW6cuXKDbmcwoubYFzKWya5cuU+kksKkf5hrDg1kStX7gO4pFiphR3FyY9cuXIHuLxRSccktZeRK1fub7l8c9lVBqXtk1y5cg9y37RfkJ/IYeeiAAAAAElFTkSuQmCC" alt="微信分享二维码">
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAK4AAACuCAAAAACKZ2kyAAABxklEQVR42u3aS47DMAwE0dz/0s4BDNvVpMR8UFoFmsR6noUgNvV64XGcxvmv/FdXz1k25MqV2+Yet+NqAb7k+VdXn+8NcuXKnefWluEI/vwHm1y5cr+YSw465OgjV67c/+Dez5B5uXLl/gqXFD+1AibdHJfVanLlym1weUq57/OWfFeuXLkl7hEOXurwYilYXa5cuSNcvqHwF6gdcci6cuXKneGmwURanPDAFF31kCtX7iC3v3xaufA4FZ3I5MqVu5mbbjqk1Ekvfl3GtXLlyh3hdkqXtI1KWrO8cStXrtxPcdPH8dAz3RZRTiNXrtylXIJLixYevPJ5uXLlznBrDZK0BOo0XB9qNbly5W7jpscOXsaQJmswI1eu3BHu/Zf4waUWoabPkStX7jyXz9Ras/3YRa5cufPcWlTRb6ny0ESuXLnz3PQUwS9dpVe7Hr4jV67czdxai7R/6EmjWLly5U5y05ij9mK8oOJbpFy5cndzebnCI9FVgUj8n5MrV+5SLmmH1K5bpTvoA12uXLlfzK1d0kqvayzbyOTKlTvCXXvNgl8HkStX7iQ3bYum8Uf6MnLlyv0sl28uneS1Frm28l25cuVWuG9iGin4db3nkwAAAABJRU5ErkJggg==" alt="微信分享二维码">
 </div>
 
 

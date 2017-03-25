@@ -21,21 +21,36 @@
     
     <meta name="keywords" content="DataStructure&amp;Algorithm">
     <meta name="description" content="队列(Queue)基本概念队列(Queue)是一种先进先出(FIFO)的数据结构，编程中可通过使用数组或者链表来实现。
-基本操作Enqueue        入队，向队列尾部添加一个元素Dequeue        出队，在队列头部移除一个元素isEmpty        检查队列是否为空size        查看队列大小
-常见应用普通队列在现实计算机当中应用非常广泛，比如播放器的播放列表，数据">
+基本操作enqueue        入队，向队列尾部添加一个元素
+dequeue        出队，在队列头部移除一个元素
+isEmpty        检查队列是否为空
+size        查看队列大小
+Coding时刻
+使用链表实现队列
+123456789101112">
 <meta property="og:type" content="article">
 <meta property="og:title" content="数据结构与算法理论学习 -- 队列">
-<meta property="og:url" content="http://linzhs.cm/2017/03/21/queue/index.html">
+<meta property="og:url" content="http://linzhs.cm/2017/03/25/queue/index.html">
 <meta property="og:site_name" content="Linzh's Blog">
 <meta property="og:description" content="队列(Queue)基本概念队列(Queue)是一种先进先出(FIFO)的数据结构，编程中可通过使用数组或者链表来实现。
-基本操作Enqueue        入队，向队列尾部添加一个元素Dequeue        出队，在队列头部移除一个元素isEmpty        检查队列是否为空size        查看队列大小
-常见应用普通队列在现实计算机当中应用非常广泛，比如播放器的播放列表，数据">
-<meta property="og:updated_time" content="2017-03-21T03:00:59.365Z">
+基本操作enqueue        入队，向队列尾部添加一个元素
+dequeue        出队，在队列头部移除一个元素
+isEmpty        检查队列是否为空
+size        查看队列大小
+Coding时刻
+使用链表实现队列
+123456789101112">
+<meta property="og:updated_time" content="2017-03-25T06:26:51.195Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="数据结构与算法理论学习 -- 队列">
 <meta name="twitter:description" content="队列(Queue)基本概念队列(Queue)是一种先进先出(FIFO)的数据结构，编程中可通过使用数组或者链表来实现。
-基本操作Enqueue        入队，向队列尾部添加一个元素Dequeue        出队，在队列头部移除一个元素isEmpty        检查队列是否为空size        查看队列大小
-常见应用普通队列在现实计算机当中应用非常广泛，比如播放器的播放列表，数据">
+基本操作enqueue        入队，向队列尾部添加一个元素
+dequeue        出队，在队列头部移除一个元素
+isEmpty        检查队列是否为空
+size        查看队列大小
+Coding时刻
+使用链表实现队列
+123456789101112">
     
         <link rel="alternative" href="/atom.xml" title="Linzh&#39;s Blog" type="application/atom+xml">
     
@@ -151,8 +166,8 @@
         <h1 class="title">数据结构与算法理论学习 -- 队列</h1>
         <h5 class="subtitle">
             
-                <time datetime="2017-03-21T02:58:10.000Z" itemprop="datePublished" class="page-time">
-  2017-03-21
+                <time datetime="2017-03-25T06:26:51.208Z" itemprop="datePublished" class="page-time">
+  2017-03-25
 </time>
 
 
@@ -170,7 +185,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#队列-Queue"><span class="post-toc-number">1.</span> <span class="post-toc-text">队列(Queue)</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#基本概念"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">基本概念</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#基本操作"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">基本操作</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#常见应用"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">常见应用</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#队列的常见衍生版本"><span class="post-toc-number">2.</span> <span class="post-toc-text">队列的常见衍生版本</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#1-循环队列"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">1.循环队列</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#2-双端队列"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">2.双端队列</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#3-优先队列-堆-Heap"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">3.优先队列(堆, Heap)</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#总结"><span class="post-toc-number">3.</span> <span class="post-toc-text">总结</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#队列-Queue"><span class="post-toc-number">1.</span> <span class="post-toc-text">队列(Queue)</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#基本概念"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">基本概念</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#基本操作"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">基本操作</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Coding时刻"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">Coding时刻</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#常见应用"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">常见应用</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#队列的常见衍生版本"><span class="post-toc-number">2.</span> <span class="post-toc-text">队列的常见衍生版本</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#1-循环队列"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">1.循环队列</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#2-双端队列"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">2.双端队列</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#3-优先队列-堆-Heap"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">3.优先队列(堆, Heap)</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#总结"><span class="post-toc-number">3.</span> <span class="post-toc-text">总结</span></a></li></ol>
         </nav>
     </aside>
     
@@ -180,7 +195,7 @@
     <div class="post-card">
         <h1 class="post-card-title">数据结构与算法理论学习 -- 队列</h1>
         <div class="post-meta">
-            <time class="post-time" title="2017年03月21日 10:58" datetime="2017-03-21T02:58:10.000Z"  itemprop="datePublished">2017-03-21</time>
+            <time class="post-time" title="2017年03月25日 14:26" datetime="2017-03-25T06:26:51.208Z"  itemprop="datePublished">2017-03-25</time>
 
             
 
@@ -196,7 +211,18 @@
         </div>
         <div class="post-content" id="post-content" itemprop="postContent">
             <h2 id="队列-Queue"><a href="#队列-Queue" class="headerlink" title="队列(Queue)"></a>队列(Queue)</h2><h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><p>队列(Queue)是一种先进先出(FIFO)的数据结构，编程中可通过使用数组或者链表来实现。</p>
-<h3 id="基本操作"><a href="#基本操作" class="headerlink" title="基本操作"></a>基本操作</h3><p>Enqueue        入队，向队列尾部添加一个元素<br>Dequeue        出队，在队列头部移除一个元素<br>isEmpty        检查队列是否为空<br>size        查看队列大小</p>
+<h3 id="基本操作"><a href="#基本操作" class="headerlink" title="基本操作"></a>基本操作</h3><pre><code>enqueue        入队，向队列尾部添加一个元素
+dequeue        出队，在队列头部移除一个元素
+isEmpty        检查队列是否为空
+size        查看队列大小
+</code></pre><h3 id="Coding时刻"><a href="#Coding时刻" class="headerlink" title="Coding时刻"></a>Coding时刻</h3><ul>
+<li><p>使用链表实现队列</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line">public class Queue&lt;T&gt; &#123;</div><div class="line"></div><div class="line">    private Node first;//指向队列中最早添加的结点</div><div class="line">    private Node last;//指向队列中最近添加的结点</div><div class="line">    private int N;</div><div class="line">    private class Node &#123;//结点类，只在内部使用</div><div class="line">        T item;</div><div class="line">        Node next;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public boolean isEmpty() &#123;</div><div class="line">        return first == null;</div><div class="line">        //return N == 0;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public int size() &#123;</div><div class="line">        return N;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public void enqueue(T item) &#123;</div><div class="line">        Node oldlast = last;</div><div class="line">        last = new Node();</div><div class="line">        last.item = item;</div><div class="line">        last.next = null;</div><div class="line">        if (isEmpty() == true) first = last;</div><div class="line">        else oldlast.next = last;</div><div class="line">        N++; </div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public Item dequeue() &#123;</div><div class="line">        Item item = first.item;</div><div class="line">        first = first.next;</div><div class="line">        if (isEmpty()) last = null;</div><div class="line">        N--;</div><div class="line">        return item;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>实现两个栈实现队列</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">public class Solution&lt;T&gt; &#123;</div><div class="line"></div><div class="line">    private static Stack&lt;T&gt; stack1 = new Stack&lt;&gt;();//入队</div><div class="line">    private static Stack&lt;T&gt; stack2 = new Stack&lt;&gt;();//出队</div><div class="line"></div><div class="line">    public void enqueue(T element) &#123;</div><div class="line">        stack1.push(element);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public T dequeue() &#123;</div><div class="line">        if (stack2.isEmpty() == true) &#123;//出队，将stack1中的元素弹出，并且在stack2中入栈</div><div class="line">            while (stack1.isEmpty() == false) &#123;</div><div class="line">                T data = stack1.pop();</div><div class="line">                stack2.push(data);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        if (stack2.isEmpty() == true) &#123;</div><div class="line">            throw new Exception(&quot;queue is empty.&quot;);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        return stack2.pop();        </div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
 <h3 id="常见应用"><a href="#常见应用" class="headerlink" title="常见应用"></a>常见应用</h3><p>普通队列在现实计算机当中应用非常广泛，比如播放器的播放列表，数据流对象，异步数据传输结构(文件IO，管道通信，套接字等)，<br>多线程中的阻塞队列，打印机队列，消息队列等等。</p>
 <h2 id="队列的常见衍生版本"><a href="#队列的常见衍生版本" class="headerlink" title="队列的常见衍生版本"></a>队列的常见衍生版本</h2><h3 id="1-循环队列"><a href="#1-循环队列" class="headerlink" title="1.循环队列"></a>1.循环队列</h3><p>在普通队列的基础上，将队列的头部和尾部相连接，就构成了循环队列这种数据结构。循环队列可以充分利用结构的空间，克服<br>队列的“假溢出”这种现象。循环队列可以通过数据和链表来实现。<br>    循环队列的一些基本的判断条件和性质：</p>
 <pre><code>初始化条件为：队头指针是front，队尾是rear，队列的最大长度为QueueSize
@@ -211,7 +237,7 @@
 如果双端队列允许从一端输入，从一端输出，则是普通的队列，如果双端队列只允许从一端输入和输出则是栈，
 因此说双端队列同时具有队列和栈两种数据结构的性质。
 </code></pre><h3 id="3-优先队列-堆-Heap"><a href="#3-优先队列-堆-Heap" class="headerlink" title="3.优先队列(堆, Heap)"></a>3.优先队列(堆, Heap)</h3><p>堆也是队列，但强调的是“<a href="">优先</a>”二字，每个在队列中取出的元素都具备最高优先权，若是最大堆，则每次取出必定是当前堆中<br>最大的元素，同理，若是最小堆而取出元素为最小。<br>堆有着广泛的应用，比如抢占式优先级的系统等。<br>堆还有着各种衍生结构，这里就不在详细说明，有关堆的知识，将专门开一篇文章来了解。</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本文所述的队列知识比较简单，队列在数据结构中确实算是比较简单的，但是应用却是非常广泛。文章很遗憾没有上代码，希望能尽快完成代码并且贴上来。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本文所述的队列知识比较简单，队列在数据结构中确实算是比较简单的，但是应用却是非常广泛。</p>
 
         </div>
 
@@ -219,11 +245,11 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2017-03-21T03:00:59.365Z" itemprop="dateUpdated">2017年3月21日 11:00</time>
+    最后更新时间：<time datetime="2017-03-25T06:26:51.195Z" itemprop="dateUpdated">2017年3月25日 14:26</time>
 </span><br>
 
 
-        这里写留言或版权声明：<a href="/2017/03/21/queue/" target="_blank" rel="external">http://linzhs.cm/2017/03/21/queue/</a>
+        这里写留言或版权声明：<a href="/2017/03/25/queue/" target="_blank" rel="external">http://linzhs.cm/2017/03/25/queue/</a>
     </div>
     <footer>
         <a href="http://linzhs.cm">
@@ -252,7 +278,7 @@
 <div class="page-share" id="pageShare">
     <ul class="reset share-icons">
       <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://linzhs.cm/2017/03/21/queue/&title=《数据结构与算法理论学习 -- 队列》 — Linzh's Blog&pic=http://linzhs.cm/img/linzh.jpg" data-title="微博">
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://linzhs.cm/2017/03/25/queue/&title=《数据结构与算法理论学习 -- 队列》 — Linzh's Blog&pic=http://linzhs.cm/img/linzh.jpg" data-title="微博">
           <i class="icon icon-weibo"></i>
         </a>
       </li>
@@ -262,22 +288,22 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://linzhs.cm/2017/03/21/queue/&title=《数据结构与算法理论学习 -- 队列》 — Linzh's Blog&source=Standing on Shoulders of Giants" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://linzhs.cm/2017/03/25/queue/&title=《数据结构与算法理论学习 -- 队列》 — Linzh's Blog&source=Standing on Shoulders of Giants" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
       <li>
-        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://linzhs.cm/2017/03/21/queue/" data-title=" Facebook">
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://linzhs.cm/2017/03/25/queue/" data-title=" Facebook">
           <i class="icon icon-facebook"></i>
         </a>
       </li>
       <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《数据结构与算法理论学习 -- 队列》 — Linzh's Blog&url=http://linzhs.cm/2017/03/21/queue/&via=http://linzhs.cm" data-title=" Twitter">
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《数据结构与算法理论学习 -- 队列》 — Linzh's Blog&url=http://linzhs.cm/2017/03/25/queue/&via=http://linzhs.cm" data-title=" Twitter">
           <i class="icon icon-twitter"></i>
         </a>
       </li>
       <li>
-        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://linzhs.cm/2017/03/21/queue/" data-title=" Google+">
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://linzhs.cm/2017/03/25/queue/" data-title=" Google+">
           <i class="icon icon-google-plus"></i>
         </a>
       </li>
@@ -300,18 +326,18 @@
 <nav class="post-nav flex-row flex-justify-between">
   
     <div class="waves-block waves-effect prev">
-      <a href="/2017/03/22/JavaFuncParamCall/" id="post-prev" class="post-nav-link">
+      <a href="/2017/03/25/Android中的Animation/" id="post-prev" class="post-nav-link">
         <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
-        <h4 class="title">Java中方法(函数)参数的传递</h4>
+        <h4 class="title">Android中的动画和图形绘制</h4>
       </a>
     </div>
   
 
   
     <div class="waves-block waves-effect next">
-      <a href="/2017/03/11/HowToBuildHexoBlog/" id="post-next" class="post-nav-link">
+      <a href="/2017/03/25/stack/" id="post-next" class="post-nav-link">
         <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
-        <h4 class="title">CentOS-7个人静态博客Hexo搭建（适合新手）</h4>
+        <h4 class="title">数据结构与算法理论学习 -- 栈</h4>
       </a>
     </div>
   
@@ -322,7 +348,7 @@
     
 
 <div class="comments" id="comments">
-    <div class="ds-thread" data-thread-key="queue" data-title="数据结构与算法理论学习 -- 队列" data-url="http://linzhs.cm/2017/03/21/queue/"></div>
+    <div class="ds-thread" data-thread-key="queue" data-title="数据结构与算法理论学习 -- 队列" data-url="http://linzhs.cm/2017/03/25/queue/"></div>
 </div>
 <script>
 lazyScripts.push('//cdn.bootcss.com/marked/0.3.6/marked.min.js');
@@ -404,7 +430,7 @@ lazyScripts.push('/js/embed.min.js?v=1.4.8');
 <div class="global-share" id="globalShare">
     <ul class="reset share-icons">
       <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://linzhs.cm/2017/03/21/queue/&title=《数据结构与算法理论学习 -- 队列》 — Linzh's Blog&pic=http://linzhs.cm/img/linzh.jpg" data-title="微博">
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://linzhs.cm/2017/03/25/queue/&title=《数据结构与算法理论学习 -- 队列》 — Linzh's Blog&pic=http://linzhs.cm/img/linzh.jpg" data-title="微博">
           <i class="icon icon-weibo"></i>
         </a>
       </li>
@@ -414,22 +440,22 @@ lazyScripts.push('/js/embed.min.js?v=1.4.8');
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://linzhs.cm/2017/03/21/queue/&title=《数据结构与算法理论学习 -- 队列》 — Linzh's Blog&source=Standing on Shoulders of Giants" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://linzhs.cm/2017/03/25/queue/&title=《数据结构与算法理论学习 -- 队列》 — Linzh's Blog&source=Standing on Shoulders of Giants" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
       <li>
-        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://linzhs.cm/2017/03/21/queue/" data-title=" Facebook">
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://linzhs.cm/2017/03/25/queue/" data-title=" Facebook">
           <i class="icon icon-facebook"></i>
         </a>
       </li>
       <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《数据结构与算法理论学习 -- 队列》 — Linzh's Blog&url=http://linzhs.cm/2017/03/21/queue/&via=http://linzhs.cm" data-title=" Twitter">
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《数据结构与算法理论学习 -- 队列》 — Linzh's Blog&url=http://linzhs.cm/2017/03/25/queue/&via=http://linzhs.cm" data-title=" Twitter">
           <i class="icon icon-twitter"></i>
         </a>
       </li>
       <li>
-        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://linzhs.cm/2017/03/21/queue/" data-title=" Google+">
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://linzhs.cm/2017/03/25/queue/" data-title=" Google+">
           <i class="icon icon-google-plus"></i>
         </a>
       </li>
@@ -440,7 +466,7 @@ lazyScripts.push('/js/embed.min.js?v=1.4.8');
 <div class="page-modal wx-share" id="wxShare">
     <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
-    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAK4AAACuCAAAAACKZ2kyAAABy0lEQVR42u3aS3KDMBAFQN//0s4BEuC9AclJqrVyUShqspjSfF6veL1PV77r+/PXioWLi3ubm1DOnyTo5Hf078DFxd3IbY85/7AkYB3turDh4uL+Ym4Szs7/Mi4u7v/jHuGS57i4uH+F215c2qvPB3I1XFzcG9y8Srnu95L6Li4u7oj7LleewLRXouh0XFzcLdw8oMyaK/kVJz8XFxd3D/doc5II1UWNuMVykfzg4uIu5uaDU3eGq2bl1MO4i4uLu4z7Hq2njq9HOnBxcTdy7wepthSSX2h+CGS4uLiLue2GO2/mBZGLN3FxcRdz719cirpLUGq58ODi4m7hzkqls/LorOF6GM5wcXGXcWcjFPnHtCXXYdzFxcV9lJsPZeYflrPaUgsuLu5Obj5OkQ9gzYJXUTDFxcXdzm0LoHmzpE2BolwNFxd3MbdFtE3ZB97BxcVdzJ2NZM1asHlbpdiAi4u7gNsOXbUt0jYUnp+Li4u7k/vUKFUe7PKCyGsWO3FxcR/itknRneGtNvkpqji4uLgf4s5asO0wVl01wcXF/QXcqCFaDltE4xq4uLgbuW3hox3SmiVUuLi4n+LmweWp8JS3bW7Vd3FxcSfcL2JtkJ87cFv8AAAAAElFTkSuQmCC" alt="微信分享二维码">
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAK4AAACuCAAAAACKZ2kyAAAB0ElEQVR42u3a0WrDMAwF0P7/T3cw9lAYc6+k2Cnj+KmUxDnJg5AlPR7xen6v19+va33X7yuTe0cLFxd3zH0u129uj5Lsv74GFxf3PDcPXkloSwLf+nP8+T8uLu6HcZNQle+Mi4v7P7hJ0rPes3o9Li7uvdxemhI9IH69i89quLi4A26vYHrt7+31XVxc3Iu6EuuAsi6JXvvcnz1xcXGPcHvljF54ylOcN2EOFxd3Mzc/8ORNkV7BNGnf4uLinuHmUeKqkFT9QM2ghouLO+ZWg1e1dVp9vTfBDhcXdzO32iDJixe9YsobNC4u7nFubyQrH8jIxzuibjAuLu42bq9gWh2kqH6CQr8XFxd3Gzd/ZHLUyXeudklwcXHPcHsjF72mS+9eXFzcu7h5CtI7/FzWSsHFxT3CnQxf5seVnFhoqODi4m7jVg85o/mOYpUDFxf3Xm51CGOS3DyKCxcX9y5udbRi1CKNBy9GMyC4uLgDbi8F6aUp+fX5Dri4uPu4ecMjT196x6ooLOLi4h7kVscmegekakCMWim4uLi3cpNNJ8lQtBsuLu4HcycFl1Hgw8XFPcidD1ZWC6P5eEfzrIaLizvg9sYj8tbLPFXCxcU9yP0Cl08lC9gn4A8AAAAASUVORK5CYII=" alt="微信分享二维码">
 </div>
 
 
