@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>Java随笔 - 对象克隆 | Linzh&#39;s Blog | Standing on Shoulders of Giants</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Java">
+    <meta name="description" content="Java随笔 - 对象克隆
+本文总结Java对象的浅复制和深复制，以及Clonable接口。
+
+前言对象在传递的时候，会进行对象复制。对象的复制，可以分为浅复制和深复制。
+浅复制在下面的例子中，可以实现对象的复制，origin和copy对象变量引用同一个内存区域，copy调用raiseSalary方法可以修改origin对象所引用的内容。12345678910111213141516171819p">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java随笔 - 对象克隆">
+<meta property="og:url" content="http://linzhs.cm/2017/04/18/java-note-object-copy/index.html">
+<meta property="og:site_name" content="Linzh's Blog">
+<meta property="og:description" content="Java随笔 - 对象克隆
+本文总结Java对象的浅复制和深复制，以及Clonable接口。
+
+前言对象在传递的时候，会进行对象复制。对象的复制，可以分为浅复制和深复制。
+浅复制在下面的例子中，可以实现对象的复制，origin和copy对象变量引用同一个内存区域，copy调用raiseSalary方法可以修改origin对象所引用的内容。12345678910111213141516171819p">
+<meta property="og:updated_time" content="2017-04-17T16:48:32.160Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java随笔 - 对象克隆">
+<meta name="twitter:description" content="Java随笔 - 对象克隆
+本文总结Java对象的浅复制和深复制，以及Clonable接口。
+
+前言对象在传递的时候，会进行对象复制。对象的复制，可以分为浅复制和深复制。
+浅复制在下面的例子中，可以实现对象的复制，origin和copy对象变量引用同一个内存区域，copy调用raiseSalary方法可以修改origin对象所引用的内容。12345678910111213141516171819p">
+    
+        <link rel="alternative" href="/atom.xml" title="Linzh&#39;s Blog" type="application/atom+xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.4.8">
+    <script>window.lazyScripts=[]</script>
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/linzh.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Linzh</h5>
+          <a href="mailto:lzh_547590520@163.com" title="lzh_547590520@163.com" class="mail">lzh_547590520@163.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                Home Page
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/ZehaoLin" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://www.weibo.com/L_Ceylon" target="_blank" >
+                <i class="icon icon-lg icon-weibo"></i>
+                Weibo
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/" target="_blank" >
+                <i class="icon icon-lg icon-link"></i>
+                About
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Java随笔 - 对象克隆</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Java随笔 - 对象克隆</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-04-17T16:48:32.000Z" itemprop="datePublished" class="page-time">
+  2017-04-18
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Java随笔-对象克隆"><span class="post-toc-number">1.</span> <span class="post-toc-text">Java随笔 - 对象克隆</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#前言"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">前言</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#浅复制"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">浅复制</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#深复制"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">深复制</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+    
+<article id="post-java-note-object-copy"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Java随笔 - 对象克隆</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017年04月18日 0:48" datetime="2017-04-17T16:48:32.000Z"  itemprop="datePublished">2017-04-18</time>
+
+            
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h1 id="Java随笔-对象克隆"><a href="#Java随笔-对象克隆" class="headerlink" title="Java随笔 - 对象克隆"></a>Java随笔 - 对象克隆</h1><blockquote>
+<p>本文总结Java对象的浅复制和深复制，以及Clonable接口。</p>
+</blockquote>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>对象在传递的时候，会进行对象复制。对象的复制，可以分为浅复制和深复制。</p>
+<h2 id="浅复制"><a href="#浅复制" class="headerlink" title="浅复制"></a>浅复制</h2><p>在下面的例子中，可以实现对象的复制，origin和copy对象变量引用同一个内存区域，copy调用raiseSalary方法可以修改origin对象所引用的内容。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">public class Employee &#123;</div><div class="line">    private double salary;</div><div class="line">    </div><div class="line">    &#123;</div><div class="line">        salary = 0.0;    </div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    public double getSalary() &#123;</div><div class="line">        return this.salary;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    public void raiseSalary(int t) &#123;</div><div class="line">        this.salary = salary * t;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">Employee origin = new Employee();</div><div class="line">Employee copy = origin;</div><div class="line">copy.raiseSalary(10);</div></pre></td></tr></table></figure></p>
+<p>在这次的复制过程中，实现的细节是：Object这个Java的万类祖先有个protect的clone方法，可以在相同类的对象上做拷贝。</p>
+<p>但是，在整个复制的过程中，复制是有限制的，也就是不完全的，所以我们称之为浅复制，浅克隆，浅拷贝。Object这个超类在实现clone这个方法的时候，并不知道子孙类到底是什么，所以在复制的时候也就有了局限性，若需要复制的内容是数值或者其他基本类型，那没什么问题，直接复制即可；若是复制的内容是另一对象的引用呢？那clone复制的新内存区域仍然和原对象共享着一些信息。</p>
+<p>浅复制有什么影响吗？我们来举两个例子。</p>
+<ul>
+<li>例子1<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">public class Employee &#123;</div><div class="line">    private String name;</div><div class="line">    private double salary;</div><div class="line">    </div><div class="line">    &#123;</div><div class="line">        name = &quot;&quot;;</div><div class="line">        salary = 0.0;    </div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    public double getSalary() &#123;</div><div class="line">        return this.salary;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    public void raiseSalary(int t) &#123;</div><div class="line">        this.salary = salary * t;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    ...</div><div class="line">&#125;</div><div class="line"></div><div class="line">Employee origin = new Employee();</div><div class="line">Employee copy = origin;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>在例子1中，我们在Employee中新增String类型的name变量，还是像之前的那样进行拷贝操作。拷贝之后，原对象和克隆对象的name指向了同一块区域，String是不可变的，也就是指向了常量池。</p>
+<p>对于不可变对象的拷贝，其实是安全的，没什么影响，拷贝与否没什么影响，因为不管拷贝与否，不可变对象都是同一块内存，并不会因为拷贝了就另外分配一块内存。所以对于不可变对象，浅复制是安全的，可以安全的共享信息。</p>
+<ul>
+<li>例子2<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">public class Employee &#123;</div><div class="line">    private String name;</div><div class="line">    private double salary;</div><div class="line">    private Date hireDay;</div><div class="line">    </div><div class="line">    &#123;</div><div class="line">        name = &quot;&quot;;</div><div class="line">        salary = 0.0;    </div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    public double getSalary() &#123;</div><div class="line">        return this.salary;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    public void raiseSalary(int t) &#123;</div><div class="line">        this.salary = salary * t;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    ...</div><div class="line">&#125;</div><div class="line"></div><div class="line">Employee origin = new Employee();</div><div class="line">Employee copy = origin;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>在新的例子中，我们新增了可变对象Date，这个时候不完全的拷贝，是有影响的。原本复制的用意是让克隆对象有单独的内存来管理自己的数据，但是由于浅复制导致原对象和克隆对象都指向了同一个可变的对象，那么任一对象进行修改，那就是灾难级别的，所以这时候我们需要深度复制。</p>
+<h2 id="深复制"><a href="#深复制" class="headerlink" title="深复制"></a>深复制</h2><p>通常，在复制对象的时候会考虑下面三个选项：</p>
+<ul>
+<li>默认的clone方法是否能满足要求；</li>
+<li>是否可以在可变的子对象上调用clone方法来修补默认的clone方法；</li>
+<li>是不是不应该使用clone方法</li>
+</ul>
+<p>对于第三个选项，其实是默认的，对于前两个选项，类必须：</p>
+<ul>
+<li>实现Cloneable接口</li>
+<li>重新定义clone方法，并制定为public访问修饰符</li>
+</ul>
+<p>在Object类中制定了clone方法为protect，但是在新的Java语法规则中，已经变得宽松了，可以将clone方法重写成public的方法。</p>
+<p>要建立深度复制来复制对象中另一个对象，那么就要实行Cloneable接口、重写clone方法，在clone方法里来完成这些复制，如下例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">public class Employee implements Cloneable &#123;</div><div class="line">    private String name;</div><div class="line">    private double salary;</div><div class="line">    private Date hireDay;</div><div class="line">    </div><div class="line">    &#123;</div><div class="line">        name = &quot;&quot;;</div><div class="line">        salary = 0.0;    </div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    public double getSalary() &#123;</div><div class="line">        return this.salary;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    public void raiseSalary(int t) &#123;</div><div class="line">        this.salary = salary * t;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    public Employee clone() throws CloneNotSupportedException &#123;</div><div class="line">        Employee cloned = (Employee)super.clone();</div><div class="line">        cloned.hireDay = (Date)hireDay.clone();</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    ...</div><div class="line">&#125;</div><div class="line"></div><div class="line">Employee origin = new Employee();</div><div class="line">Employee copy = origin;</div></pre></td></tr></table></figure></p>
+<p>在新的clone实现里，指定了throws CloneNotSupportedException异常，其用意在于要实现Cloneable接口，否则就不支持深度拷贝，从而抛出异常。</p>
+<p>在重写clone方法的时候，首先应该要调用超类的clone方法来完成浅复制，然后才去定制自己需要完成的深度复制。</p>
+<blockquote>
+<p>在重写clone方法的时候，我们返回的类型是Employee，而不是原本自带的Object，与super类有别，这个是Java5后的特性，为clone指定正确的返回类型，这就是协变返回类型。</p>
+</blockquote>
+<p>标记为Clone的类，在执行克隆方法的时候是内存二进制克隆，比new一个对象性能更好，但是直接在内存中拷贝，构造方法并不会被执行。</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2017-04-17T16:48:32.160Z" itemprop="dateUpdated">2017年4月18日 0:48</time>
+</span><br>
+
+
+        这里写留言或版权声明：<a href="/2017/04/18/java-note-object-copy/" target="_blank" rel="external">http://linzhs.cm/2017/04/18/java-note-object-copy/</a>
+    </div>
+    <footer>
+        <a href="http://linzhs.cm">
+            <img src="/img/linzh.jpg" alt="Linzh">
+            Linzh
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://linzhs.cm/2017/04/18/java-note-object-copy/&title=《Java随笔 - 对象克隆》 — Linzh's Blog&pic=http://linzhs.cm/img/linzh.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://linzhs.cm/2017/04/18/java-note-object-copy/&title=《Java随笔 - 对象克隆》 — Linzh's Blog&source=Standing on Shoulders of Giants" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://linzhs.cm/2017/04/18/java-note-object-copy/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Java随笔 - 对象克隆》 — Linzh's Blog&url=http://linzhs.cm/2017/04/18/java-note-object-copy/&via=http://linzhs.cm" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://linzhs.cm/2017/04/18/java-note-object-copy/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/03/25/Android中的Animation/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">Android中的动画和图形绘制</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+<div class="comments" id="comments">
+    <div class="ds-thread" data-thread-key="java-note-object-copy" data-title="Java随笔 - 对象克隆" data-url="http://linzhs.cm/2017/04/18/java-note-object-copy/"></div>
+</div>
+<script>
+lazyScripts.push('//cdn.bootcss.com/marked/0.3.6/marked.min.js');
+
+var duoshuoQuery = {short_name:'ysblog', theme: 'none'};
+lazyScripts.push('/js/embed.min.js?v=1.4.8');
+
+
+</script>
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        �Thanks
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <ul class="reward-items">
+        
+        <li>
+            <img src="/img/wechat.jpg" title="微信打赏二维码" alt="微信打赏二维码">
+            <p>微信</p>
+        </li>
+        
+
+        
+        <li>
+            <img src="/img/alipay.jpg" title="支付宝打赏二维码" alt="支付宝打赏二维码">
+            <p>支付宝</p>
+        </li>
+        
+    </ul>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            <span>博客内容遵循 <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">知识共享 署名 - 非商业性 - 相同方式共享 4.0协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p>
+            <span>Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a></span>
+            <span>Linzh's Blog &copy; 2017</span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://linzhs.cm/2017/04/18/java-note-object-copy/&title=《Java随笔 - 对象克隆》 — Linzh's Blog&pic=http://linzhs.cm/img/linzh.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://linzhs.cm/2017/04/18/java-note-object-copy/&title=《Java随笔 - 对象克隆》 — Linzh's Blog&source=Standing on Shoulders of Giants" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://linzhs.cm/2017/04/18/java-note-object-copy/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Java随笔 - 对象克隆》 — Linzh's Blog&url=http://linzhs.cm/2017/04/18/java-note-object-copy/&via=http://linzhs.cm" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://linzhs.cm/2017/04/18/java-note-object-copy/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACJUlEQVR42u3aQY7DIAwF0N7/0pkDjEr/x+0i5LGqpgzhpZJlsF+veFz/RjJzb7X1/44GBgbGbRnXciSbS/6erLB+7odXiYGB8QBGsokEkIfmdeRsn4uBgYGRbPfd/HwOBgYGxi8Y6+Nri8fAwMBYM/IAut50ckxtA+6Xz+IYGBg3ZEwOlr/+/JP6BgYGxq0YVznWgTVPBPOQGu0KAwPjaEYe4PYSsvyA2qZ9GBgYT2MkYTRfOmmzaGcWrWMYGBhHM3JSexE2CbJtcQIDA+M8RhJk8xDcXu63ZdS332JgYDySsRco9y7XvtxmgYGBcRwjD3mTdod26/kBGAMD42mMSQPEXiI4mRndHWJgYBzH2Gu2mCR5ewG6KGFiYGAcwWgfnwe+JH1saxdFQxgGBsahjDxCz9O4JJQnJAwMjCcw2ge0V/Z5Qrm3hw+/CQYGxhGMKx5t4vi7lPFDswUGBsZxjPktXY5pi6B5SRUDAwOjbYZoSe3LKiobGBgYxzHyBC6BTUqS+fpRlQMDA+NoRvJ5Mzh+KTTXt30YGBg3Z+RJW9skMWn/Gh1iMTAwjmBc5WiPvnlQbl9Z9DtgYGAcwchHUtqcXNi1iekmBgMD47aMts0ibw6bN20UARcDA+MBjLw9K0G2l2jtITYqDGBgYGCU+WbbtLGZvWJgYGCUpElbRrsaBgbGExj5hVqbtM3LDEnSiYGBcTZjL+/Kg2O7lfZIjIGBcTTjD6oG+ghIPTP7AAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.4.8"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.4.8" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+</body>
+</html>
