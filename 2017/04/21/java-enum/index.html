@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>Java随笔 - 枚举类 | Linzh&#39;s Blog | Standing on Shoulders of Giants</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Java">
+    <meta name="description" content="Java随笔 - 枚举类前言
+枚举类是JDK 5开始引入的，其知识点比较少，又较C/C++中的枚举类型不一样，在这里，枚举以类的形式存在，下面学习枚举类的常见语法和在单例模式（设计模式）中的应用。
+
+常用语法先看一个典型例子，在C/C++/C#中都是很常见的例子：123enum Week &amp;#123;	Monday, Tuesday, Wednesday, Thursday, Friday, Sa">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java随笔 - 枚举类">
+<meta property="og:url" content="http://linzhs.cm/2017/04/21/java-enum/index.html">
+<meta property="og:site_name" content="Linzh's Blog">
+<meta property="og:description" content="Java随笔 - 枚举类前言
+枚举类是JDK 5开始引入的，其知识点比较少，又较C/C++中的枚举类型不一样，在这里，枚举以类的形式存在，下面学习枚举类的常见语法和在单例模式（设计模式）中的应用。
+
+常用语法先看一个典型例子，在C/C++/C#中都是很常见的例子：123enum Week &amp;#123;	Monday, Tuesday, Wednesday, Thursday, Friday, Sa">
+<meta property="og:updated_time" content="2017-04-20T17:10:21.518Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java随笔 - 枚举类">
+<meta name="twitter:description" content="Java随笔 - 枚举类前言
+枚举类是JDK 5开始引入的，其知识点比较少，又较C/C++中的枚举类型不一样，在这里，枚举以类的形式存在，下面学习枚举类的常见语法和在单例模式（设计模式）中的应用。
+
+常用语法先看一个典型例子，在C/C++/C#中都是很常见的例子：123enum Week &amp;#123;	Monday, Tuesday, Wednesday, Thursday, Friday, Sa">
+    
+        <link rel="alternative" href="/atom.xml" title="Linzh&#39;s Blog" type="application/atom+xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.4.8">
+    <script>window.lazyScripts=[]</script>
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/linzh.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Linzh</h5>
+          <a href="mailto:lzh_547590520@163.com" title="lzh_547590520@163.com" class="mail">lzh_547590520@163.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                Home Page
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/ZehaoLin" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://www.weibo.com/L_Ceylon" target="_blank" >
+                <i class="icon icon-lg icon-weibo"></i>
+                Weibo
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/" target="_blank" >
+                <i class="icon icon-lg icon-link"></i>
+                About
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Java随笔 - 枚举类</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Java随笔 - 枚举类</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-04-20T17:10:21.000Z" itemprop="datePublished" class="page-time">
+  2017-04-21
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Java随笔-枚举类"><span class="post-toc-number">1.</span> <span class="post-toc-text">Java随笔 - 枚举类</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#前言"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">前言</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#常用语法"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">常用语法</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#单例模式的枚举实现"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">单例模式的枚举实现</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+    
+<article id="post-java-enum"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Java随笔 - 枚举类</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017年04月21日 1:10" datetime="2017-04-20T17:10:21.000Z"  itemprop="datePublished">2017-04-21</time>
+
+            
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h2 id="Java随笔-枚举类"><a href="#Java随笔-枚举类" class="headerlink" title="Java随笔 - 枚举类"></a>Java随笔 - 枚举类</h2><h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><blockquote>
+<p>枚举类是JDK 5开始引入的，其知识点比较少，又较C/C++中的枚举类型不一样，在这里，枚举以类的形式存在，下面学习枚举类的常见语法和在单例模式（设计模式）中的应用。</p>
+</blockquote>
+<h3 id="常用语法"><a href="#常用语法" class="headerlink" title="常用语法"></a>常用语法</h3><p>先看一个典型例子，在C/C++/C#中都是很常见的例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">enum Week &#123;</div><div class="line">	Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>所有的枚举类都继承于Enum，Enum有一些比较好用的方法，比如toString()，ordinal()，compareTo()，下面为使用例子:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">System.out.println(Week.Friday);// print &quot;Friday&quot; 直接输出枚举常量</div><div class="line">Week week = Enum.valueOf(Week.class, &quot;Friday&quot;);//获取指定类和名字的枚举常量</div><div class="line">System.out.println(week);// print &quot;Friday&quot;</div><div class="line">System.out.println(Week.Friday.ordinal());//获取当前枚举常量的位置  print 4</div><div class="line">Week[] values = Week.values();//values()为静态方法，将包含的全部枚举常量以数组的形式返回 </div><div class="line">for (Week w : values) &#123;// print Monday Tuesday Wednesday Thursday Friday Saturday Sunday</div><div class="line">	System.out.print(w + &quot; &quot;);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>枚举强调常量这个概念，可以理解为静态的，不要试图去构造一个枚举对象，这样是不允许的，比如<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Week week = new Week();// error</div></pre></td></tr></table></figure></p>
+<p>在比较两个枚举类型的值的时候，永远不需要调用equals方法，虽然有实现，直接用==就可以。</p>
+<p>有需要的话，可以在枚举类中添加一些构造器、方法和数据域。当然，其中的构造器只能在构造枚举常量的时候被调用。以下为例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">enum Size &#123;</div><div class="line">	SMALL(&quot;S&quot;), MEDIUM(&quot;M&quot;), LARGE(&quot;L&quot;),EXTRA_LARGE(&quot;XL&quot;);</div><div class="line">	</div><div class="line">	private String abbreviation;</div><div class="line">	</div><div class="line">	private Size(String abbreviation) &#123;</div><div class="line">		this.abbreviation = abbreviation;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	public String getAbbreviation() &#123;</div><div class="line">		return abbreviation;</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">System.out.println(Size.SMALL.getAbbreviation());</div><div class="line">Size size = Enum.valueOf(Size.class, &quot;SMALL&quot;);//print &quot;S&quot;</div><div class="line">System.out.println(size.equals(Size.SMALL));//true</div><div class="line">System.out.println(size == Size.SMALL);//true</div><div class="line">System.out.println(size == Size.LARGE);//false</div></pre></td></tr></table></figure></p>
+<h3 id="单例模式的枚举实现"><a href="#单例模式的枚举实现" class="headerlink" title="单例模式的枚举实现"></a>单例模式的枚举实现</h3><p>用枚举来实现单例模式是最佳方法。它更简洁，不仅可以避免多线程同步问题，自动支持序列化机制，也可以绝对防止多次被实例化。<br>Code:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">public enum Singleton &#123;</div><div class="line">    INSTANCE;</div><div class="line">    public void whateverMethod() &#123;</div><div class="line">        </div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2017-04-20T17:10:21.518Z" itemprop="dateUpdated">2017年4月21日 1:10</time>
+</span><br>
+
+
+        这里写留言或版权声明：<a href="/2017/04/21/java-enum/" target="_blank" rel="external">http://linzhs.cm/2017/04/21/java-enum/</a>
+    </div>
+    <footer>
+        <a href="http://linzhs.cm">
+            <img src="/img/linzh.jpg" alt="Linzh">
+            Linzh
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://linzhs.cm/2017/04/21/java-enum/&title=《Java随笔 - 枚举类》 — Linzh's Blog&pic=http://linzhs.cm/img/linzh.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://linzhs.cm/2017/04/21/java-enum/&title=《Java随笔 - 枚举类》 — Linzh's Blog&source=Standing on Shoulders of Giants" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://linzhs.cm/2017/04/21/java-enum/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Java随笔 - 枚举类》 — Linzh's Blog&url=http://linzhs.cm/2017/04/21/java-enum/&via=http://linzhs.cm" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://linzhs.cm/2017/04/21/java-enum/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2017/04/21/java-innerclass/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">Java随笔 - 内部类和闭包</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/04/21/java-interface-abstract/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">Java随笔 - 接口和抽象</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+<div class="comments" id="comments">
+    <div class="ds-thread" data-thread-key="java-enum" data-title="Java随笔 - 枚举类" data-url="http://linzhs.cm/2017/04/21/java-enum/"></div>
+</div>
+<script>
+lazyScripts.push('//cdn.bootcss.com/marked/0.3.6/marked.min.js');
+
+var duoshuoQuery = {short_name:'ysblog', theme: 'none'};
+lazyScripts.push('/js/embed.min.js?v=1.4.8');
+
+
+</script>
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        �Thanks
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <ul class="reward-items">
+        
+        <li>
+            <img src="/img/wechat.jpg" title="微信打赏二维码" alt="微信打赏二维码">
+            <p>微信</p>
+        </li>
+        
+
+        
+        <li>
+            <img src="/img/alipay.jpg" title="支付宝打赏二维码" alt="支付宝打赏二维码">
+            <p>支付宝</p>
+        </li>
+        
+    </ul>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            <span>博客内容遵循 <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">知识共享 署名 - 非商业性 - 相同方式共享 4.0协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p>
+            <span>Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a></span>
+            <span>Linzh's Blog &copy; 2017</span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://linzhs.cm/2017/04/21/java-enum/&title=《Java随笔 - 枚举类》 — Linzh's Blog&pic=http://linzhs.cm/img/linzh.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://linzhs.cm/2017/04/21/java-enum/&title=《Java随笔 - 枚举类》 — Linzh's Blog&source=Standing on Shoulders of Giants" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://linzhs.cm/2017/04/21/java-enum/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Java随笔 - 枚举类》 — Linzh's Blog&url=http://linzhs.cm/2017/04/21/java-enum/&via=http://linzhs.cm" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://linzhs.cm/2017/04/21/java-enum/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAK4AAACuCAAAAACKZ2kyAAABx0lEQVR42u3aQYrDMAwF0Nz/0h3oaqDE+bJiN4XnVTFO/JqFkCUfRzxe73E2/398zo9njhUDFxe3zX0Nx9z2ZyvzNZ/rcXFx93PHwSvZZrwyp1/YcHFxH8YdzyTz1XQHFxf3F7nVBCgPebi4uE/gJoefTu2iekC64ayGi4vb4FYLpit+L6zv4uLiFrmvqTEueYx36eyOi4u7h5u3PforO63Z4y4ELi5ukZtTxsGr2phJ/gYuLu5+7jgRmQtPcy3V/EIYLi7uam7h4BEEr2rTJS+e4uLi7uf2r1DkSU+e4kQ9YVxc3Fu5eZuzenTpfI6LLAwXF/dL3LtKJ3PvPH0WFxd3I3fuKJIHu7vW4+Li7uGuKJv2S6u5BBcXdwU3KYxWm6ydQ07hW+Li4i7j5sXKZONOM7WV3ODi4t7K7QSyuT9QDX+nZzVcXNxl3DxxyV/RSlyKRyxcXNwV3LliaF4GrX6Ci6dwcXG3cDthJUo+huvzVgouLu5+bt4EnQs6cyxcXNwncPPg1SmAzj2Li4v7K9xq46RaeD19ChcX92Hcai32tvtiuLi4X+J2rl/MvXOy+IKLi7uF2ymYVlsmeTt2SX0XFxf3epc/sr12neiIR38AAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.4.8"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.4.8" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+</body>
+</html>

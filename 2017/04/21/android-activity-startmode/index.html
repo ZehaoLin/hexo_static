@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>Android中Activity的启动模式 | Linzh&#39;s Blog | Standing on Shoulders of Giants</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Android">
+    <meta name="description" content="Android中Activity的启动模式在Android中，每一个任务（应用程序）都有一个放回栈（back stack），每一个应用都有一到多个Activity，返回栈就是来存储这些活动的，当Activity处于栈顶的时候，该Activity也是正显示在手机屏幕上的。若用户按下“返回”按钮后，一个Activity将会被弹出栈，也就等于被销毁，而前一个Activity也将被执行。返回栈中永远不会重">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android中Activity的启动模式">
+<meta property="og:url" content="http://linzhs.cm/2017/04/21/android-activity-startmode/index.html">
+<meta property="og:site_name" content="Linzh's Blog">
+<meta property="og:description" content="Android中Activity的启动模式在Android中，每一个任务（应用程序）都有一个放回栈（back stack），每一个应用都有一到多个Activity，返回栈就是来存储这些活动的，当Activity处于栈顶的时候，该Activity也是正显示在手机屏幕上的。若用户按下“返回”按钮后，一个Activity将会被弹出栈，也就等于被销毁，而前一个Activity也将被执行。返回栈中永远不会重">
+<meta property="og:updated_time" content="2017-04-20T17:16:52.674Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android中Activity的启动模式">
+<meta name="twitter:description" content="Android中Activity的启动模式在Android中，每一个任务（应用程序）都有一个放回栈（back stack），每一个应用都有一到多个Activity，返回栈就是来存储这些活动的，当Activity处于栈顶的时候，该Activity也是正显示在手机屏幕上的。若用户按下“返回”按钮后，一个Activity将会被弹出栈，也就等于被销毁，而前一个Activity也将被执行。返回栈中永远不会重">
+    
+        <link rel="alternative" href="/atom.xml" title="Linzh&#39;s Blog" type="application/atom+xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.4.8">
+    <script>window.lazyScripts=[]</script>
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/linzh.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Linzh</h5>
+          <a href="mailto:lzh_547590520@163.com" title="lzh_547590520@163.com" class="mail">lzh_547590520@163.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                Home Page
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/ZehaoLin" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://www.weibo.com/L_Ceylon" target="_blank" >
+                <i class="icon icon-lg icon-weibo"></i>
+                Weibo
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/" target="_blank" >
+                <i class="icon icon-lg icon-link"></i>
+                About
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Android中Activity的启动模式</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Android中Activity的启动模式</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-04-20T17:16:52.000Z" itemprop="datePublished" class="page-time">
+  2017-04-21
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Android中Activity的启动模式"><span class="post-toc-number">1.</span> <span class="post-toc-text">Android中Activity的启动模式</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#自定义Activity的启动模式"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">自定义Activity的启动模式</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#动态设置Activity启动模式"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">动态设置Activity启动模式</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#清理返回栈"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">清理返回栈</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+    
+<article id="post-android-activity-startmode"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Android中Activity的启动模式</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017年04月21日 1:16" datetime="2017-04-20T17:16:52.000Z"  itemprop="datePublished">2017-04-21</time>
+
+            
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h2 id="Android中Activity的启动模式"><a href="#Android中Activity的启动模式" class="headerlink" title="Android中Activity的启动模式"></a>Android中Activity的启动模式</h2><p>在Android中，每一个任务（应用程序）都有一个放回栈（back stack），每一个应用都有一到多个Activity，返回栈就是来存储这些活动的，当Activity处于栈顶的时候，该Activity也是正显示在手机屏幕上的。若用户按下“返回”按钮后，一个Activity将会被弹出栈，也就等于被销毁，而前一个Activity也将被执行。返回栈中永远不会重新排序，而是根据入栈和出栈的顺序来排列的。</p>
+<p>在没有设置Activity的启动模式的时候，栈是可以被重复创建的，比如一个应用有很多个Activity，这些Activity大部分都可以创建同一个Activity，那么每次创建都会被推入栈中，返回栈也就有了多次被实例化的Activity。</p>
+<p>Activity和任务的默认行为如下：</p>
+<ul>
+<li>当 Activity A 启动 Activity B 时，Activity A 将会停止，但系统会保留其状态（例如，滚动位置和已输入表单中的文本）。如果用户处于Activity B时按“返回”按钮，则Activity A将恢复其状态，继续运行。（活动与活动之间如何进行数据交流，活动怎么在一个应用程序的生命周期中保存好自己的关键数据，以防中途活动被销毁后，又要从头开始加载，丢失关键数据？这些问题将在另一篇随笔上做总结）</li>
+<li>用户通过按下Home键按钮离开任务时，当前Activity将停止运行，并且任务会将入后台。系统将保留任务中的每个Activity的状态。如果用户稍后通过选择开始任务的启动器图标来恢复任务，则任务又会回到前台并恢复当前任务返回栈栈顶的Activity继续执行。</li>
+<li>如果用户按“返回”按钮，则当前 Activity 会从堆栈弹出并被销毁。 堆栈中的前一个 Activity 恢复执行。销毁 Activity 时，系统不会保留该 Activity 的状态。</li>
+<li>当前任务的Activity也可以被其他任务多次实例化。</li>
+</ul>
+<h3 id="自定义Activity的启动模式"><a href="#自定义Activity的启动模式" class="headerlink" title="自定义Activity的启动模式"></a>自定义Activity的启动模式</h3><p>我们可以为每个Activity定义一种启动模式，注册的方法就是在<a href="">AndroidManifest.xml</a>文件声明时，为相应的Activity元素加上launchMode属性，并且指定该属性为如下一种：</p>
+<ul>
+<li>“standard”（默认标准模式）</li>
+</ul>
+<p>这个标准模式是默认的启动模式。系统在启动 Activity 的任务中创建 Activity 的新实例并向其传送 Intent。默认模式下的Activity可以被多次实例化，而且每个实例都可以属于不用的任务，并且一个任务可以拥有多个实例，举个例子，比如我们现在界面上有个按钮，点击按钮就会启动一个新的活动，这个活动是默认模式的，新的活动里也有一个按钮，这个新的按钮还是启动这个新的界面，所以每个当我们点击按钮后，同一个Activity将会多多次实例化，实例化了多少次，就要按下“返回”按钮来销毁多少次。</p>
+<ul>
+<li>“singleTop”</li>
+</ul>
+<p>在“singleTop”模式下，如果当前的任务的栈顶已经存在此种模式的Activity实例，那么系统会通过调用该实例的<a href="">onNewIntent()</a>方法向其传输intent，而不是创建Activity新的实例。也就是说，在“singleTop”模式下，如果活动位于栈顶，那么此活动只会被实例化一次，若不是在栈顶，那么还是会被多次实例化。</p>
+<p>例如，假设任务的返回栈包含根 Activity A 以及 Activity B、C 和位于顶部的 D（堆栈是 A-B-C-D；D 位于顶部）。收到针对 D 类 Activity 的 Intent。如果 D 具有默认的 “standard” 启动模式，则会启动该类的新实例，且堆栈会变成 A-B-C-D-D。但是，如果 D 的启动模式是 “singleTop”，则 D 的现有实例会通过 onNewIntent() 接收 Intent，因为它位于堆栈的顶部；而堆栈仍为 A-B-C-D。但是，如果收到针对 B 类 Activity 的 Intent，则会向堆栈添加 B 的新实例，即便其启动模式为 “singleTop” 也是如此。</p>
+<blockquote>
+<p>注：为某个 Activity 创建新实例时，用户可以按“返回”按钮返回到前一个 Activity。 但是，当 Activity 的现有实例处理新 Intent 时，则在新 Intent 到达 onNewIntent() 之前，用户无法按“返回”按钮返回到 Activity 的状态。</p>
+</blockquote>
+<ul>
+<li>“singleTask”</li>
+</ul>
+<p>当前活动的模式如果是“singleTask”模式，拿每次启动该活动时系统首先会在返回栈中检查是否存在该实例，如果发现先已经存在则不会重新实例化，而是使用已经存在的，则系统会通过调用现有实例的 <a href="">onNewIntent()</a> 方法向其传送 Intent，并把这个活动统统出栈，让这个活动处于栈顶，如果返回栈中没有该活动的实例，则会创建一个新的实例。</p>
+<ul>
+<li>“singleInstance”</li>
+</ul>
+<p>“singleInstance”模式下的活动比较特别，该活动会被系统单独放在一个返回栈上去管理，这个活动在整个应用程序的生命里面只有一个实例，这个和单例模式很像了。在这种模式下，这个活动是共享的，也可以被其他应用程序调用。</p>
+<h3 id="动态设置Activity启动模式"><a href="#动态设置Activity启动模式" class="headerlink" title="动态设置Activity启动模式"></a>动态设置Activity启动模式</h3><p>在程序中用startActivity()启动Activity的时候，可以在Intent中加入相应的标志来修改Activity与其他任务的默认关联方式。可用于修改的标志如下所示：</p>
+<ul>
+<li>FLAG_ACTIVITY_NEW_TASK</li>
+</ul>
+<p>在新任务中启动 Activity。如果已为正在启动的 Activity 运行任务，则该任务会转到前台并恢复其最后状态，同时 Activity 会在 onNewIntent() 中收到新 Intent。这个状态与”singlTask”模式是一样的。</p>
+<ul>
+<li>FLAG_ACTIVITY_SINGLE_TOP</li>
+</ul>
+<p>如果正在启动的 Activity 是当前 Activity（位于返回栈的顶部），则 现有实例会接收对 onNewIntent() 的调用，而不是创建 Activity 的新实例。这种模式与“singleTop”模式一致。</p>
+<ul>
+<li>FLAG_ACTIVITY_CLEAR_TOP</li>
+</ul>
+<p>如果正在启动的 Activity 已在当前任务中运行，则会销毁当前任务顶部的所有 Activity，并通过 onNewIntent() 将此 Intent 传递给 Activity 已恢复的实例（现在位于顶部），而不是启动该 Activity 的新实例。</p>
+<p>FLAG_ACTIVITY_CLEAR_TOP 通常与 FLAG_ACTIVITY_NEW_TASK 结合使用。一起使用时，通过这些标志，可以找到其他任务中的现有 Activity，并将其放入可从中响应 Intent 的位置。</p>
+<h3 id="清理返回栈"><a href="#清理返回栈" class="headerlink" title="清理返回栈"></a>清理返回栈</h3><p>如果用户长时间离开任务，则系统会清除所有 Activity 的任务，根 Activity 除外。 当用户再次返回到任务时，仅恢复根 Activity。系统这样做的原因是，经过很长一段时间后，用户可能已经放弃之前执行的操作，返回到任务是要开始执行新的操作。</p>
+<p>可以使用下列几个 Activity 属性修改此行为：</p>
+<ul>
+<li>alwaysRetainTaskState</li>
+</ul>
+<p>如果在任务的根 Activity 中将此属性设置为 “true”，则不会发生刚才所述的默认行为。即使在很长一段时间后，任务仍将所有 Activity 保留在其堆栈中。</p>
+<ul>
+<li>clearTaskOnLaunch</li>
+</ul>
+<p>如果在任务的根 Activity 中将此属性设置为 “true”，则每当用户离开任务然后返回时，系统都会将堆栈清除到只剩下根 Activity。 换而言之，它与 alwaysRetainTaskState 正好相反。 即使只离开任务片刻时间，用户也始终会返回到任务的初始状态。</p>
+<ul>
+<li>finishOnTaskLaunch</li>
+</ul>
+<p>此属性类似于 clearTaskOnLaunch，但它对单个 Activity 起作用，而非整个任务。 此外，它还有可能会导致任何 Activity 停止，包括根 Activity。 设置为 “true” 时，Activity 仍是任务的一部分，但是仅限于当前会话。如果用户离开然后返回任务，则任务将不复存在。</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2017-04-20T17:16:52.674Z" itemprop="dateUpdated">2017年4月21日 1:16</time>
+</span><br>
+
+
+        这里写留言或版权声明：<a href="/2017/04/21/android-activity-startmode/" target="_blank" rel="external">http://linzhs.cm/2017/04/21/android-activity-startmode/</a>
+    </div>
+    <footer>
+        <a href="http://linzhs.cm">
+            <img src="/img/linzh.jpg" alt="Linzh">
+            Linzh
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://linzhs.cm/2017/04/21/android-activity-startmode/&title=《Android中Activity的启动模式》 — Linzh's Blog&pic=http://linzhs.cm/img/linzh.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://linzhs.cm/2017/04/21/android-activity-startmode/&title=《Android中Activity的启动模式》 — Linzh's Blog&source=Standing on Shoulders of Giants" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://linzhs.cm/2017/04/21/android-activity-startmode/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Android中Activity的启动模式》 — Linzh's Blog&url=http://linzhs.cm/2017/04/21/android-activity-startmode/&via=http://linzhs.cm" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://linzhs.cm/2017/04/21/android-activity-startmode/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/04/21/android-lifecycle/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">Android中Activity、Fragment、Service的生命周期</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+<div class="comments" id="comments">
+    <div class="ds-thread" data-thread-key="android-activity-startmode" data-title="Android中Activity的启动模式" data-url="http://linzhs.cm/2017/04/21/android-activity-startmode/"></div>
+</div>
+<script>
+lazyScripts.push('//cdn.bootcss.com/marked/0.3.6/marked.min.js');
+
+var duoshuoQuery = {short_name:'ysblog', theme: 'none'};
+lazyScripts.push('/js/embed.min.js?v=1.4.8');
+
+
+</script>
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        �Thanks
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <ul class="reward-items">
+        
+        <li>
+            <img src="/img/wechat.jpg" title="微信打赏二维码" alt="微信打赏二维码">
+            <p>微信</p>
+        </li>
+        
+
+        
+        <li>
+            <img src="/img/alipay.jpg" title="支付宝打赏二维码" alt="支付宝打赏二维码">
+            <p>支付宝</p>
+        </li>
+        
+    </ul>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            <span>博客内容遵循 <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">知识共享 署名 - 非商业性 - 相同方式共享 4.0协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p>
+            <span>Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a></span>
+            <span>Linzh's Blog &copy; 2017</span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://linzhs.cm/2017/04/21/android-activity-startmode/&title=《Android中Activity的启动模式》 — Linzh's Blog&pic=http://linzhs.cm/img/linzh.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://linzhs.cm/2017/04/21/android-activity-startmode/&title=《Android中Activity的启动模式》 — Linzh's Blog&source=Standing on Shoulders of Giants" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://linzhs.cm/2017/04/21/android-activity-startmode/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Android中Activity的启动模式》 — Linzh's Blog&url=http://linzhs.cm/2017/04/21/android-activity-startmode/&via=http://linzhs.cm" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://linzhs.cm/2017/04/21/android-activity-startmode/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACMElEQVR42u3aO3LDMAxFUe1/03brGVvyfQBViLisPIkS8bCAic9x4PX6WGc//16fz1z/1fdvjzuWDBkyHsvgW+GLb/r6Gf4WGTJkTGCc/WvymQDSyMn3JkOGDBnpMxzMj0mGDBkyOoxO2rnq+GTIkDGHUQuIpKBWC8c35uIyZMh4IKOTWN79+Zb+hgwZMh7FqJX7eSOTFN0WNCFkyJCxNYMHOPKytCXQaSTIkCFjDiNNF8kgVy195X/74whkyJAxgNEpYKXBsROyTzEyZMgYwOAvTjdHUlzeJCj2QmXIkLEpo9Ni7BxQfCmUIUPGAEZa1u+MUKS9SB6sZciQsTcjbVt2Gpy1KyD6SpAhQ8bWDD4MwUtgacmMh3XUiZUhQ8YARq15SdqT5ID4KEZ8QZQhQ8bDGQvy4DA0p0lvsegmQ4aMLRi1F6eBtdYSCPYgQ4aMAQx+CeMFuPQZ8gUQF9pkyJCxEaOffPKrXi3s/jliGTJkbM3oFMVqyW3aNuBprQwZMiYw0rGJtEhHQm0nQMuQIWMCI70IriqZ8XLen6KeDBkyBjA6pX/eKY03x6+SMmTI2JTxCtf1ZY4PZ/DEFR2lDBkytmbw1UlxO6ly+kYZMmTsyqiNRKRDFWnanDZHZciQMYFRa17yMhzZFg/9QWNAhgwZIxn8yrhqvAwFaxkyZMgoJaikPJd2IZddDWXIkPFABkli03GKNCVOg7UMGTLmMNLUsTM8QZ6vXUNlyJCxKeMN/QWJh5s1mR4AAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.4.8"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.4.8" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+</body>
+</html>

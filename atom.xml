@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://linzhs.cm/"/>
-  <updated>2017-04-17T16:48:32.160Z</updated>
+  <updated>2017-04-20T17:16:52.674Z</updated>
   <id>http://linzhs.cm/</id>
   
   <author>
@@ -14,6 +14,401 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Android中Activity的启动模式</title>
+    <link href="http://linzhs.cm/2017/04/21/android-activity-startmode/"/>
+    <id>http://linzhs.cm/2017/04/21/android-activity-startmode/</id>
+    <published>2017-04-20T17:16:52.000Z</published>
+    <updated>2017-04-20T17:16:52.674Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="Android中Activity的启动模式"><a href="#Android中Activity的启动模式" class="headerlink" title="Android中Activity的启动模式"></a>Android中Activity的启动模式</h2><p>在Android中，每一个任务（应用程序）都有一个放回栈（back stack），每一个应用都有一到多个Activity，返回栈就是来存储这些活动的，当Activity处于栈顶的时候，该Activity也是正显示在手机屏幕上的。若用户按下“返回”按钮后，一个Activity将会被弹出栈，也就等于被销毁，而前一个Activity也将被执行。返回栈中永远不会重新排序，而是根据入栈和出栈的顺序来排列的。</p>
+<p>在没有设置Activity的启动模式的时候，栈是可以被重复创建的，比如一个应用有很多个Activity，这些Activity大部分都可以创建同一个Activity，那么每次创建都会被推入栈中，返回栈也就有了多次被实例化的Activity。</p>
+<p>Activity和任务的默认行为如下：</p>
+<ul>
+<li>当 Activity A 启动 Activity B 时，Activity A 将会停止，但系统会保留其状态（例如，滚动位置和已输入表单中的文本）。如果用户处于Activity B时按“返回”按钮，则Activity A将恢复其状态，继续运行。（活动与活动之间如何进行数据交流，活动怎么在一个应用程序的生命周期中保存好自己的关键数据，以防中途活动被销毁后，又要从头开始加载，丢失关键数据？这些问题将在另一篇随笔上做总结）</li>
+<li>用户通过按下Home键按钮离开任务时，当前Activity将停止运行，并且任务会将入后台。系统将保留任务中的每个Activity的状态。如果用户稍后通过选择开始任务的启动器图标来恢复任务，则任务又会回到前台并恢复当前任务返回栈栈顶的Activity继续执行。</li>
+<li>如果用户按“返回”按钮，则当前 Activity 会从堆栈弹出并被销毁。 堆栈中的前一个 Activity 恢复执行。销毁 Activity 时，系统不会保留该 Activity 的状态。</li>
+<li>当前任务的Activity也可以被其他任务多次实例化。</li>
+</ul>
+<h3 id="自定义Activity的启动模式"><a href="#自定义Activity的启动模式" class="headerlink" title="自定义Activity的启动模式"></a>自定义Activity的启动模式</h3><p>我们可以为每个Activity定义一种启动模式，注册的方法就是在<a href="">AndroidManifest.xml</a>文件声明时，为相应的Activity元素加上launchMode属性，并且指定该属性为如下一种：</p>
+<ul>
+<li>“standard”（默认标准模式）</li>
+</ul>
+<p>这个标准模式是默认的启动模式。系统在启动 Activity 的任务中创建 Activity 的新实例并向其传送 Intent。默认模式下的Activity可以被多次实例化，而且每个实例都可以属于不用的任务，并且一个任务可以拥有多个实例，举个例子，比如我们现在界面上有个按钮，点击按钮就会启动一个新的活动，这个活动是默认模式的，新的活动里也有一个按钮，这个新的按钮还是启动这个新的界面，所以每个当我们点击按钮后，同一个Activity将会多多次实例化，实例化了多少次，就要按下“返回”按钮来销毁多少次。</p>
+<ul>
+<li>“singleTop”</li>
+</ul>
+<p>在“singleTop”模式下，如果当前的任务的栈顶已经存在此种模式的Activity实例，那么系统会通过调用该实例的<a href="">onNewIntent()</a>方法向其传输intent，而不是创建Activity新的实例。也就是说，在“singleTop”模式下，如果活动位于栈顶，那么此活动只会被实例化一次，若不是在栈顶，那么还是会被多次实例化。</p>
+<p>例如，假设任务的返回栈包含根 Activity A 以及 Activity B、C 和位于顶部的 D（堆栈是 A-B-C-D；D 位于顶部）。收到针对 D 类 Activity 的 Intent。如果 D 具有默认的 “standard” 启动模式，则会启动该类的新实例，且堆栈会变成 A-B-C-D-D。但是，如果 D 的启动模式是 “singleTop”，则 D 的现有实例会通过 onNewIntent() 接收 Intent，因为它位于堆栈的顶部；而堆栈仍为 A-B-C-D。但是，如果收到针对 B 类 Activity 的 Intent，则会向堆栈添加 B 的新实例，即便其启动模式为 “singleTop” 也是如此。</p>
+<blockquote>
+<p>注：为某个 Activity 创建新实例时，用户可以按“返回”按钮返回到前一个 Activity。 但是，当 Activity 的现有实例处理新 Intent 时，则在新 Intent 到达 onNewIntent() 之前，用户无法按“返回”按钮返回到 Activity 的状态。</p>
+</blockquote>
+<ul>
+<li>“singleTask”</li>
+</ul>
+<p>当前活动的模式如果是“singleTask”模式，拿每次启动该活动时系统首先会在返回栈中检查是否存在该实例，如果发现先已经存在则不会重新实例化，而是使用已经存在的，则系统会通过调用现有实例的 <a href="">onNewIntent()</a> 方法向其传送 Intent，并把这个活动统统出栈，让这个活动处于栈顶，如果返回栈中没有该活动的实例，则会创建一个新的实例。</p>
+<ul>
+<li>“singleInstance”</li>
+</ul>
+<p>“singleInstance”模式下的活动比较特别，该活动会被系统单独放在一个返回栈上去管理，这个活动在整个应用程序的生命里面只有一个实例，这个和单例模式很像了。在这种模式下，这个活动是共享的，也可以被其他应用程序调用。</p>
+<h3 id="动态设置Activity启动模式"><a href="#动态设置Activity启动模式" class="headerlink" title="动态设置Activity启动模式"></a>动态设置Activity启动模式</h3><p>在程序中用startActivity()启动Activity的时候，可以在Intent中加入相应的标志来修改Activity与其他任务的默认关联方式。可用于修改的标志如下所示：</p>
+<ul>
+<li>FLAG_ACTIVITY_NEW_TASK</li>
+</ul>
+<p>在新任务中启动 Activity。如果已为正在启动的 Activity 运行任务，则该任务会转到前台并恢复其最后状态，同时 Activity 会在 onNewIntent() 中收到新 Intent。这个状态与”singlTask”模式是一样的。</p>
+<ul>
+<li>FLAG_ACTIVITY_SINGLE_TOP</li>
+</ul>
+<p>如果正在启动的 Activity 是当前 Activity（位于返回栈的顶部），则 现有实例会接收对 onNewIntent() 的调用，而不是创建 Activity 的新实例。这种模式与“singleTop”模式一致。</p>
+<ul>
+<li>FLAG_ACTIVITY_CLEAR_TOP</li>
+</ul>
+<p>如果正在启动的 Activity 已在当前任务中运行，则会销毁当前任务顶部的所有 Activity，并通过 onNewIntent() 将此 Intent 传递给 Activity 已恢复的实例（现在位于顶部），而不是启动该 Activity 的新实例。</p>
+<p>FLAG_ACTIVITY_CLEAR_TOP 通常与 FLAG_ACTIVITY_NEW_TASK 结合使用。一起使用时，通过这些标志，可以找到其他任务中的现有 Activity，并将其放入可从中响应 Intent 的位置。</p>
+<h3 id="清理返回栈"><a href="#清理返回栈" class="headerlink" title="清理返回栈"></a>清理返回栈</h3><p>如果用户长时间离开任务，则系统会清除所有 Activity 的任务，根 Activity 除外。 当用户再次返回到任务时，仅恢复根 Activity。系统这样做的原因是，经过很长一段时间后，用户可能已经放弃之前执行的操作，返回到任务是要开始执行新的操作。</p>
+<p>可以使用下列几个 Activity 属性修改此行为：</p>
+<ul>
+<li>alwaysRetainTaskState</li>
+</ul>
+<p>如果在任务的根 Activity 中将此属性设置为 “true”，则不会发生刚才所述的默认行为。即使在很长一段时间后，任务仍将所有 Activity 保留在其堆栈中。</p>
+<ul>
+<li>clearTaskOnLaunch</li>
+</ul>
+<p>如果在任务的根 Activity 中将此属性设置为 “true”，则每当用户离开任务然后返回时，系统都会将堆栈清除到只剩下根 Activity。 换而言之，它与 alwaysRetainTaskState 正好相反。 即使只离开任务片刻时间，用户也始终会返回到任务的初始状态。</p>
+<ul>
+<li>finishOnTaskLaunch</li>
+</ul>
+<p>此属性类似于 clearTaskOnLaunch，但它对单个 Activity 起作用，而非整个任务。 此外，它还有可能会导致任何 Activity 停止，包括根 Activity。 设置为 “true” 时，Activity 仍是任务的一部分，但是仅限于当前会话。如果用户离开然后返回任务，则任务将不复存在。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;Android中Activity的启动模式&quot;&gt;&lt;a href=&quot;#Android中Activity的启动模式&quot; class=&quot;headerlink&quot; title=&quot;Android中Activity的启动模式&quot;&gt;&lt;/a&gt;Android中Activity的启动模式&lt;/
+    
+    </summary>
+    
+    
+      <category term="Android" scheme="http://linzhs.cm/tags/Android/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Android中Activity、Fragment、Service的生命周期</title>
+    <link href="http://linzhs.cm/2017/04/21/android-lifecycle/"/>
+    <id>http://linzhs.cm/2017/04/21/android-lifecycle/</id>
+    <published>2017-04-20T17:15:48.000Z</published>
+    <updated>2017-04-20T17:15:48.057Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="Android中Activity、Fragment、Service的生命周期"><a href="#Android中Activity、Fragment、Service的生命周期" class="headerlink" title="Android中Activity、Fragment、Service的生命周期"></a>Android中Activity、Fragment、Service的生命周期</h1><blockquote>
+<p>在Android系统中，常见的应用组件都有它的生命周期，以便于系统对内存的管理，接下来总结一下Activity，Fragment，Service这三个常见、重要的组件的生命周期。</p>
+</blockquote>
+<h2 id="Activity的生命周期"><a href="#Activity的生命周期" class="headerlink" title="Activity的生命周期"></a>Activity的生命周期</h2><p>用回调方法的方式来管理Activity的生命周期对于开发强大、灵活的应用来说那是至关重要的。Activity的生命周期会直接影响到其他Activity、其任务和返回栈。</p>
+<p>Activity有三种状态存在：</p>
+<ul>
+<li>运行状态</li>
+</ul>
+<p>此时Activity处于屏幕的前台，可以与用户进行交互，具有用户焦点。</p>
+<ul>
+<li>暂停状态</li>
+</ul>
+<p>我们经常会遇到这种情况：屏幕上出现一个对话框，或者加载动画框，从屏幕下面弹出不会沾满屏幕的一个选项卡，而且在屏幕里面还能看到另一个界面。对于这种情况，另一个Activity位于屏幕前台并且具有用户焦点，但在背后的Activity仍然可见。也就是说，另一个Activity显示在此Activity的上方，并且Activity部分透明或者未被覆盖整个屏幕，我们把这个时候的Activity成为暂停状态。</p>
+<p>暂停状态的Activity仍然处于完全活动的状态（Activity对象保留在内存中，它保留了所有状态和成员信息，并与窗口管理器 保持连接），但是这个状态的Activity在内存不足的时候，也会被系统终止并且回收。处于此状态的Activity一般不要做太多事情，在正常切换的时候如果有太多占用时间的任务完成，那么有可能会导致卡顿的情况，影响了用户体验。</p>
+<ul>
+<li>停止状态</li>
+</ul>
+<p>当一个Activity被另一个Activity完全覆盖的时候，也就进入了后台。已停止的 Activity 同样仍处于活动状态（Activity 对象保留在内存中，它保留了所有状态和成员信息，但未与窗口管理器连接）。 不过，它对用户不再可见，在他处需要内存时可能会被系统终止。</p>
+<p>如果 Activity 处于暂停或停止状态，系统可通过要求其结束（调用其 finish() 方法）或直接终止其进程，将其从内存中删除。（将其结束或终止后）再次打开 Activity 时，必须重建。</p>
+<h3 id="生命周期对应的回调"><a href="#生命周期对应的回调" class="headerlink" title="生命周期对应的回调"></a>生命周期对应的回调</h3><p>当一个Activity转入或者转出不同的状态的时候，会有相应的回调方法被调用，也就是向Activity发出通知。我们可以在不同的状态回调方法中加入不同的操作任务，来完成相应的行为，比如实例化的时候初始化一些信息，暂停或者停止状态的时候可能Activity会被销毁，在此状态做信息状态保留等。</p>
+<p>以下框架 Activity 包括每一个基本生命周期方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line">public class ExampleActivity extends Activity &#123;</div><div class="line">    @Override</div><div class="line">    public void onCreate(Bundle savedInstanceState) &#123;</div><div class="line">        super.onCreate(savedInstanceState);</div><div class="line">        // The activity is being created.</div><div class="line">        // 在创建Activity的时候，这个回调必须重写</div><div class="line">    &#125;</div><div class="line">    @Override</div><div class="line">    protected void onStart() &#123;</div><div class="line">        super.onStart();</div><div class="line">        // The activity is about to become visible.</div><div class="line">    &#125;</div><div class="line">    @Override</div><div class="line">    protected void onResume() &#123;</div><div class="line">        super.onResume();</div><div class="line">        // The activity has become visible (it is now &quot;resumed&quot;).</div><div class="line">    &#125;</div><div class="line">    @Override</div><div class="line">    protected void onPause() &#123;</div><div class="line">        super.onPause();</div><div class="line">        // Another activity is taking focus (this activity is about to be &quot;paused&quot;).</div><div class="line">    &#125;</div><div class="line">    @Override</div><div class="line">    protected void onStop() &#123;</div><div class="line">        super.onStop();</div><div class="line">        // The activity is no longer visible (it is now &quot;stopped&quot;)</div><div class="line">    &#125;</div><div class="line">    @Override</div><div class="line">    protected void onDestroy() &#123;</div><div class="line">        super.onDestroy();</div><div class="line">        // The activity is about to be destroyed.</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<ul>
+<li>onCreate()</li>
+</ul>
+<p>首次创建Activity的时候调用（Activity被销毁后重建也是首次创建）。该回调方法传入一个Bundle对象，这个对象很重要，用于保存上一次Activity被创建后的状态。-&gt; onStart()</p>
+<ul>
+<li>onStart()</li>
+</ul>
+<p>在Activity对用户可见之前被调用。如果Activity转入前台可见，则接下来调用onResume()，若是转入隐藏状态，则接下来调用onStop()。</p>
+<ul>
+<li>onResume()</li>
+</ul>
+<p>在 Activity 即将开始与用户进行交互之前调用。 此时，Activity 处于 Activity 堆栈的顶层，并具有用户输入焦点。-&gt; onPause()</p>
+<ul>
+<li>onPause()</li>
+</ul>
+<p>当系统要去执行另一个Activity的时候被调用，此时Activity还处于可见的状态，不过已经有一些界面已被另一个Activity覆盖。此方法通常用于确认对持久性数据的未保存更改、停止动画以及其他可能消耗 CPU 的内容，诸如此类。 它应该非常迅速地执行所需操作，因为它返回后，下一个 Activity 才能继续执行。</p>
+<p>如果 Activity 返回前台，则后接 onResume()，如果 Activity 转入对用户不可见状态，则后接 onStop()。</p>
+<ul>
+<li>onStop()</li>
+</ul>
+<p>在 Activity 对用户不再可见时调用。如果 Activity 被销毁，或另一个 Activity（一个现有 Activity 或新 Activity）继续执行并将其覆盖，就可能发生这种情况。</p>
+<p>如果 Activity 恢复与用户的交互，则后接 onRestart()，如果 Activity 被销毁，则后接 onDestroy()。</p>
+<ul>
+<li>onRestart()</li>
+</ul>
+<p>在 Activity 已停止并即将再次启动前调用。始终后接 onStart()</p>
+<ul>
+<li>onDestroy()</li>
+</ul>
+<p>在 Activity 被销毁前调用。这是 Activity 将收到的最后调用。 当 Activity 结束（有人对 Activity 调用了 finish()），或系统为节省空间而暂时销毁该 Activity 实例时，可能会调用它。 您可以通过 isFinishing() 方法区分这两种情形。</p>
+<p>这些方法共同定义 Activity 的整个生命周期。可以通过实现这些方法监控 Activity 生命周期中的三个嵌套循环：</p>
+<ul>
+<li>完整生命周期</li>
+</ul>
+<p>在 onCreate() 调用与 onDestroy() 调用之间。</p>
+<p>您的 Activity 应在 onCreate() 中执行“全局”状态设置（例如定义布局），并释放 onDestroy() 中的所有其余资源。例如，如果您的 Activity有一个在后台运行的线程，用于从网络上下载数据，它可能会在 onCreate() 中创建该线程，然后在 onDestroy() 中停止该线程。</p>
+<ul>
+<li>可见生命周期</li>
+</ul>
+<p>在 onStart() 调用与 onStop() 调用之间。</p>
+<p>在这段时间，用户可以在屏幕上看到 Activity 并与其交互。 例如，当一个新 Activity 启动，并且此 Activity 不再可见时，系统会调用 onStop()。您可以在调用这两个方法之间保留向用户显示 Activity 所需的资源。 例如，您可以在 onStart() 中注册一个 BroadcastReceiver 以监控影响 UI 的变化，并在用户无法再看到您显示的内容时在 onStop() 中将其取消注册。在 Activity 的整个生命周期，当 Activity 在对用户可见和隐藏两种状态中交替变化时，系统可能会多次调用 onStart() 和 onStop()。</p>
+<ul>
+<li>前台声明周期</li>
+</ul>
+<p>在 onResume() 调用与 onPause() 调用之间。</p>
+<p>在这段时间，Activity 位于屏幕上的所有其他 Activity 之前，并具有用户输入焦点。 Activity 可频繁转入和转出前台 — 例如，当设备转入休眠状态或出现对话框时，系统会调用 onPause()。 由于此状态可能经常发生转变，因此这两个方法中应采用适度轻量级的代码，以避免因转变速度慢而让用户等待。</p>
+<h3 id="实例：旋转屏幕Activity的生命周期变化（带保存状态）"><a href="#实例：旋转屏幕Activity的生命周期变化（带保存状态）" class="headerlink" title="实例：旋转屏幕Activity的生命周期变化（带保存状态）"></a>实例：旋转屏幕Activity的生命周期变化（带保存状态）</h3><p>假设一开始是竖屏状态，旋转后为横屏。</p>
+<p>横屏状态下：onCreate() -&gt; onStart() -&gt; onResume()</p>
+<p>旋转屏幕：onSavaInstanceState() -&gt; onPause() -&gt; onStop() -&gt; onDestroy() - &gt;onCreate() -&gt; onStart() -&gt; onRestoreInstanceState() -&gt; onResume()</p>
+<h2 id="Fragment的生命周期"><a href="#Fragment的生命周期" class="headerlink" title="Fragment的生命周期"></a>Fragment的生命周期</h2><p>管理片段生命周期与管理 Activity 生命周期很相似。和 Activity 一样，片段也以三种状态存在：</p>
+<ul>
+<li>运行状态</li>
+</ul>
+<p>片段在运行中的 Activity 中可见。</p>
+<ul>
+<li>暂停状态</li>
+</ul>
+<p>另一个 Activity 位于前台并具有焦点，但此片段所在的 Activity 仍然可见（前台 Activity 部分透明，或未覆盖整个屏幕）。</p>
+<ul>
+<li>停止状态</li>
+<li>片段不可见。宿主 Activity 已停止，或片段已从 Activity中移除，但已添加到返回栈。</li>
+</ul>
+<p>停止片段仍然处于活动状态（系统会保留所有状态和成员信息）。不过，它对用户不再可见，如果 Activity 被终止，它也会被终止。同样与 Activity 一样，假使 Activity 的进程被终止，而需要在重建 Activity 时恢复片段状态，也可以使用 Bundle 保留片段的状态。可以在片段的 onSaveInstanceState() 回调期间保存状态，并可在 onCreate()、onCreateView() 或 onActivityCreated() 期间恢复状态。</p>
+<p>Activity 生命周期与片段生命周期之间的最显著差异在于它们在其各自返回栈中的存储方式。 默认情况下，Activity 停止时会被放入由系统管理的 Activity返回栈（以便用户通过返回按钮回退到Activity，任务和返回栈对此做了阐述）。不过，仅当您在移除片段的事务执行期间通过调用 addToBackStack()显式请求保存实例时，系统才会将片段放入由宿主 Activity 管理的返回栈。</p>
+<p>在其他方面，管理片段生命周期与管理 Activity 生命周期非常相似。 因此，管理 Activity 生命周期的做法同样适用于片段。</p>
+<h3 id="Fragment结合Activity的生命周期一起运行"><a href="#Fragment结合Activity的生命周期一起运行" class="headerlink" title="Fragment结合Activity的生命周期一起运行"></a>Fragment结合Activity的生命周期一起运行</h3><ul>
+<li>onAttach()  Fragment和Activity建立关联</li>
+<li>onCreate()</li>
+<li>onCreateView() 调用它可创建与片段关联的视图层次结构</li>
+<li>onActivityCreated() 在 Activity 的 onCreate() 方法已返回时调用</li>
+<li>onStart()</li>
+<li>onResume()</li>
+<li>onPause()</li>
+<li>onStop()</li>
+<li>onDestroyView() 在移除与片段关联的视图层次结构时调用</li>
+<li>onDestroy() </li>
+<li>onDetach() 在取消片段与 Activity 的关联时调用</li>
+</ul>
+<h2 id="Service的生命周期"><a href="#Service的生命周期" class="headerlink" title="Service的生命周期"></a>Service的生命周期</h2><p>服务基本上分为两种形式：</p>
+<ul>
+<li>启动</li>
+</ul>
+<p>当应用组件（如 Activity）通过调用 startService() 启动服务时，服务即处于“启动”状态。一旦启动，服务即可在后台无限期运行，即使启动服务的组件已被销毁也不受影响。 已启动的服务通常是执行单一操作，而且不会将结果返回给调用方。例如，它可能通过网络下载或上传文件。 操作完成后，服务会自行停止运行。</p>
+<ul>
+<li>绑定</li>
+</ul>
+<p>当应用组件通过调用 bindService() 绑定到服务时，服务即处于“绑定”状态。绑定服务提供了一个客户端-服务器接口，允许组件与服务进行交互、发送请求、获取结果，甚至是利用进程间通信 (IPC) 跨进程执行这些操作。 仅当与另一个应用组件绑定时，绑定服务才会运行。 多个组件可以同时绑定到该服务，但全部取消绑定后，该服务即会被销毁。</p>
+<p>虽然本文档是分开概括讨论这两种服务，但是您的服务可以同时以这两种方式运行，也就是说，它既可以是启动服务（以无限期运行），也允许绑定。问题只是在于您是否实现了一组回调方法：onStartCommand()（允许组件启动服务）和 onBind()（允许绑定服务）。</p>
+<p>无论应用是处于启动状态还是绑定状态，抑或处于启动并且绑定状态，任何应用组件均可像使用 Activity 那样通过调用 Intent 来使用服务（即使此服务来自另一应用）。 不过，您可以通过清单文件将服务声明为私有服务，并阻止其他应用访问。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;Android中Activity、Fragment、Service的生命周期&quot;&gt;&lt;a href=&quot;#Android中Activity、Fragment、Service的生命周期&quot; class=&quot;headerlink&quot; title=&quot;Android中Activity
+    
+    </summary>
+    
+    
+      <category term="Android" scheme="http://linzhs.cm/tags/Android/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Android系统的体系架构</title>
+    <link href="http://linzhs.cm/2017/04/21/android-system-architecture/"/>
+    <id>http://linzhs.cm/2017/04/21/android-system-architecture/</id>
+    <published>2017-04-20T17:13:30.000Z</published>
+    <updated>2017-04-20T17:13:30.220Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="Android系统的体系架构"><a href="#Android系统的体系架构" class="headerlink" title="Android系统的体系架构"></a>Android系统的体系架构</h2><h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><blockquote>
+<p>Android 5.0 （API 21）开始，Android开发者官网给出的平台架构层次稍微有些不一样，从原先的四层结构变成五层，更加易懂。Android系统的平台架构从下至上分为：</p>
+<p>Linux内核层 -&gt; 硬件抽象层（HAL） -&gt; 原生C/C++层 + Android Runtime层 -&gt; Java API框架层 -&gt; 系统应用程序层</p>
+</blockquote>
+<h3 id="Linux内核层"><a href="#Linux内核层" class="headerlink" title="Linux内核层"></a>Linux内核层</h3><p>众所周知，Android是基于Linux内核构建的，所以最底层肯定是Linux的内核，Android Runtime也需要依靠Linux内核来执行底层任务，比如线程和内存的管理，当然，这一层还包含了嵌入式的硬件驱动程序，包括蓝牙、WiFi、摄像头等等。</p>
+<h3 id="硬件抽象层（Hardware-Abstract-Layout-HAL）"><a href="#硬件抽象层（Hardware-Abstract-Layout-HAL）" class="headerlink" title="硬件抽象层（Hardware Abstract Layout, HAL）"></a>硬件抽象层（Hardware Abstract Layout, HAL）</h3><p>硬件抽象层是位于操作系统内核与硬件电路之间的接口层，其目的在于将硬件抽象化，为了保护硬件厂商的知识产权，它隐藏了特定平台的硬件接口细节，为操作系统提供虚拟硬件平台，使其具有硬件无关性，可在多种平台上进行移植。 从软硬件测试的角度来看，软硬件的测试工作都可分别基于硬件抽象层来完成，使得软硬件测试工作的并行进行成为可能。通俗来讲，就是将控制硬件的动作放在硬件抽象层中。</p>
+<h3 id="系统运行库层"><a href="#系统运行库层" class="headerlink" title="系统运行库层"></a>系统运行库层</h3><p>这一层包含两部分，一部分是原生的C/C++库，另一部分是Android Runtime，也就是Android的虚拟机。</p>
+<ul>
+<li><p>Android Runtime</p>
+<p>Android 5.0（API 21）开始，ART（Android Runtime）取代了之前的Dalvik虚拟机。ART 编写为通过执行 DEX 文件在低内存设备上运行多个虚拟机，DEX 文件是一种专为 Android 设计的字节码格式，经过优化，使用的内存很少。编译工具链（例如 Jack）将 Java 源代码编译为 DEX 字节码，使其可在 Android 平台上运行。</p>
+</li>
+</ul>
+<p>ART的部分主要功能包括：</p>
+<ul>
+<li>预先 (AOT) 和即时 (JIT) 编译</li>
+<li>优化的垃圾回收 (GC)</li>
+<li>更好的调试支持，包括专用采样分析器、详细的诊断异常和崩溃报告，并且能够设置监视点以监控特定字段</li>
+</ul>
+<p>Android 还包含一套核心运行时库，可提供 Java API 框架使用的 Java 编程语言大部分功能，包括一些 Java 8 语言功能。</p>
+<ul>
+<li>原生C/C++库</li>
+</ul>
+<p>很多Android的系统组件和服务都由C/C++构建，Android也将原生的开发提供给开发者。开发者可以 Android 框架的 Java OpenGL API 访问 OpenGL ES，以支持在应用中绘制和操作 2D 和 3D 图形。如果开发的是需要 C 或 C++ 代码的应用，可以使用 Android NDK 直接从原生代码访问某些原生平台库。</p>
+<h3 id="Java-API-框架层"><a href="#Java-API-框架层" class="headerlink" title="Java API 框架层"></a>Java API 框架层</h3><p>这个层提供了用Java编写的API，这些API是Android系统的整个功能集，开发者可以根据这些API来开发不同的App。核心的模块组件和服务如下：</p>
+<ul>
+<li>View系统。可用以构建应用的UI，包括列表、网格、文本框、按钮甚至可嵌入的网络浏览器</li>
+<li>资源管理器，用于访问非代码资源，例如本地化的字符串、图形和布局文件</li>
+<li>通知管理器，可让所有应用在状态栏中显示自定义提醒</li>
+<li>Activity 管理器，用于管理应用的生命周期，提供常见的导航返回栈</li>
+<li>内容提供程序，可让应用访问其他应用（例如“联系人”应用）中的数据或者共享其自己的数据</li>
+</ul>
+<h3 id="系统应用层"><a href="#系统应用层" class="headerlink" title="系统应用层"></a>系统应用层</h3><p>系统中内置的应用和开发者开发的应用程序，都归属系统的应用层，主要是和用户进行交互，这一层都是用Java来发开的。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;Android系统的体系架构&quot;&gt;&lt;a href=&quot;#Android系统的体系架构&quot; class=&quot;headerlink&quot; title=&quot;Android系统的体系架构&quot;&gt;&lt;/a&gt;Android系统的体系架构&lt;/h2&gt;&lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot;
+    
+    </summary>
+    
+    
+      <category term="Android" scheme="http://linzhs.cm/tags/Android/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Java随笔 - 内部类和闭包</title>
+    <link href="http://linzhs.cm/2017/04/21/java-innerclass/"/>
+    <id>http://linzhs.cm/2017/04/21/java-innerclass/</id>
+    <published>2017-04-20T17:11:22.000Z</published>
+    <updated>2017-04-20T17:11:22.124Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="Java随笔-内部类和闭包"><a href="#Java随笔-内部类和闭包" class="headerlink" title="Java随笔 - 内部类和闭包"></a>Java随笔 - 内部类和闭包</h2><h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><blockquote>
+<p>内部类（inner class），就是类中类，与其对应的就是外部类。接下来将学习内部类的各种形式，内部类和外部类的联系，还Java中的闭包。</p>
+</blockquote>
+<h3 id="内部类的作用"><a href="#内部类的作用" class="headerlink" title="内部类的作用"></a>内部类的作用</h3><p>每一项技术的诞生都有它的用处，内部类的出现，我们为什么要使用内部类，主要有以下三点：</p>
+<ul>
+<li>内部类作为外部类的成员，其方法可以访问外部类作用域中的数据，包括私有数据，这个是很重要的一点</li>
+<li>内部类可以实现进一步的封装，在Java中，常规类默认是包可见的，或者公有可见，只有内部类可以对同一个包中的其他类不可见，即隐藏起来</li>
+<li>当想要定义一个回调函数，又不想编写太多的代码时，使用匿名的内部类可以比较便捷地实现</li>
+</ul>
+<h3 id="成员内部类"><a href="#成员内部类" class="headerlink" title="成员内部类"></a>成员内部类</h3><p>在普通的类内部放置一个类，外层的我们称之为外部类，在外部类里面的为内部类，相当于内部类成为了外部类的一个成员，成员内部类是包不可见的，成员内部类可以无条件访问外部类的作用域，包括数据和方法，private的也可以。<br>例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">public class OutterClass &#123;//外部类</div><div class="line">	private int intValue = 0;</div><div class="line">	private static int staticValue = 0;</div><div class="line">	public OutterClass(int intValue) &#123;</div><div class="line">		this.intValue = intValue;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	class InnerClass &#123;//内部类</div><div class="line">		int a = intValue;</div><div class="line">		public void output() &#123;</div><div class="line">			System.out.println(intValue);</div><div class="line">			System.out.println(staticValue);</div><div class="line">			</div><div class="line">			intValue++;</div><div class="line">			System.out.println(intValue);</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>Java中，实现内部类能够访问外部类成员的思路是，内部类的对象总有一个隐式的引用，它指向了创建它的外部类的对象，假设这个引用为outer（实际不是Java的关键字），那么上面例子的内部类可以等价于：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">class InnerClass &#123;//内部类</div><div class="line">		int a = outer.intValue;</div><div class="line">		public void output() &#123;</div><div class="line">			System.out.println(outer.intValue);</div><div class="line">			System.out.println(outer.staticValue);</div><div class="line">			</div><div class="line">			outer.intValue++;</div><div class="line">			System.out.println(outer.intValue);</div><div class="line">		&#125;</div><div class="line">	&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="内部类的特殊语法"><a href="#内部类的特殊语法" class="headerlink" title="内部类的特殊语法"></a>内部类的特殊语法</h3><p>Java的语法当中，变量名的命名除了使用下划线、数字、字母外，还可以使用$来命名，但是一般不推荐使用，因为这个美刀字符，只要是用于对内部类的命名，上面的例子中，编译器编译过后，内部类所形成的类名实际为OutterClass$InnerClass。<br>内部类正规的引用外部类的成员是使用如下形式<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">OutterClass.this</div></pre></td></tr></table></figure></p>
+<p>这种表达方式中的this限定词很多时候可能是累赘，没什么作用，但是如果内部类中的方法和数据与外部的相同时，作用就很大了，就像在类的构造方法中经常用到的方式。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">System.out.println(OutterClass.this.intValue);//调用外部类的intValue成员</div></pre></td></tr></table></figure></p>
+<p>外部类是没法直接访问内部类的，要访问内部类，就必须在外部类中实例化一个内部类对象，通过这个对象引用到访问内部类<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">public class OutterClass &#123;//外部类</div><div class="line">	private int intValue = 0;</div><div class="line">	private static int staticValue = 0;</div><div class="line">	private InnerClass inner;</div><div class="line">	public OutterClass(int intValue) &#123;</div><div class="line">		this.intValue = intValue;</div><div class="line">		Inner = new InnerClass();//实例化一个内部类对象</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	class InnerClass &#123;//内部类</div><div class="line">		...</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>内部类也是有所限制的，它必须依附于外部类存在的，如果需要创建一个内部类对象，那就必须存在一个外部类对象，通过这个外部类对象来实例化一个内部类对象。创建内部类对象的例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">OutterClass out = new OutterClass(...);</div><div class="line">OutterClass.InnerClass in = out.new InnerClass();</div></pre></td></tr></table></figure></p>
+<h3 id="局部内部类"><a href="#局部内部类" class="headerlink" title="局部内部类"></a>局部内部类</h3><p>有时候会遇到这种情况：我们需要在一个方法当中去回调一个实现了相应操作接口的类的方法，对应创建的对象只使用一次，如果在外部类中内置一个内部类，那么每个外部类对象都会有这个内部类。但是，Java给我们提供一个便捷的方式，让程序员更加“懒惰”，我们可以在方法中定义一个局部的内部类，从而实现该对象只使用一次就被GC回收，例子如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">public OutterClass() &#123;</div><div class="line">    class InnerClass &#123;</div><div class="line">        private int i = 0;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    InnerClass in = new InnerClass();</div><div class="line">    System.out.println(in.i);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>在方法中的局部类，和定义变量一样，不能用private、public等修饰符来声明，它的作用域仅限于这个块中。</p>
+<h3 id="匿名内部类"><a href="#匿名内部类" class="headerlink" title="匿名内部类"></a>匿名内部类</h3><p>匿名内部类比较好理解，就是创建一个没有名字的内部类，这个是非常常见的，举一个Android中按钮点击触发的事件例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">button.setOnClickListener(new View.OnClickListener &#123; </div><div class="line">   @Override</div><div class="line">   public void onClick(View v) &#123;</div><div class="line">       //do something...</div><div class="line">   &#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
+<h3 id="静态内部类"><a href="#静态内部类" class="headerlink" title="静态内部类"></a>静态内部类</h3><p>Java中，只有内部类可以声明为static，若是声明为static的内部类，我们称之为静态内部类。静态内部类的对象不具备对生成它的外部类对象的引用特权，其他的基本是普通内部类一致。静态内部类无法访问外部类的非静态成员。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">public class OutterClass &#123;//外部类</div><div class="line">    private int intValue = 0;</div><div class="line">    private static int staticValue = 0;</div><div class="line">    static class StaticInnerClass &#123;</div><div class="line">        public int a = staticValue;</div><div class="line">        //public int b = intValue;//error</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">public class InnerClassTest &#123;</div><div class="line">  public static void main(String[] args)&#123;</div><div class="line">      OutterClass.StaticInnerClass in = new OutterClass.StaticInnerClass();</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="闭包（Closure）"><a href="#闭包（Closure）" class="headerlink" title="闭包（Closure）"></a>闭包（Closure）</h3><p>Java没有像C#中的委托机制，但是Java引入了闭包，非显式地支持闭包。Java中的闭包一般和回调关联在一起，可以通过接口和内部类来实现。上面谈到，非静态内部类可以理解为外部类的一个对象引用，内部类可以访问外部类的详细信息，所以可以把非静态内部类当做面向对象领域的闭包。</p>
+<p>例子：存在一个类Teacher，表示教师，它有一个成员方法work<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">public class Teacher &#123;</div><div class="line">    public void work() &#123;</div><div class="line">        //do something...</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>存在一个接口Programmable，表示具备编程能力的人，它提供一个方法work<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">public interface Programmable &#123;</div><div class="line">    void work();</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>以上两者都提供了work方法，方法的签名是一样的，但是功能不一样。<br>现在有这么一个人，他是老师，教的是编程课，那么我们既要实现Programmable接口，也要继承教师类。现在的问题是实现的这个类只能定义一个work方法，怎么来实现？采用闭包可以有效解决这个问题。</p>
+<p>code：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">public Man extends Teacher &#123;</div><div class="line">    @Override </div><div class="line">    public void work() &#123;</div><div class="line">        //do something...</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    public void coding() &#123;</div><div class="line">        //program</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    class Programmer implements Programmabele &#123;</div><div class="line">        @Override</div><div class="line">        public void work() &#123;</div><div class="line">            coding();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;Java随笔-内部类和闭包&quot;&gt;&lt;a href=&quot;#Java随笔-内部类和闭包&quot; class=&quot;headerlink&quot; title=&quot;Java随笔 - 内部类和闭包&quot;&gt;&lt;/a&gt;Java随笔 - 内部类和闭包&lt;/h2&gt;&lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot;
+    
+    </summary>
+    
+    
+      <category term="Java" scheme="http://linzhs.cm/tags/Java/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Java随笔 - 枚举类</title>
+    <link href="http://linzhs.cm/2017/04/21/java-enum/"/>
+    <id>http://linzhs.cm/2017/04/21/java-enum/</id>
+    <published>2017-04-20T17:10:21.000Z</published>
+    <updated>2017-04-20T17:10:21.518Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="Java随笔-枚举类"><a href="#Java随笔-枚举类" class="headerlink" title="Java随笔 - 枚举类"></a>Java随笔 - 枚举类</h2><h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><blockquote>
+<p>枚举类是JDK 5开始引入的，其知识点比较少，又较C/C++中的枚举类型不一样，在这里，枚举以类的形式存在，下面学习枚举类的常见语法和在单例模式（设计模式）中的应用。</p>
+</blockquote>
+<h3 id="常用语法"><a href="#常用语法" class="headerlink" title="常用语法"></a>常用语法</h3><p>先看一个典型例子，在C/C++/C#中都是很常见的例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">enum Week &#123;</div><div class="line">	Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>所有的枚举类都继承于Enum，Enum有一些比较好用的方法，比如toString()，ordinal()，compareTo()，下面为使用例子:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">System.out.println(Week.Friday);// print &quot;Friday&quot; 直接输出枚举常量</div><div class="line">Week week = Enum.valueOf(Week.class, &quot;Friday&quot;);//获取指定类和名字的枚举常量</div><div class="line">System.out.println(week);// print &quot;Friday&quot;</div><div class="line">System.out.println(Week.Friday.ordinal());//获取当前枚举常量的位置  print 4</div><div class="line">Week[] values = Week.values();//values()为静态方法，将包含的全部枚举常量以数组的形式返回 </div><div class="line">for (Week w : values) &#123;// print Monday Tuesday Wednesday Thursday Friday Saturday Sunday</div><div class="line">	System.out.print(w + &quot; &quot;);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>枚举强调常量这个概念，可以理解为静态的，不要试图去构造一个枚举对象，这样是不允许的，比如<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Week week = new Week();// error</div></pre></td></tr></table></figure></p>
+<p>在比较两个枚举类型的值的时候，永远不需要调用equals方法，虽然有实现，直接用==就可以。</p>
+<p>有需要的话，可以在枚举类中添加一些构造器、方法和数据域。当然，其中的构造器只能在构造枚举常量的时候被调用。以下为例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">enum Size &#123;</div><div class="line">	SMALL(&quot;S&quot;), MEDIUM(&quot;M&quot;), LARGE(&quot;L&quot;),EXTRA_LARGE(&quot;XL&quot;);</div><div class="line">	</div><div class="line">	private String abbreviation;</div><div class="line">	</div><div class="line">	private Size(String abbreviation) &#123;</div><div class="line">		this.abbreviation = abbreviation;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	public String getAbbreviation() &#123;</div><div class="line">		return abbreviation;</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">System.out.println(Size.SMALL.getAbbreviation());</div><div class="line">Size size = Enum.valueOf(Size.class, &quot;SMALL&quot;);//print &quot;S&quot;</div><div class="line">System.out.println(size.equals(Size.SMALL));//true</div><div class="line">System.out.println(size == Size.SMALL);//true</div><div class="line">System.out.println(size == Size.LARGE);//false</div></pre></td></tr></table></figure></p>
+<h3 id="单例模式的枚举实现"><a href="#单例模式的枚举实现" class="headerlink" title="单例模式的枚举实现"></a>单例模式的枚举实现</h3><p>用枚举来实现单例模式是最佳方法。它更简洁，不仅可以避免多线程同步问题，自动支持序列化机制，也可以绝对防止多次被实例化。<br>Code:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">public enum Singleton &#123;</div><div class="line">    INSTANCE;</div><div class="line">    public void whateverMethod() &#123;</div><div class="line">        </div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;Java随笔-枚举类&quot;&gt;&lt;a href=&quot;#Java随笔-枚举类&quot; class=&quot;headerlink&quot; title=&quot;Java随笔 - 枚举类&quot;&gt;&lt;/a&gt;Java随笔 - 枚举类&lt;/h2&gt;&lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;head
+    
+    </summary>
+    
+    
+      <category term="Java" scheme="http://linzhs.cm/tags/Java/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Java随笔 - 接口和抽象</title>
+    <link href="http://linzhs.cm/2017/04/21/java-interface-abstract/"/>
+    <id>http://linzhs.cm/2017/04/21/java-interface-abstract/</id>
+    <published>2017-04-20T17:08:54.000Z</published>
+    <updated>2017-04-20T17:08:54.056Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="Java随笔-接口和抽象类"><a href="#Java随笔-接口和抽象类" class="headerlink" title="Java随笔 - 接口和抽象类"></a>Java随笔 - 接口和抽象类</h2><blockquote>
+<p>接口和抽象类有着相似和不同的地方，相似的地方在于都是为了在继承层次中，让上层更加通用的类更好地将数据隔离、封装、抽象出来，不同之处是两者使用的一些特性。</p>
+</blockquote>
+<h2 id="抽象类"><a href="#抽象类" class="headerlink" title="抽象类"></a>抽象类</h2><p>在继承的层次中，处在上层的类更具通用性，也就是通用的超类，让此类作为抽象类，抽象类中的通用的方法进行抽象，在类中起到占位的作用，自己不去实现它，而让继承它的之类去实现它。</p>
+<p>抽象类的修饰词是abstract，不仅仅可以修饰类，还可以修饰方法。为了提高程序的清晰度，在一个类中，包含一到多个抽象方法的类，其本身必须被声明为抽象类。也就是说，具备一到多个方法的类一定是抽象类。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">public abstract class Person &#123;</div><div class="line">    public abstract String getDescription();//抽象方法必须为public或者default</div><div class="line">&#125;</div><div class="line"></div><div class="line">public class Student extends Person &#123;</div><div class="line">    public String getDescription() &#123;</div><div class="line">        //...</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>在抽象类中，除了可以拥有抽象方法，还可以有具体的数据和具体方法，子类继承抽象类时，可以不用去重写具体方法。</p>
+<p>抽象类中，可以包含具体的数据域和具体方法，还可以不包含抽象方法。也就是说，类即使不包含抽象方法，也可以被声明为抽象类。但是！抽象类是不能被实例化的，下面的例子就是错误的：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Person p = new Person();//error</div><div class="line">Person p = new Student();//ok</div></pre></td></tr></table></figure></p>
+<p>抽象类可以定义对象变量，但是其只能引用非抽象子类的对象。</p>
+<blockquote>
+<p>在抽象类中尽量不要包含具体方法，不管是不是抽象的，都应该将通用的域和方法尽量放在super类中。</p>
+</blockquote>
+<h3 id="拓展抽象类的方式"><a href="#拓展抽象类的方式" class="headerlink" title="拓展抽象类的方式"></a>拓展抽象类的方式</h3><ul>
+<li>在抽象中定义部分抽象类方法或者不定义抽象方法，这样子类就必须声明为抽象类，去定义剩余部分的抽象方法或者去定义没有定义的抽象方法</li>
+<li>在抽象类中定义全部的抽象方法，这样子类就不是抽象的了</li>
+</ul>
+<h2 id="接口"><a href="#接口" class="headerlink" title="接口"></a>接口</h2><p>接口，修饰符为interface，声明方式如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">public interface Comparable&lt;T&gt; &#123;</div><div class="line">    int compareTo(T other);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>接口不是类，而是一种特殊的类，其意义在于描述了类的行为，具有什么功能，这些行为和功能往往具备通用性。接口只是“描述”，而不去实现。一个类只能继承一个类，在Java和C#中都是单继承的，但是对于接口来说，一个类可以实现多继承，也就是一个类可以继承多个接口，其含义是一个类可以具备多种通用的行为。</p>
+<p>Java库中内置的Comparable接口，也就是上面的例子，对于实现了这个接口的类，都必须是实现comparaTo方法，从而拥有这个方法，而且这个方法必须和接口中声明的一致，包括参数和返回类型。</p>
+<p>接口中的所有方法都是public的，所以在接口声明中写不写public修饰符都是一样的。但是！在实现类中，必须有public修饰符。因为在实现的具体类中，若不写明为public，那么编译器会认为此方法为default，也就是默认包可见的，从而引发后面的一系列警告。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">class Person implements Comparable&lt;Person&gt; &#123;</div><div class="line">    public compareTo(Person other) &#123;</div><div class="line">        return age - other.age;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>接口可以包含多个方法，但是在设计模式的六大原则中，职责单一原则建议实现接口的职责单一，而不是将所有不同功能的接口都放在一个接口中，最好是一个接口一个方法。</p>
+<p>在接口中，是绝对不能有具体的实例域和具体方法或者静态方法的，这个有别于抽象类。提供实例域和方法的实现的任务应该交由实现接口的类来完成。但是，接口可以具备常量，且接口中的域会被自动设置为public static final。接口是没有构造方法的。</p>
+<p>因此，我们可以把接口看成是没有实例域的抽象类。</p>
+<p>和抽象类一样，接口是不能被实例化的，但是可以声明接口对象变量，去引用实现了这个接口的类的对象，这也体现了类的多态性。</p>
+<h3 id="接口的其他特性"><a href="#接口的其他特性" class="headerlink" title="接口的其他特性"></a>接口的其他特性</h3><ul>
+<li>静态方法</li>
+</ul>
+<p>Java8开始，允许在接口中增加静态方法。理论上讲，这是合乎常理的，只是这由位于将接口作为抽象规范的初衷。</p>
+<ul>
+<li>默认方法</li>
+</ul>
+<p>可以为接口方法提供一个默认的实现，但必须用default修饰符来标记。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">public interface Comparable&lt;T&gt; &#123;</div><div class="line">    default int compareTo(T other) &#123;</div><div class="line">        return 0;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>当然，添加这个默认的实现意义不大，因为在实现这个接口的同时，这个方法也会被重写，也就是被覆盖。意义不大，还是有些意义的，在过多类似的回调接口实现中，有些没有去实现，那就可以拿默认的来用。</p>
+<h3 id="接口的默认方法冲突"><a href="#接口的默认方法冲突" class="headerlink" title="接口的默认方法冲突"></a>接口的默认方法冲突</h3><p>接口的默认方法出现冲突的情况是这样的：先是在一个接口中将一个方法定义为默认方法，然后又在超类或者另一个接口中定义了同样的方法。</p>
+<p>Java为解决此问题，指定了如下规则：</p>
+<ul>
+<li>超类优先。如果超类提供了一个具体的方法，同名而且有相同参数类型的默认方法都会被忽略。</li>
+<li>接口冲突。如果一个超接口提供了一个默认方法，另一个接口提供了一个同名而且参数类型（无论是否是默认参数）相同的方法，拿就必须覆盖这个方法来解决冲突。</li>
+</ul>
+<blockquote>
+<p>如果两个接口都没有为共享方法提供默认的实现，实现类可以选择两者都实现，也可以选择干脆都不实现。</p>
+</blockquote>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;Java随笔-接口和抽象类&quot;&gt;&lt;a href=&quot;#Java随笔-接口和抽象类&quot; class=&quot;headerlink&quot; title=&quot;Java随笔 - 接口和抽象类&quot;&gt;&lt;/a&gt;Java随笔 - 接口和抽象类&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;接口和抽象类有着相
+    
+    </summary>
+    
+    
+      <category term="Java" scheme="http://linzhs.cm/tags/Java/"/>
+    
+  </entry>
   
   <entry>
     <title>Java随笔 - 对象克隆</title>

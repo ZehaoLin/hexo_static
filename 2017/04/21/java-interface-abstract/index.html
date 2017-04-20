@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>Java随笔 - 接口和抽象 | Linzh&#39;s Blog | Standing on Shoulders of Giants</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Java">
+    <meta name="description" content="Java随笔 - 接口和抽象类
+接口和抽象类有着相似和不同的地方，相似的地方在于都是为了在继承层次中，让上层更加通用的类更好地将数据隔离、封装、抽象出来，不同之处是两者使用的一些特性。
+
+抽象类在继承的层次中，处在上层的类更具通用性，也就是通用的超类，让此类作为抽象类，抽象类中的通用的方法进行抽象，在类中起到占位的作用，自己不去实现它，而让继承它的之类去实现它。
+抽象类的修饰词是abstract，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java随笔 - 接口和抽象">
+<meta property="og:url" content="http://linzhs.cm/2017/04/21/java-interface-abstract/index.html">
+<meta property="og:site_name" content="Linzh's Blog">
+<meta property="og:description" content="Java随笔 - 接口和抽象类
+接口和抽象类有着相似和不同的地方，相似的地方在于都是为了在继承层次中，让上层更加通用的类更好地将数据隔离、封装、抽象出来，不同之处是两者使用的一些特性。
+
+抽象类在继承的层次中，处在上层的类更具通用性，也就是通用的超类，让此类作为抽象类，抽象类中的通用的方法进行抽象，在类中起到占位的作用，自己不去实现它，而让继承它的之类去实现它。
+抽象类的修饰词是abstract，">
+<meta property="og:updated_time" content="2017-04-20T17:08:54.056Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java随笔 - 接口和抽象">
+<meta name="twitter:description" content="Java随笔 - 接口和抽象类
+接口和抽象类有着相似和不同的地方，相似的地方在于都是为了在继承层次中，让上层更加通用的类更好地将数据隔离、封装、抽象出来，不同之处是两者使用的一些特性。
+
+抽象类在继承的层次中，处在上层的类更具通用性，也就是通用的超类，让此类作为抽象类，抽象类中的通用的方法进行抽象，在类中起到占位的作用，自己不去实现它，而让继承它的之类去实现它。
+抽象类的修饰词是abstract，">
+    
+        <link rel="alternative" href="/atom.xml" title="Linzh&#39;s Blog" type="application/atom+xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.4.8">
+    <script>window.lazyScripts=[]</script>
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/linzh.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Linzh</h5>
+          <a href="mailto:lzh_547590520@163.com" title="lzh_547590520@163.com" class="mail">lzh_547590520@163.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                Home Page
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/ZehaoLin" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://www.weibo.com/L_Ceylon" target="_blank" >
+                <i class="icon icon-lg icon-weibo"></i>
+                Weibo
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/" target="_blank" >
+                <i class="icon icon-lg icon-link"></i>
+                About
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Java随笔 - 接口和抽象</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Java随笔 - 接口和抽象</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-04-20T17:08:54.000Z" itemprop="datePublished" class="page-time">
+  2017-04-21
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Java随笔-接口和抽象类"><span class="post-toc-number">1.</span> <span class="post-toc-text">Java随笔 - 接口和抽象类</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#抽象类"><span class="post-toc-number">2.</span> <span class="post-toc-text">抽象类</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#拓展抽象类的方式"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">拓展抽象类的方式</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#接口"><span class="post-toc-number">3.</span> <span class="post-toc-text">接口</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#接口的其他特性"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">接口的其他特性</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#接口的默认方法冲突"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">接口的默认方法冲突</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+    
+<article id="post-java-interface-abstract"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Java随笔 - 接口和抽象</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017年04月21日 1:08" datetime="2017-04-20T17:08:54.000Z"  itemprop="datePublished">2017-04-21</time>
+
+            
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h2 id="Java随笔-接口和抽象类"><a href="#Java随笔-接口和抽象类" class="headerlink" title="Java随笔 - 接口和抽象类"></a>Java随笔 - 接口和抽象类</h2><blockquote>
+<p>接口和抽象类有着相似和不同的地方，相似的地方在于都是为了在继承层次中，让上层更加通用的类更好地将数据隔离、封装、抽象出来，不同之处是两者使用的一些特性。</p>
+</blockquote>
+<h2 id="抽象类"><a href="#抽象类" class="headerlink" title="抽象类"></a>抽象类</h2><p>在继承的层次中，处在上层的类更具通用性，也就是通用的超类，让此类作为抽象类，抽象类中的通用的方法进行抽象，在类中起到占位的作用，自己不去实现它，而让继承它的之类去实现它。</p>
+<p>抽象类的修饰词是abstract，不仅仅可以修饰类，还可以修饰方法。为了提高程序的清晰度，在一个类中，包含一到多个抽象方法的类，其本身必须被声明为抽象类。也就是说，具备一到多个方法的类一定是抽象类。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">public abstract class Person &#123;</div><div class="line">    public abstract String getDescription();//抽象方法必须为public或者default</div><div class="line">&#125;</div><div class="line"></div><div class="line">public class Student extends Person &#123;</div><div class="line">    public String getDescription() &#123;</div><div class="line">        //...</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>在抽象类中，除了可以拥有抽象方法，还可以有具体的数据和具体方法，子类继承抽象类时，可以不用去重写具体方法。</p>
+<p>抽象类中，可以包含具体的数据域和具体方法，还可以不包含抽象方法。也就是说，类即使不包含抽象方法，也可以被声明为抽象类。但是！抽象类是不能被实例化的，下面的例子就是错误的：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Person p = new Person();//error</div><div class="line">Person p = new Student();//ok</div></pre></td></tr></table></figure></p>
+<p>抽象类可以定义对象变量，但是其只能引用非抽象子类的对象。</p>
+<blockquote>
+<p>在抽象类中尽量不要包含具体方法，不管是不是抽象的，都应该将通用的域和方法尽量放在super类中。</p>
+</blockquote>
+<h3 id="拓展抽象类的方式"><a href="#拓展抽象类的方式" class="headerlink" title="拓展抽象类的方式"></a>拓展抽象类的方式</h3><ul>
+<li>在抽象中定义部分抽象类方法或者不定义抽象方法，这样子类就必须声明为抽象类，去定义剩余部分的抽象方法或者去定义没有定义的抽象方法</li>
+<li>在抽象类中定义全部的抽象方法，这样子类就不是抽象的了</li>
+</ul>
+<h2 id="接口"><a href="#接口" class="headerlink" title="接口"></a>接口</h2><p>接口，修饰符为interface，声明方式如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">public interface Comparable&lt;T&gt; &#123;</div><div class="line">    int compareTo(T other);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>接口不是类，而是一种特殊的类，其意义在于描述了类的行为，具有什么功能，这些行为和功能往往具备通用性。接口只是“描述”，而不去实现。一个类只能继承一个类，在Java和C#中都是单继承的，但是对于接口来说，一个类可以实现多继承，也就是一个类可以继承多个接口，其含义是一个类可以具备多种通用的行为。</p>
+<p>Java库中内置的Comparable接口，也就是上面的例子，对于实现了这个接口的类，都必须是实现comparaTo方法，从而拥有这个方法，而且这个方法必须和接口中声明的一致，包括参数和返回类型。</p>
+<p>接口中的所有方法都是public的，所以在接口声明中写不写public修饰符都是一样的。但是！在实现类中，必须有public修饰符。因为在实现的具体类中，若不写明为public，那么编译器会认为此方法为default，也就是默认包可见的，从而引发后面的一系列警告。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">class Person implements Comparable&lt;Person&gt; &#123;</div><div class="line">    public compareTo(Person other) &#123;</div><div class="line">        return age - other.age;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>接口可以包含多个方法，但是在设计模式的六大原则中，职责单一原则建议实现接口的职责单一，而不是将所有不同功能的接口都放在一个接口中，最好是一个接口一个方法。</p>
+<p>在接口中，是绝对不能有具体的实例域和具体方法或者静态方法的，这个有别于抽象类。提供实例域和方法的实现的任务应该交由实现接口的类来完成。但是，接口可以具备常量，且接口中的域会被自动设置为public static final。接口是没有构造方法的。</p>
+<p>因此，我们可以把接口看成是没有实例域的抽象类。</p>
+<p>和抽象类一样，接口是不能被实例化的，但是可以声明接口对象变量，去引用实现了这个接口的类的对象，这也体现了类的多态性。</p>
+<h3 id="接口的其他特性"><a href="#接口的其他特性" class="headerlink" title="接口的其他特性"></a>接口的其他特性</h3><ul>
+<li>静态方法</li>
+</ul>
+<p>Java8开始，允许在接口中增加静态方法。理论上讲，这是合乎常理的，只是这由位于将接口作为抽象规范的初衷。</p>
+<ul>
+<li>默认方法</li>
+</ul>
+<p>可以为接口方法提供一个默认的实现，但必须用default修饰符来标记。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">public interface Comparable&lt;T&gt; &#123;</div><div class="line">    default int compareTo(T other) &#123;</div><div class="line">        return 0;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>当然，添加这个默认的实现意义不大，因为在实现这个接口的同时，这个方法也会被重写，也就是被覆盖。意义不大，还是有些意义的，在过多类似的回调接口实现中，有些没有去实现，那就可以拿默认的来用。</p>
+<h3 id="接口的默认方法冲突"><a href="#接口的默认方法冲突" class="headerlink" title="接口的默认方法冲突"></a>接口的默认方法冲突</h3><p>接口的默认方法出现冲突的情况是这样的：先是在一个接口中将一个方法定义为默认方法，然后又在超类或者另一个接口中定义了同样的方法。</p>
+<p>Java为解决此问题，指定了如下规则：</p>
+<ul>
+<li>超类优先。如果超类提供了一个具体的方法，同名而且有相同参数类型的默认方法都会被忽略。</li>
+<li>接口冲突。如果一个超接口提供了一个默认方法，另一个接口提供了一个同名而且参数类型（无论是否是默认参数）相同的方法，拿就必须覆盖这个方法来解决冲突。</li>
+</ul>
+<blockquote>
+<p>如果两个接口都没有为共享方法提供默认的实现，实现类可以选择两者都实现，也可以选择干脆都不实现。</p>
+</blockquote>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2017-04-20T17:08:54.056Z" itemprop="dateUpdated">2017年4月21日 1:08</time>
+</span><br>
+
+
+        这里写留言或版权声明：<a href="/2017/04/21/java-interface-abstract/" target="_blank" rel="external">http://linzhs.cm/2017/04/21/java-interface-abstract/</a>
+    </div>
+    <footer>
+        <a href="http://linzhs.cm">
+            <img src="/img/linzh.jpg" alt="Linzh">
+            Linzh
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://linzhs.cm/2017/04/21/java-interface-abstract/&title=《Java随笔 - 接口和抽象》 — Linzh's Blog&pic=http://linzhs.cm/img/linzh.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://linzhs.cm/2017/04/21/java-interface-abstract/&title=《Java随笔 - 接口和抽象》 — Linzh's Blog&source=Standing on Shoulders of Giants" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://linzhs.cm/2017/04/21/java-interface-abstract/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Java随笔 - 接口和抽象》 — Linzh's Blog&url=http://linzhs.cm/2017/04/21/java-interface-abstract/&via=http://linzhs.cm" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://linzhs.cm/2017/04/21/java-interface-abstract/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2017/04/21/java-enum/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">Java随笔 - 枚举类</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/04/18/java-note-object-copy/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">Java随笔 - 对象克隆</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+<div class="comments" id="comments">
+    <div class="ds-thread" data-thread-key="java-interface-abstract" data-title="Java随笔 - 接口和抽象" data-url="http://linzhs.cm/2017/04/21/java-interface-abstract/"></div>
+</div>
+<script>
+lazyScripts.push('//cdn.bootcss.com/marked/0.3.6/marked.min.js');
+
+var duoshuoQuery = {short_name:'ysblog', theme: 'none'};
+lazyScripts.push('/js/embed.min.js?v=1.4.8');
+
+
+</script>
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        �Thanks
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <ul class="reward-items">
+        
+        <li>
+            <img src="/img/wechat.jpg" title="微信打赏二维码" alt="微信打赏二维码">
+            <p>微信</p>
+        </li>
+        
+
+        
+        <li>
+            <img src="/img/alipay.jpg" title="支付宝打赏二维码" alt="支付宝打赏二维码">
+            <p>支付宝</p>
+        </li>
+        
+    </ul>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            <span>博客内容遵循 <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">知识共享 署名 - 非商业性 - 相同方式共享 4.0协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p>
+            <span>Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a></span>
+            <span>Linzh's Blog &copy; 2017</span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://linzhs.cm/2017/04/21/java-interface-abstract/&title=《Java随笔 - 接口和抽象》 — Linzh's Blog&pic=http://linzhs.cm/img/linzh.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://linzhs.cm/2017/04/21/java-interface-abstract/&title=《Java随笔 - 接口和抽象》 — Linzh's Blog&source=Standing on Shoulders of Giants" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://linzhs.cm/2017/04/21/java-interface-abstract/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Java随笔 - 接口和抽象》 — Linzh's Blog&url=http://linzhs.cm/2017/04/21/java-interface-abstract/&via=http://linzhs.cm" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://linzhs.cm/2017/04/21/java-interface-abstract/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACNElEQVR42u3ay2rEMAxG4Xn/l05hdqXEnF9KCpaPV6Xk4i8LjXX5fPC6vmv9/7tr1tf/vYs8p7hkyJCxLeNarrtXXnitwfy9d9fIkCHjHMZTwZF8AhIt+d5kyJAho0ZaX5OGdRkyZMjoMMh2a3moDBkyZNSSWHKYW1+fPu2VXFyGDBkbMtLGwH/+/WJ/Q4YMGZswrnDxMlnnY8W7kiFDxmhGrSjP01qe3PIPEZxwZciQMYLRSSxJssoT1Nph8dfvhgwZMoYySDBNW4+88cmboMV0V4YMGSMY6UhEJ5jyIMvbpTJkyDiBQW6ubbc/chG3TmXIkDGakZb70yZBOsDRKefJkCFjHqMTWDul/zQQxydcGTJkjGOkr++HXV7aQx9ChgwZBzDIC9JEtNN6jFsLMmTIOIaRlrSeLfrzFubtzIgMGTJGM9JAyduK/a2jNFuGDBmjGeRmvmojZemYBRq2kCFDxmEMnl7WgmwnxY1/DWTIkLE5gw9A1IJsOijGP5kMGTJmM0hKmRbUSEmO/wcFXxkyZBzDIKU38tD0OaS01xq2kCFDxuYMcgQkG+qkqfywiK6XIUPGOMazpf9gkGsJiN8rQ4aM0Qy+4htw+yE9OPKwLkOGjEmMdBiLp5r8o6DBr/XzZciQcQAjLZDx8a+0YVnMxWXIkCEDlOlJSE3L/bxtIEOGDBm1VgEP3LVGqQwZMk5jvJHEpoNl6ZiFDBkyzmGkjYG4EIbT4/QQWexOyJAhYyfGD9FoMwjvueHIAAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.4.8"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.4.8" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+</body>
+</html>

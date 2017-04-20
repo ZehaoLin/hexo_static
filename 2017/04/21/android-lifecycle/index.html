@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>Android中Activity、Fragment、Service的生命周期 | Linzh&#39;s Blog | Standing on Shoulders of Giants</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Android">
+    <meta name="description" content="Android中Activity、Fragment、Service的生命周期
+在Android系统中，常见的应用组件都有它的生命周期，以便于系统对内存的管理，接下来总结一下Activity，Fragment，Service这三个常见、重要的组件的生命周期。
+
+Activity的生命周期用回调方法的方式来管理Activity的生命周期对于开发强大、灵活的应用来说那是至关重要的。Activity的生命">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android中Activity、Fragment、Service的生命周期">
+<meta property="og:url" content="http://linzhs.cm/2017/04/21/android-lifecycle/index.html">
+<meta property="og:site_name" content="Linzh's Blog">
+<meta property="og:description" content="Android中Activity、Fragment、Service的生命周期
+在Android系统中，常见的应用组件都有它的生命周期，以便于系统对内存的管理，接下来总结一下Activity，Fragment，Service这三个常见、重要的组件的生命周期。
+
+Activity的生命周期用回调方法的方式来管理Activity的生命周期对于开发强大、灵活的应用来说那是至关重要的。Activity的生命">
+<meta property="og:updated_time" content="2017-04-20T17:15:48.057Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android中Activity、Fragment、Service的生命周期">
+<meta name="twitter:description" content="Android中Activity、Fragment、Service的生命周期
+在Android系统中，常见的应用组件都有它的生命周期，以便于系统对内存的管理，接下来总结一下Activity，Fragment，Service这三个常见、重要的组件的生命周期。
+
+Activity的生命周期用回调方法的方式来管理Activity的生命周期对于开发强大、灵活的应用来说那是至关重要的。Activity的生命">
+    
+        <link rel="alternative" href="/atom.xml" title="Linzh&#39;s Blog" type="application/atom+xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.4.8">
+    <script>window.lazyScripts=[]</script>
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/linzh.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Linzh</h5>
+          <a href="mailto:lzh_547590520@163.com" title="lzh_547590520@163.com" class="mail">lzh_547590520@163.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                Home Page
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/ZehaoLin" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://www.weibo.com/L_Ceylon" target="_blank" >
+                <i class="icon icon-lg icon-weibo"></i>
+                Weibo
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/" target="_blank" >
+                <i class="icon icon-lg icon-link"></i>
+                About
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Android中Activity、Fragment、Service的生命周期</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Android中Activity、Fragment、Service的生命周期</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-04-20T17:15:48.000Z" itemprop="datePublished" class="page-time">
+  2017-04-21
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Android中Activity、Fragment、Service的生命周期"><span class="post-toc-number">1.</span> <span class="post-toc-text">Android中Activity、Fragment、Service的生命周期</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Activity的生命周期"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">Activity的生命周期</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#生命周期对应的回调"><span class="post-toc-number">1.1.1.</span> <span class="post-toc-text">生命周期对应的回调</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#实例：旋转屏幕Activity的生命周期变化（带保存状态）"><span class="post-toc-number">1.1.2.</span> <span class="post-toc-text">实例：旋转屏幕Activity的生命周期变化（带保存状态）</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Fragment的生命周期"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">Fragment的生命周期</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Fragment结合Activity的生命周期一起运行"><span class="post-toc-number">1.2.1.</span> <span class="post-toc-text">Fragment结合Activity的生命周期一起运行</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Service的生命周期"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">Service的生命周期</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+    
+<article id="post-android-lifecycle"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Android中Activity、Fragment、Service的生命周期</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017年04月21日 1:15" datetime="2017-04-20T17:15:48.000Z"  itemprop="datePublished">2017-04-21</time>
+
+            
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h1 id="Android中Activity、Fragment、Service的生命周期"><a href="#Android中Activity、Fragment、Service的生命周期" class="headerlink" title="Android中Activity、Fragment、Service的生命周期"></a>Android中Activity、Fragment、Service的生命周期</h1><blockquote>
+<p>在Android系统中，常见的应用组件都有它的生命周期，以便于系统对内存的管理，接下来总结一下Activity，Fragment，Service这三个常见、重要的组件的生命周期。</p>
+</blockquote>
+<h2 id="Activity的生命周期"><a href="#Activity的生命周期" class="headerlink" title="Activity的生命周期"></a>Activity的生命周期</h2><p>用回调方法的方式来管理Activity的生命周期对于开发强大、灵活的应用来说那是至关重要的。Activity的生命周期会直接影响到其他Activity、其任务和返回栈。</p>
+<p>Activity有三种状态存在：</p>
+<ul>
+<li>运行状态</li>
+</ul>
+<p>此时Activity处于屏幕的前台，可以与用户进行交互，具有用户焦点。</p>
+<ul>
+<li>暂停状态</li>
+</ul>
+<p>我们经常会遇到这种情况：屏幕上出现一个对话框，或者加载动画框，从屏幕下面弹出不会沾满屏幕的一个选项卡，而且在屏幕里面还能看到另一个界面。对于这种情况，另一个Activity位于屏幕前台并且具有用户焦点，但在背后的Activity仍然可见。也就是说，另一个Activity显示在此Activity的上方，并且Activity部分透明或者未被覆盖整个屏幕，我们把这个时候的Activity成为暂停状态。</p>
+<p>暂停状态的Activity仍然处于完全活动的状态（Activity对象保留在内存中，它保留了所有状态和成员信息，并与窗口管理器 保持连接），但是这个状态的Activity在内存不足的时候，也会被系统终止并且回收。处于此状态的Activity一般不要做太多事情，在正常切换的时候如果有太多占用时间的任务完成，那么有可能会导致卡顿的情况，影响了用户体验。</p>
+<ul>
+<li>停止状态</li>
+</ul>
+<p>当一个Activity被另一个Activity完全覆盖的时候，也就进入了后台。已停止的 Activity 同样仍处于活动状态（Activity 对象保留在内存中，它保留了所有状态和成员信息，但未与窗口管理器连接）。 不过，它对用户不再可见，在他处需要内存时可能会被系统终止。</p>
+<p>如果 Activity 处于暂停或停止状态，系统可通过要求其结束（调用其 finish() 方法）或直接终止其进程，将其从内存中删除。（将其结束或终止后）再次打开 Activity 时，必须重建。</p>
+<h3 id="生命周期对应的回调"><a href="#生命周期对应的回调" class="headerlink" title="生命周期对应的回调"></a>生命周期对应的回调</h3><p>当一个Activity转入或者转出不同的状态的时候，会有相应的回调方法被调用，也就是向Activity发出通知。我们可以在不同的状态回调方法中加入不同的操作任务，来完成相应的行为，比如实例化的时候初始化一些信息，暂停或者停止状态的时候可能Activity会被销毁，在此状态做信息状态保留等。</p>
+<p>以下框架 Activity 包括每一个基本生命周期方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line">public class ExampleActivity extends Activity &#123;</div><div class="line">    @Override</div><div class="line">    public void onCreate(Bundle savedInstanceState) &#123;</div><div class="line">        super.onCreate(savedInstanceState);</div><div class="line">        // The activity is being created.</div><div class="line">        // 在创建Activity的时候，这个回调必须重写</div><div class="line">    &#125;</div><div class="line">    @Override</div><div class="line">    protected void onStart() &#123;</div><div class="line">        super.onStart();</div><div class="line">        // The activity is about to become visible.</div><div class="line">    &#125;</div><div class="line">    @Override</div><div class="line">    protected void onResume() &#123;</div><div class="line">        super.onResume();</div><div class="line">        // The activity has become visible (it is now &quot;resumed&quot;).</div><div class="line">    &#125;</div><div class="line">    @Override</div><div class="line">    protected void onPause() &#123;</div><div class="line">        super.onPause();</div><div class="line">        // Another activity is taking focus (this activity is about to be &quot;paused&quot;).</div><div class="line">    &#125;</div><div class="line">    @Override</div><div class="line">    protected void onStop() &#123;</div><div class="line">        super.onStop();</div><div class="line">        // The activity is no longer visible (it is now &quot;stopped&quot;)</div><div class="line">    &#125;</div><div class="line">    @Override</div><div class="line">    protected void onDestroy() &#123;</div><div class="line">        super.onDestroy();</div><div class="line">        // The activity is about to be destroyed.</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<ul>
+<li>onCreate()</li>
+</ul>
+<p>首次创建Activity的时候调用（Activity被销毁后重建也是首次创建）。该回调方法传入一个Bundle对象，这个对象很重要，用于保存上一次Activity被创建后的状态。-&gt; onStart()</p>
+<ul>
+<li>onStart()</li>
+</ul>
+<p>在Activity对用户可见之前被调用。如果Activity转入前台可见，则接下来调用onResume()，若是转入隐藏状态，则接下来调用onStop()。</p>
+<ul>
+<li>onResume()</li>
+</ul>
+<p>在 Activity 即将开始与用户进行交互之前调用。 此时，Activity 处于 Activity 堆栈的顶层，并具有用户输入焦点。-&gt; onPause()</p>
+<ul>
+<li>onPause()</li>
+</ul>
+<p>当系统要去执行另一个Activity的时候被调用，此时Activity还处于可见的状态，不过已经有一些界面已被另一个Activity覆盖。此方法通常用于确认对持久性数据的未保存更改、停止动画以及其他可能消耗 CPU 的内容，诸如此类。 它应该非常迅速地执行所需操作，因为它返回后，下一个 Activity 才能继续执行。</p>
+<p>如果 Activity 返回前台，则后接 onResume()，如果 Activity 转入对用户不可见状态，则后接 onStop()。</p>
+<ul>
+<li>onStop()</li>
+</ul>
+<p>在 Activity 对用户不再可见时调用。如果 Activity 被销毁，或另一个 Activity（一个现有 Activity 或新 Activity）继续执行并将其覆盖，就可能发生这种情况。</p>
+<p>如果 Activity 恢复与用户的交互，则后接 onRestart()，如果 Activity 被销毁，则后接 onDestroy()。</p>
+<ul>
+<li>onRestart()</li>
+</ul>
+<p>在 Activity 已停止并即将再次启动前调用。始终后接 onStart()</p>
+<ul>
+<li>onDestroy()</li>
+</ul>
+<p>在 Activity 被销毁前调用。这是 Activity 将收到的最后调用。 当 Activity 结束（有人对 Activity 调用了 finish()），或系统为节省空间而暂时销毁该 Activity 实例时，可能会调用它。 您可以通过 isFinishing() 方法区分这两种情形。</p>
+<p>这些方法共同定义 Activity 的整个生命周期。可以通过实现这些方法监控 Activity 生命周期中的三个嵌套循环：</p>
+<ul>
+<li>完整生命周期</li>
+</ul>
+<p>在 onCreate() 调用与 onDestroy() 调用之间。</p>
+<p>您的 Activity 应在 onCreate() 中执行“全局”状态设置（例如定义布局），并释放 onDestroy() 中的所有其余资源。例如，如果您的 Activity有一个在后台运行的线程，用于从网络上下载数据，它可能会在 onCreate() 中创建该线程，然后在 onDestroy() 中停止该线程。</p>
+<ul>
+<li>可见生命周期</li>
+</ul>
+<p>在 onStart() 调用与 onStop() 调用之间。</p>
+<p>在这段时间，用户可以在屏幕上看到 Activity 并与其交互。 例如，当一个新 Activity 启动，并且此 Activity 不再可见时，系统会调用 onStop()。您可以在调用这两个方法之间保留向用户显示 Activity 所需的资源。 例如，您可以在 onStart() 中注册一个 BroadcastReceiver 以监控影响 UI 的变化，并在用户无法再看到您显示的内容时在 onStop() 中将其取消注册。在 Activity 的整个生命周期，当 Activity 在对用户可见和隐藏两种状态中交替变化时，系统可能会多次调用 onStart() 和 onStop()。</p>
+<ul>
+<li>前台声明周期</li>
+</ul>
+<p>在 onResume() 调用与 onPause() 调用之间。</p>
+<p>在这段时间，Activity 位于屏幕上的所有其他 Activity 之前，并具有用户输入焦点。 Activity 可频繁转入和转出前台 — 例如，当设备转入休眠状态或出现对话框时，系统会调用 onPause()。 由于此状态可能经常发生转变，因此这两个方法中应采用适度轻量级的代码，以避免因转变速度慢而让用户等待。</p>
+<h3 id="实例：旋转屏幕Activity的生命周期变化（带保存状态）"><a href="#实例：旋转屏幕Activity的生命周期变化（带保存状态）" class="headerlink" title="实例：旋转屏幕Activity的生命周期变化（带保存状态）"></a>实例：旋转屏幕Activity的生命周期变化（带保存状态）</h3><p>假设一开始是竖屏状态，旋转后为横屏。</p>
+<p>横屏状态下：onCreate() -&gt; onStart() -&gt; onResume()</p>
+<p>旋转屏幕：onSavaInstanceState() -&gt; onPause() -&gt; onStop() -&gt; onDestroy() - &gt;onCreate() -&gt; onStart() -&gt; onRestoreInstanceState() -&gt; onResume()</p>
+<h2 id="Fragment的生命周期"><a href="#Fragment的生命周期" class="headerlink" title="Fragment的生命周期"></a>Fragment的生命周期</h2><p>管理片段生命周期与管理 Activity 生命周期很相似。和 Activity 一样，片段也以三种状态存在：</p>
+<ul>
+<li>运行状态</li>
+</ul>
+<p>片段在运行中的 Activity 中可见。</p>
+<ul>
+<li>暂停状态</li>
+</ul>
+<p>另一个 Activity 位于前台并具有焦点，但此片段所在的 Activity 仍然可见（前台 Activity 部分透明，或未覆盖整个屏幕）。</p>
+<ul>
+<li>停止状态</li>
+<li>片段不可见。宿主 Activity 已停止，或片段已从 Activity中移除，但已添加到返回栈。</li>
+</ul>
+<p>停止片段仍然处于活动状态（系统会保留所有状态和成员信息）。不过，它对用户不再可见，如果 Activity 被终止，它也会被终止。同样与 Activity 一样，假使 Activity 的进程被终止，而需要在重建 Activity 时恢复片段状态，也可以使用 Bundle 保留片段的状态。可以在片段的 onSaveInstanceState() 回调期间保存状态，并可在 onCreate()、onCreateView() 或 onActivityCreated() 期间恢复状态。</p>
+<p>Activity 生命周期与片段生命周期之间的最显著差异在于它们在其各自返回栈中的存储方式。 默认情况下，Activity 停止时会被放入由系统管理的 Activity返回栈（以便用户通过返回按钮回退到Activity，任务和返回栈对此做了阐述）。不过，仅当您在移除片段的事务执行期间通过调用 addToBackStack()显式请求保存实例时，系统才会将片段放入由宿主 Activity 管理的返回栈。</p>
+<p>在其他方面，管理片段生命周期与管理 Activity 生命周期非常相似。 因此，管理 Activity 生命周期的做法同样适用于片段。</p>
+<h3 id="Fragment结合Activity的生命周期一起运行"><a href="#Fragment结合Activity的生命周期一起运行" class="headerlink" title="Fragment结合Activity的生命周期一起运行"></a>Fragment结合Activity的生命周期一起运行</h3><ul>
+<li>onAttach()  Fragment和Activity建立关联</li>
+<li>onCreate()</li>
+<li>onCreateView() 调用它可创建与片段关联的视图层次结构</li>
+<li>onActivityCreated() 在 Activity 的 onCreate() 方法已返回时调用</li>
+<li>onStart()</li>
+<li>onResume()</li>
+<li>onPause()</li>
+<li>onStop()</li>
+<li>onDestroyView() 在移除与片段关联的视图层次结构时调用</li>
+<li>onDestroy() </li>
+<li>onDetach() 在取消片段与 Activity 的关联时调用</li>
+</ul>
+<h2 id="Service的生命周期"><a href="#Service的生命周期" class="headerlink" title="Service的生命周期"></a>Service的生命周期</h2><p>服务基本上分为两种形式：</p>
+<ul>
+<li>启动</li>
+</ul>
+<p>当应用组件（如 Activity）通过调用 startService() 启动服务时，服务即处于“启动”状态。一旦启动，服务即可在后台无限期运行，即使启动服务的组件已被销毁也不受影响。 已启动的服务通常是执行单一操作，而且不会将结果返回给调用方。例如，它可能通过网络下载或上传文件。 操作完成后，服务会自行停止运行。</p>
+<ul>
+<li>绑定</li>
+</ul>
+<p>当应用组件通过调用 bindService() 绑定到服务时，服务即处于“绑定”状态。绑定服务提供了一个客户端-服务器接口，允许组件与服务进行交互、发送请求、获取结果，甚至是利用进程间通信 (IPC) 跨进程执行这些操作。 仅当与另一个应用组件绑定时，绑定服务才会运行。 多个组件可以同时绑定到该服务，但全部取消绑定后，该服务即会被销毁。</p>
+<p>虽然本文档是分开概括讨论这两种服务，但是您的服务可以同时以这两种方式运行，也就是说，它既可以是启动服务（以无限期运行），也允许绑定。问题只是在于您是否实现了一组回调方法：onStartCommand()（允许组件启动服务）和 onBind()（允许绑定服务）。</p>
+<p>无论应用是处于启动状态还是绑定状态，抑或处于启动并且绑定状态，任何应用组件均可像使用 Activity 那样通过调用 Intent 来使用服务（即使此服务来自另一应用）。 不过，您可以通过清单文件将服务声明为私有服务，并阻止其他应用访问。</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2017-04-20T17:15:48.057Z" itemprop="dateUpdated">2017年4月21日 1:15</time>
+</span><br>
+
+
+        这里写留言或版权声明：<a href="/2017/04/21/android-lifecycle/" target="_blank" rel="external">http://linzhs.cm/2017/04/21/android-lifecycle/</a>
+    </div>
+    <footer>
+        <a href="http://linzhs.cm">
+            <img src="/img/linzh.jpg" alt="Linzh">
+            Linzh
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://linzhs.cm/2017/04/21/android-lifecycle/&title=《Android中Activity、Fragment、Service的生命周期》 — Linzh's Blog&pic=http://linzhs.cm/img/linzh.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://linzhs.cm/2017/04/21/android-lifecycle/&title=《Android中Activity、Fragment、Service的生命周期》 — Linzh's Blog&source=Standing on Shoulders of Giants" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://linzhs.cm/2017/04/21/android-lifecycle/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Android中Activity、Fragment、Service的生命周期》 — Linzh's Blog&url=http://linzhs.cm/2017/04/21/android-lifecycle/&via=http://linzhs.cm" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://linzhs.cm/2017/04/21/android-lifecycle/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2017/04/21/android-activity-startmode/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">Android中Activity的启动模式</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/04/21/android-system-architecture/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">Android系统的体系架构</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+<div class="comments" id="comments">
+    <div class="ds-thread" data-thread-key="android-lifecycle" data-title="Android中Activity、Fragment、Service的生命周期" data-url="http://linzhs.cm/2017/04/21/android-lifecycle/"></div>
+</div>
+<script>
+lazyScripts.push('//cdn.bootcss.com/marked/0.3.6/marked.min.js');
+
+var duoshuoQuery = {short_name:'ysblog', theme: 'none'};
+lazyScripts.push('/js/embed.min.js?v=1.4.8');
+
+
+</script>
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        �Thanks
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <ul class="reward-items">
+        
+        <li>
+            <img src="/img/wechat.jpg" title="微信打赏二维码" alt="微信打赏二维码">
+            <p>微信</p>
+        </li>
+        
+
+        
+        <li>
+            <img src="/img/alipay.jpg" title="支付宝打赏二维码" alt="支付宝打赏二维码">
+            <p>支付宝</p>
+        </li>
+        
+    </ul>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            <span>博客内容遵循 <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">知识共享 署名 - 非商业性 - 相同方式共享 4.0协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p>
+            <span>Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a></span>
+            <span>Linzh's Blog &copy; 2017</span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://linzhs.cm/2017/04/21/android-lifecycle/&title=《Android中Activity、Fragment、Service的生命周期》 — Linzh's Blog&pic=http://linzhs.cm/img/linzh.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://linzhs.cm/2017/04/21/android-lifecycle/&title=《Android中Activity、Fragment、Service的生命周期》 — Linzh's Blog&source=Standing on Shoulders of Giants" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://linzhs.cm/2017/04/21/android-lifecycle/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Android中Activity、Fragment、Service的生命周期》 — Linzh's Blog&url=http://linzhs.cm/2017/04/21/android-lifecycle/&via=http://linzhs.cm" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://linzhs.cm/2017/04/21/android-lifecycle/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACLUlEQVR42u3aS27DMAwFwNz/0i7QVYHWxiMlF5A0WhWK43i8YMXP5xOv63s97/zcv/v093fzO09YGBgYyzKux3X3wznj7rvPd8ifDQMD4xxGfrs81iW8ZCf5B4CBgYGRHNdyZLKPgYGBMSvgJvu9QIyBgYHRS2KfS2P5UTI/Vr6Si2NgYCzIqDYG/vPvF/sbGBgYizCu4qoG35FrCk+FgYGxNWN8kCIpmVXT0V6rAAMDY1dGPsKVP2i1VVltav7x6xgYGFszemNbeaBMkElQjq7BwMDYlJEEsl5AnNXgjFJfDAyMrRkjI1x5o7GXW48EZQwMjJ0Y4w3F6rHyFSoGBsYBjOejWzlmFwe/ei/uthOLgYGxHaMXOvPUtIevtiswMDBOYFSLbnkJrAobGfvAwMA4gTFr9KEZ71uN0nKlEAMDY1lGtSg/MkjRGzJrkjAwMLZg9IYhquNfeUpcLbRhYGCcxqgOaVUx+X3K42IYGBhbM3oF+jwRHRkvm9ZMxcDAWJyRH8tmva030l0MDIwTGPmxLAmO+ZXVVLk5J4KBgbE4Y+7YVl4yG2lnYmBgnMa4iqvK7pXkkkZCuWqIgYGxLKMaZJOdkSJafsSsBmsMDIzVGbOGKoZKZvHruH0RGBgYBzCqCWcO6IXdcrKNgYGBEY92vT2QgYGBgdErlk042BVHN4aOhhgYGMsy8nGHPJWtBtlqua3QyMTAwFic0WtGjpT1R46JvQQYAwNjWcYXSun6CJIVdF8AAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.4.8"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.4.8" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+</body>
+</html>

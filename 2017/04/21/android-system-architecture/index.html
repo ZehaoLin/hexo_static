@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>Android系统的体系架构 | Linzh&#39;s Blog | Standing on Shoulders of Giants</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Android">
+    <meta name="description" content="Android系统的体系架构前言
+Android 5.0 （API 21）开始，Android开发者官网给出的平台架构层次稍微有些不一样，从原先的四层结构变成五层，更加易懂。Android系统的平台架构从下至上分为：
+Linux内核层 -&amp;gt; 硬件抽象层（HAL） -&amp;gt; 原生C/C++层 + Android Runtime层 -&amp;gt; Java API框架层 -&amp;gt; 系统应用程序层">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android系统的体系架构">
+<meta property="og:url" content="http://linzhs.cm/2017/04/21/android-system-architecture/index.html">
+<meta property="og:site_name" content="Linzh's Blog">
+<meta property="og:description" content="Android系统的体系架构前言
+Android 5.0 （API 21）开始，Android开发者官网给出的平台架构层次稍微有些不一样，从原先的四层结构变成五层，更加易懂。Android系统的平台架构从下至上分为：
+Linux内核层 -&amp;gt; 硬件抽象层（HAL） -&amp;gt; 原生C/C++层 + Android Runtime层 -&amp;gt; Java API框架层 -&amp;gt; 系统应用程序层">
+<meta property="og:updated_time" content="2017-04-20T17:13:30.220Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android系统的体系架构">
+<meta name="twitter:description" content="Android系统的体系架构前言
+Android 5.0 （API 21）开始，Android开发者官网给出的平台架构层次稍微有些不一样，从原先的四层结构变成五层，更加易懂。Android系统的平台架构从下至上分为：
+Linux内核层 -&amp;gt; 硬件抽象层（HAL） -&amp;gt; 原生C/C++层 + Android Runtime层 -&amp;gt; Java API框架层 -&amp;gt; 系统应用程序层">
+    
+        <link rel="alternative" href="/atom.xml" title="Linzh&#39;s Blog" type="application/atom+xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.4.8">
+    <script>window.lazyScripts=[]</script>
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/linzh.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Linzh</h5>
+          <a href="mailto:lzh_547590520@163.com" title="lzh_547590520@163.com" class="mail">lzh_547590520@163.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                Home Page
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/ZehaoLin" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://www.weibo.com/L_Ceylon" target="_blank" >
+                <i class="icon icon-lg icon-weibo"></i>
+                Weibo
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/" target="_blank" >
+                <i class="icon icon-lg icon-link"></i>
+                About
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Android系统的体系架构</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Android系统的体系架构</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-04-20T17:13:30.000Z" itemprop="datePublished" class="page-time">
+  2017-04-21
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Android系统的体系架构"><span class="post-toc-number">1.</span> <span class="post-toc-text">Android系统的体系架构</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#前言"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">前言</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Linux内核层"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">Linux内核层</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#硬件抽象层（Hardware-Abstract-Layout-HAL）"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">硬件抽象层（Hardware Abstract Layout, HAL）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#系统运行库层"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">系统运行库层</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Java-API-框架层"><span class="post-toc-number">1.5.</span> <span class="post-toc-text">Java API 框架层</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#系统应用层"><span class="post-toc-number">1.6.</span> <span class="post-toc-text">系统应用层</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+    
+<article id="post-android-system-architecture"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Android系统的体系架构</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017年04月21日 1:13" datetime="2017-04-20T17:13:30.000Z"  itemprop="datePublished">2017-04-21</time>
+
+            
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h2 id="Android系统的体系架构"><a href="#Android系统的体系架构" class="headerlink" title="Android系统的体系架构"></a>Android系统的体系架构</h2><h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><blockquote>
+<p>Android 5.0 （API 21）开始，Android开发者官网给出的平台架构层次稍微有些不一样，从原先的四层结构变成五层，更加易懂。Android系统的平台架构从下至上分为：</p>
+<p>Linux内核层 -&gt; 硬件抽象层（HAL） -&gt; 原生C/C++层 + Android Runtime层 -&gt; Java API框架层 -&gt; 系统应用程序层</p>
+</blockquote>
+<h3 id="Linux内核层"><a href="#Linux内核层" class="headerlink" title="Linux内核层"></a>Linux内核层</h3><p>众所周知，Android是基于Linux内核构建的，所以最底层肯定是Linux的内核，Android Runtime也需要依靠Linux内核来执行底层任务，比如线程和内存的管理，当然，这一层还包含了嵌入式的硬件驱动程序，包括蓝牙、WiFi、摄像头等等。</p>
+<h3 id="硬件抽象层（Hardware-Abstract-Layout-HAL）"><a href="#硬件抽象层（Hardware-Abstract-Layout-HAL）" class="headerlink" title="硬件抽象层（Hardware Abstract Layout, HAL）"></a>硬件抽象层（Hardware Abstract Layout, HAL）</h3><p>硬件抽象层是位于操作系统内核与硬件电路之间的接口层，其目的在于将硬件抽象化，为了保护硬件厂商的知识产权，它隐藏了特定平台的硬件接口细节，为操作系统提供虚拟硬件平台，使其具有硬件无关性，可在多种平台上进行移植。 从软硬件测试的角度来看，软硬件的测试工作都可分别基于硬件抽象层来完成，使得软硬件测试工作的并行进行成为可能。通俗来讲，就是将控制硬件的动作放在硬件抽象层中。</p>
+<h3 id="系统运行库层"><a href="#系统运行库层" class="headerlink" title="系统运行库层"></a>系统运行库层</h3><p>这一层包含两部分，一部分是原生的C/C++库，另一部分是Android Runtime，也就是Android的虚拟机。</p>
+<ul>
+<li><p>Android Runtime</p>
+<p>Android 5.0（API 21）开始，ART（Android Runtime）取代了之前的Dalvik虚拟机。ART 编写为通过执行 DEX 文件在低内存设备上运行多个虚拟机，DEX 文件是一种专为 Android 设计的字节码格式，经过优化，使用的内存很少。编译工具链（例如 Jack）将 Java 源代码编译为 DEX 字节码，使其可在 Android 平台上运行。</p>
+</li>
+</ul>
+<p>ART的部分主要功能包括：</p>
+<ul>
+<li>预先 (AOT) 和即时 (JIT) 编译</li>
+<li>优化的垃圾回收 (GC)</li>
+<li>更好的调试支持，包括专用采样分析器、详细的诊断异常和崩溃报告，并且能够设置监视点以监控特定字段</li>
+</ul>
+<p>Android 还包含一套核心运行时库，可提供 Java API 框架使用的 Java 编程语言大部分功能，包括一些 Java 8 语言功能。</p>
+<ul>
+<li>原生C/C++库</li>
+</ul>
+<p>很多Android的系统组件和服务都由C/C++构建，Android也将原生的开发提供给开发者。开发者可以 Android 框架的 Java OpenGL API 访问 OpenGL ES，以支持在应用中绘制和操作 2D 和 3D 图形。如果开发的是需要 C 或 C++ 代码的应用，可以使用 Android NDK 直接从原生代码访问某些原生平台库。</p>
+<h3 id="Java-API-框架层"><a href="#Java-API-框架层" class="headerlink" title="Java API 框架层"></a>Java API 框架层</h3><p>这个层提供了用Java编写的API，这些API是Android系统的整个功能集，开发者可以根据这些API来开发不同的App。核心的模块组件和服务如下：</p>
+<ul>
+<li>View系统。可用以构建应用的UI，包括列表、网格、文本框、按钮甚至可嵌入的网络浏览器</li>
+<li>资源管理器，用于访问非代码资源，例如本地化的字符串、图形和布局文件</li>
+<li>通知管理器，可让所有应用在状态栏中显示自定义提醒</li>
+<li>Activity 管理器，用于管理应用的生命周期，提供常见的导航返回栈</li>
+<li>内容提供程序，可让应用访问其他应用（例如“联系人”应用）中的数据或者共享其自己的数据</li>
+</ul>
+<h3 id="系统应用层"><a href="#系统应用层" class="headerlink" title="系统应用层"></a>系统应用层</h3><p>系统中内置的应用和开发者开发的应用程序，都归属系统的应用层，主要是和用户进行交互，这一层都是用Java来发开的。</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2017-04-20T17:13:30.220Z" itemprop="dateUpdated">2017年4月21日 1:13</time>
+</span><br>
+
+
+        这里写留言或版权声明：<a href="/2017/04/21/android-system-architecture/" target="_blank" rel="external">http://linzhs.cm/2017/04/21/android-system-architecture/</a>
+    </div>
+    <footer>
+        <a href="http://linzhs.cm">
+            <img src="/img/linzh.jpg" alt="Linzh">
+            Linzh
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://linzhs.cm/2017/04/21/android-system-architecture/&title=《Android系统的体系架构》 — Linzh's Blog&pic=http://linzhs.cm/img/linzh.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://linzhs.cm/2017/04/21/android-system-architecture/&title=《Android系统的体系架构》 — Linzh's Blog&source=Standing on Shoulders of Giants" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://linzhs.cm/2017/04/21/android-system-architecture/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Android系统的体系架构》 — Linzh's Blog&url=http://linzhs.cm/2017/04/21/android-system-architecture/&via=http://linzhs.cm" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://linzhs.cm/2017/04/21/android-system-architecture/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2017/04/21/android-lifecycle/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">Android中Activity、Fragment、Service的生命周期</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/04/21/java-innerclass/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">Java随笔 - 内部类和闭包</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+<div class="comments" id="comments">
+    <div class="ds-thread" data-thread-key="android-system-architecture" data-title="Android系统的体系架构" data-url="http://linzhs.cm/2017/04/21/android-system-architecture/"></div>
+</div>
+<script>
+lazyScripts.push('//cdn.bootcss.com/marked/0.3.6/marked.min.js');
+
+var duoshuoQuery = {short_name:'ysblog', theme: 'none'};
+lazyScripts.push('/js/embed.min.js?v=1.4.8');
+
+
+</script>
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        �Thanks
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <ul class="reward-items">
+        
+        <li>
+            <img src="/img/wechat.jpg" title="微信打赏二维码" alt="微信打赏二维码">
+            <p>微信</p>
+        </li>
+        
+
+        
+        <li>
+            <img src="/img/alipay.jpg" title="支付宝打赏二维码" alt="支付宝打赏二维码">
+            <p>支付宝</p>
+        </li>
+        
+    </ul>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            <span>博客内容遵循 <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">知识共享 署名 - 非商业性 - 相同方式共享 4.0协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p>
+            <span>Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a></span>
+            <span>Linzh's Blog &copy; 2017</span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://linzhs.cm/2017/04/21/android-system-architecture/&title=《Android系统的体系架构》 — Linzh's Blog&pic=http://linzhs.cm/img/linzh.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://linzhs.cm/2017/04/21/android-system-architecture/&title=《Android系统的体系架构》 — Linzh's Blog&source=Standing on Shoulders of Giants" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://linzhs.cm/2017/04/21/android-system-architecture/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Android系统的体系架构》 — Linzh's Blog&url=http://linzhs.cm/2017/04/21/android-system-architecture/&via=http://linzhs.cm" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://linzhs.cm/2017/04/21/android-system-architecture/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACMElEQVR42u3aQW7kMAwEwPz/05NrgMDebsobwFLpNHA8tioHDkXy6ytenx/r95Wr6z+v/H5a8teHFwYGxmsZn9t1tbn8lckzV+7BwMA4h3H1+uSeqzv/8eJROL68joGBgREw7oPvDIyBgYExY+QhMvlWewDGwMA4mZEcJu83MauGrR90MTAwTmDkm/j7z/+lv4GBgfEqxqdc62G0TRCjXWFgYGzNWGlD5t/KA3f7ZAwMjBMYT41ZtE9IMMWQBwYGxtaMvGE5K+snb2lLb0WXAwMDYwtG++LZkMRKAI1KbxgYGFsznhrJmqWY7RhZlBRiYGBsykiCaZ7MtUEzH+koxiwwMDA2YrTtxuQQ26aMbYPz8hCLgYGxKSPfXDtssVK8m/0TMTAwdmW0jcaVEbEkEWypRT6LgYHxWsZs3CEvyc2alHmAxsDAOIGxXj5r07h26/WwBQYGxqaMWYFsNviVb64otGFgYBzJmJXhZsF3NmxRlNswMDBezlgve+VH2dngV36sxcDAOIFxj0nCZV56y+8pWqEYGBiHMZ46dq6E5joNxcDAOIYxC7vt0bQN9MWwBQYGxnaMT7nWG5N5ipkHawwMjL0Z+VppRrabGx5iMTAwtma0W8w/z0LncOwDAwPjAEZy4Mzvzwt57S/A5bcwMDAw4jJcm27OWgjF6zEwMDCC9C5JFu+LdNGdGBgYBzDyQn/bEmjHwtqDLgYGxgmMlTSuTeDaNuezPwMYGBgvZHwDownRP4pvdnkAAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.4.8"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.4.8" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+</body>
+</html>
