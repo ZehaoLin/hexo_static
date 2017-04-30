@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>Android的BLE简易收发助手 | Linzh&#39;s Blog | Standing on Shoulders of Giants</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Android,BLE">
+    <meta name="description" content="Android简易蓝牙BLE收发助手
+本文参考Android开发者说明文档，通过制作一个简易的BLE收发助手，和外置BLE模块进行通信，来学习Android的BLE开发基础知识。
+GitHub源码：Android简易BLE收发助手、Android官方BluetoothLeGatt源码
+
+前言从Android4.3（API 18）开始，Android开始支持低功耗蓝牙（Bluetooth Low E">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android的BLE简易收发助手">
+<meta property="og:url" content="http://linzhs.cm/2017/04/30/ble-helper/index.html">
+<meta property="og:site_name" content="Linzh's Blog">
+<meta property="og:description" content="Android简易蓝牙BLE收发助手
+本文参考Android开发者说明文档，通过制作一个简易的BLE收发助手，和外置BLE模块进行通信，来学习Android的BLE开发基础知识。
+GitHub源码：Android简易BLE收发助手、Android官方BluetoothLeGatt源码
+
+前言从Android4.3（API 18）开始，Android开始支持低功耗蓝牙（Bluetooth Low E">
+<meta property="og:updated_time" content="2017-04-30T03:41:48.358Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android的BLE简易收发助手">
+<meta name="twitter:description" content="Android简易蓝牙BLE收发助手
+本文参考Android开发者说明文档，通过制作一个简易的BLE收发助手，和外置BLE模块进行通信，来学习Android的BLE开发基础知识。
+GitHub源码：Android简易BLE收发助手、Android官方BluetoothLeGatt源码
+
+前言从Android4.3（API 18）开始，Android开始支持低功耗蓝牙（Bluetooth Low E">
+    
+        <link rel="alternative" href="/atom.xml" title="Linzh&#39;s Blog" type="application/atom+xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.4.8">
+    <script>window.lazyScripts=[]</script>
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/linzh.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Linzh</h5>
+          <a href="mailto:lzh_547590520@163.com" title="lzh_547590520@163.com" class="mail">lzh_547590520@163.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                Home Page
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/ZehaoLin" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://www.weibo.com/L_Ceylon" target="_blank" >
+                <i class="icon icon-lg icon-weibo"></i>
+                Weibo
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/" target="_blank" >
+                <i class="icon icon-lg icon-link"></i>
+                About
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Android的BLE简易收发助手</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Android的BLE简易收发助手</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-04-30T03:41:48.000Z" itemprop="datePublished" class="page-time">
+  2017-04-30
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Android简易蓝牙BLE收发助手"><span class="post-toc-number">1.</span> <span class="post-toc-text">Android简易蓝牙BLE收发助手</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#前言"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">前言</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#准备"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">准备</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#抽象概念"><span class="post-toc-number">1.2.1.</span> <span class="post-toc-text">抽象概念</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#外设模块"><span class="post-toc-number">1.2.2.</span> <span class="post-toc-text">外设模块</span></a></li></ol></li></ol></li></ol>
+        </nav>
+    </aside>
+    
+<article id="post-ble-helper"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Android的BLE简易收发助手</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017年04月30日 11:41" datetime="2017-04-30T03:41:48.000Z"  itemprop="datePublished">2017-04-30</time>
+
+            
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h1 id="Android简易蓝牙BLE收发助手"><a href="#Android简易蓝牙BLE收发助手" class="headerlink" title="Android简易蓝牙BLE收发助手"></a>Android简易蓝牙BLE收发助手</h1><blockquote>
+<p>本文参考<a href="https://developer.android.google.cn/guide/topics/connectivity/bluetooth-le.html" target="_blank" rel="external">Android开发者说明文档</a>，<br>通过制作一个简易的BLE收发助手，和外置BLE模块进行通信，来学习Android的BLE开发基础知识。</p>
+<p>GitHub源码：<a href="https://github.com/ZehaoLin/BluetoothLeHelper" target="_blank" rel="external">Android简易BLE收发助手</a>、<a href="https://github.com/googlesamples/android-BluetoothLeGatt" target="_blank" rel="external">Android官方BluetoothLeGatt源码</a></p>
+</blockquote>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>从Android4.3（API 18）开始，Android开始支持低功耗蓝牙（Bluetooth Low Energy, BLE）<br>功能，也就是Bluetooth 4.0版本，相比之前的蓝牙功能，BLE最显著的特点是功耗更低。基于Android<br>系统API开发的App，可以通过BLE查找其他设备、查询服务、读写特征值（Characterstic）。现<br>在BLE已基本取代了旧版本的蓝牙，特别是现在嵌入式设备（智能手表手环、无线耳机等）越来越多，<br>基本用的都是BLE。最近蓝牙协议已经升级到5.0版本，效率等大幅度提高。目前三星S8和小米6已支持蓝牙5.0。</p>
+<h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><h3 id="抽象概念"><a href="#抽象概念" class="headerlink" title="抽象概念"></a>抽象概念</h3><p>在进行开发之前，需要对蓝牙协议栈的构架有一定的了解，特别是一些关键性名词。可以参考笔者简陋的总结：<a href="">BLE协议栈简析</a>。</p>
+<p>BLE协议栈有三个层次，分别是物理层Controller、主机协议封装Host、应用Apps。</p>
+<p>三个层次中，对于开发来说比较重要的是Host，里面主要包含：</p>
+<ul>
+<li><p>ATT（Attibute Protocal）</p>
+<p>  属性协议，是BLE通信的基础，ATT封装数据，向外暴露为“属性”，提供“属性”的为服务端，读取“属性”的为客户端。</p>
+</li>
+<li><p>GATT（Generic Attribute Profile）</p>
+<p>  通用属性配置文件，建立在ATT的基础上，对ATT做进一步的逻辑封装，定义数据的交互方式和含义。每个GATT里面包含3个层次：服务（service）、特征（Characteristic）、描述（Descriptor）。</p>
+</li>
+<li><p>GAP（Generic Access Profile）</p>
+<p>  停用访问控制配置文件。它定义了 BLE 整个通信过程中的流程，例如广播、扫描、连接等流程。还定义了参与通信的设备角色，以及他们各自的职能，例如广播数据的 Broadcaster，接收广播的 Observer，还有被连接的“外设” Peripheral 和发起连接的“中心设备” Central。</p>
+</li>
+</ul>
+<p>GATT最外层是Profile配置文件，里面又包含了服务（service）、特征（Characteristic）、描述（Descriptor），他们之间的关系是一个 Service 包含若干个 Characteristic，一个 Characteristic 可以包含若干 Descriptor。而 Characteristic 定义了数值和操作。Characteristic 的操作这几种权限：读、写、通知等权限。我们说的 BLE 通信，其实就是对 Characteristic 的读写或者订阅通知。</p>
+<p>GATT里面包含的服务、特征和描述都是多个的，BLE通过UUID来标识区分。</p>
+<p>UID 是全球唯一标识符，它是 128bit 的值，为了便于识别和阅读，一般写成8-4-4-12 的16进制形式。如123e4567-e89b-12d3-a456-426655440000。16-bit的蓝牙基本UUID形式为 0000XXXX-0000-1000-8000-00805f9b34fb。实际UUID为128位，但是除了XXXX部分需要更改，其他的基本一致，这样对于BLE的数据非常受限的设备使用起来更加方便。Android中为了避免UUID的冲突，可以使用UUID.randomUUID()方法来生成一个随机的UUID。</p>
+<h3 id="外设模块"><a href="#外设模块" class="headerlink" title="外设模块"></a>外设模块</h3><p>笔者在完成低功耗蓝牙收发助手的程序测试的时候，采用的BLE透传模块为CC2541（可在某宝上搜索），基于蓝牙4.0，对于玩单片机或者嵌入式的爱好者来说，这个是很常见的，可以用于蓝牙小车，小四轴飞行器等小智能硬件设备。</p>
+<p>在透传模块给出的AT指令集里，指明了可以通过串口助手向BLE模块发送AT指令<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">## 开发正文</div><div class="line">先看一下简易的主界面图</div><div class="line">![image](http://linzhs.cn/img/ble_helper_main_activity.png) 。</div><div class="line"></div><div class="line">主界面中上半部分为数据的接收区，下半部分为发送数据编辑框，发送按钮（其实应该加入字符和hex格式的数据接收或发送方式的选择的）。点击工具单栏上的菜单选项可进行蓝牙设备搜索和连接。</div><div class="line"></div><div class="line">程序的运行思路是：主界面启动的时候，去建立自定义BLE后台服务链接，服务和MainActivity之间通过Broadcast来通信，所以还需要在MainActivity的生命周期中注册、BroadcastReceiver。完成服务、广播、界面的初始化工作后，点击链接BLE设备启动ScanActivity来搜索蓝牙设备，将识别到的外设（当前只能识别Android以外的BLE模块）显示在Activity的RecyclerView中，若点击其中一个蓝牙，则自动获取BLE的名称地址，然后退出扫描活动，将BLE的名称和地址返回主活动建立链接，接下来根据主界面的命令，向后台蓝牙服务发出读写Characteristic操作来完成与外部设备的通信，这个读写操作中需要用到UUID。</div><div class="line"></div><div class="line">Android使用BLE需要开启以下两个权限：</div></pre></td></tr></table></figure></p>
+<!-- 使用蓝牙的权限 -->
+<p><uses-permission android:name="android.permission.BLUETOOTH"><br><!-- 修改配置蓝牙属性的权限，相当于获取蓝牙管理员身份 --></uses-permission></p>
+<p><uses-permission android:name="android.permission.BLUETOOTH_ADMIN"><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">MainActivity中建立、断开绑定BLE服务，注册、注销通信广播：</div></pre></td></tr></table></figure></uses-permission></p>
+<p>@Override<br>protected void onCreate(Bundle savedInstanceState) {<br>    super.onCreate(savedInstanceState);<br>    setContentView(R.layout.activity_main);</p>
+<pre><code>// initial View...
+
+//绑定BLE收发服务
+Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
+bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
+</code></pre><p>}</p>
+<p>@Override<br>protected void onResume() {<br>    super.onResume();</p>
+<pre><code>//注册BLE收发服务广播接收器mGattUpdateReceiver
+registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
+if (mBluetoothLeService != null) {
+    Log.d(TAG, &quot;onResume: mBluetoothLeService NOT null&quot;);
+}
+</code></pre><p>}</p>
+<p>@Override<br>protected void onPause() {<br>    super.onPause();</p>
+<pre><code>//注销BLE收发服务广播接收器
+unregisterReceiver(mGattUpdateReceiver);
+</code></pre><p>}</p>
+<p>@Override<br>protected void onDestroy() {<br>    super.onDestroy();</p>
+<pre><code>//解绑BLE收发服务
+unbindService(mServiceConnection);
+mBluetoothLeService = null;
+</code></pre><p>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">后台BluetoothLeService连接后的回调和广播通信接受者：</div></pre></td></tr></table></figure></p>
+<p>// Code to manage Service lifecycle.<br>// 管理BLE数据收发服务整个生命周期<br>private final ServiceConnection mServiceConnection = new ServiceConnection() {<br>    @Override<br>    public void onServiceConnected(ComponentName name, IBinder service) {<br>        mBluetoothLeService = ((BluetoothLeService.LocalBinder) service).getService();<br>        if (!mBluetoothLeService.initialize()) {<br>            Log.e(TAG, “onServiceConnected: Unable to initialize Bluetooth”);<br>            finish();<br>        }<br>    }</p>
+<pre><code>@Override
+public void onServiceDisconnected(ComponentName name) {
+    mBluetoothLeService = null;
+}
+</code></pre><p>};</p>
+<p>// Handles various events fired by the Service.<br>// ACTION_GATT_CONNECTED: connected to a GATT server.<br>// ACTION_GATT_DISCONNECTED: disconnected from a GATT server.<br>// ACTION_GATT_SERVICES_DISCOVERED: discovered GATT services.<br>// ACTION_DATA_AVAILABLE: received data from the device.  This can be a result of read<br>//                        or notification operations.<br>// 定义处理BLE收发服务的各类事件接收机mGattUpdateReceiver，主要包括下面几种：<br>// ACTION_GATT_CONNECTED: 连接到GATT<br>// ACTION_GATT_DISCONNECTED: 断开GATT<br>// ACTION_GATT_SERVICES_DISCOVERED: 发现GATT下的服务<br>// ACTION_DATA_AVAILABLE: BLE收到数据<br>private final BroadcastReceiver mGattUpdateReceiver = new BroadcastReceiver() {<br>    @Override<br>    public void onReceive(Context context, Intent intent) {<br>        final String action = intent.getAction();</p>
+<pre><code>    if (BluetoothLeService.ACTION_GATT_CONNECTED.equals(action)) {
+        mConnected = true;
+    } else if (BluetoothLeService.ACTION_GATT_DISCONNECTED.equals(action)) {
+        mConnected = false;
+    } else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
+        // Show all the supported services and characteristics on the user interface.
+        // 获得所有的GATT服务，对于BLE透传模块，包括GAP（General Access Profile），
+        // GATT（General Attribute Profile），还有Unknown（用于数据读取）
+        mBluetoothLeService.getSupportedGattServices();
+    } else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
+           bleReceiveText.setText(intent.getStringExtra(BluetoothLeService.EXTRA_DATA));
+        }
+    }
+}
+</code></pre><p>};<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">广播中有四种隐式意图，都是在BluetoothLeService，也就是自定义后台服务中定义的，分别为链接到GATT、断开GATT、搜索到GATT服务、BLE收到数据，根据四个不同的广播状态来完成相应的标志位或者显示操作。</div><div class="line"></div><div class="line">以上的工作只是初始化，还需要建立扫描蓝牙的界面操作工作，选择菜单栏上的选项，来完成蓝牙的连接和断开。</div></pre></td></tr></table></figure></p>
+<p>@Override<br>public boolean onOptionsItemSelected(MenuItem item) {<br>    switch (item.getItemId()) {<br>        case R.id.menu_connect_ble:<br>            if (!mConnected) {// 若未连接蓝牙，则进入蓝牙扫描连接activity<br>                Intent serverIntent = new Intent(this, DeviceScanActivity.class);<br>                startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE);<br>            } else {<br>                mBluetoothLeService.disconnect();<br>            }<br>            break;<br>    }</p>
+<pre><code>return true;
+</code></pre><p>}</p>
+<p>@Override<br>protected void onActivityResult(int requestCode, int resultCode, Intent data) {<br>    switch (requestCode) {<br>        case REQUEST_CONNECT_DEVICE:<br>            if (resultCode == Activity.RESULT_OK) {<br>                // 获取准备建立连接的蓝牙设备地址和名字<br>                mDeviceName = data.getExtras().getString(EXTRAS_DEVICE_NAME);<br>                mDeviceAddress = data.getExtras().getString(EXTRAS_DEVICE_ADDRESS);</p>
+<pre><code>            Log.i(TAG, &quot;onActivityResult: &quot; + &quot;mDeviceName: &quot; + mDeviceName + &quot;, mDeviceAddress:&quot; + mDeviceAddress);
+
+            //连接该BLE模块
+            if (mBluetoothLeService != null) {
+                final boolean result = mBluetoothLeService.connect(mDeviceAddress);
+                Log.d(TAG, &quot;onActivityResult: Connect request result = &quot; + result);
+            }
+        }
+        break;
+    default:
+        break;
+}
+</code></pre><p>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">蓝牙设备的扫描工作都放置在DeviceScanActivity中，从主活动切换到这个活动中，在完成前台显示前，先完成Android设备的蓝牙检测和初始化工作，在onPause中还需要去检查Android是否还在进行扫描，若是则关闭扫描操作，整个生命周期的操作:</div></pre></td></tr></table></figure></p>
+<p>@Override<br>protected void onCreate(Bundle savedInstanceState) {<br>    super.onCreate(savedInstanceState);<br>    setContentView(R.layout.activity_device_scan);</p>
+<pre><code>ActionBar actionBar = getSupportActionBar();
+if (actionBar != null) {
+    actionBar.setTitle(&quot;Scan Bluetooth Device&quot;);
+    actionBar.setDisplayHomeAsUpEnabled(true);
+}
+
+// Initializes recycler view adapter.
+RecyclerView recyclerView = (RecyclerView)findViewById(R.id.le_device_recycler_view);
+LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+recyclerView.setLayoutManager(layoutManager);
+mLeDeviceListAdapter = new LeDeviceListAdapter();
+recyclerView.setAdapter(mLeDeviceListAdapter);
+
+mLeDeviceListAdapter.setOnItemClickListener(new LeDeviceListAdapter.OnItemClickListener() {
+    @Override
+    public void onItemClick(View view, int position) {
+        final BluetoothDevice device = mLeDeviceListAdapter.getDevice(position);
+        if (device == null) return;
+        final Intent intent = new Intent();
+        intent.putExtra(MainActivity.EXTRAS_DEVICE_NAME, device.getName());
+        intent.putExtra(MainActivity.EXTRAS_DEVICE_ADDRESS, device.getAddress());
+        if (isScanning) {
+            mBluetoothLeScanner.stopScan(mLeScanCallback);
+            //mBluetoothAdapter.stopLeScan(mLeScanCallback);
+            isScanning = false;
+        }
+        Log.d(TAG, &quot;onItemClick: start bluetooth control activity.&quot;);
+
+        //设置返回值并结束程序
+        setResult(RESULT_OK, intent);
+        finish();
+    }
+});
+
+mHandler = new Handler();
+
+// Use this check to determine whether BLE is supported on the device.  Then you can
+// selectively disable BLE-related features.
+if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
+    Toast.makeText(this, R.string.ble_not_supported, Toast.LENGTH_SHORT).show();
+    finish();
+}
+
+// Initializes a Bluetooth adapter.  For API level 18 and above, get a reference to
+// BluetoothAdapter through BluetoothManager.
+final BluetoothManager bluetoothManager =
+        (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
+mBluetoothAdapter = bluetoothManager.getAdapter();
+
+// Checks if Bluetooth is supported on the device.
+if (mBluetoothAdapter == null) {
+    Toast.makeText(this, R.string.ble_not_supported, Toast.LENGTH_SHORT).show();
+    finish();
+    return;
+}
+</code></pre><p>}</p>
+<p>@Override<br>protected void onResume() {<br>    super.onResume();</p>
+<pre><code>// Ensures Bluetooth is enabled on the device.  If Bluetooth is not currently enabled,
+// fire an intent to display a dialog asking the user to grant permission to enable it.
+if (!mBluetoothAdapter.isEnabled()) {
+    if (!mBluetoothAdapter.isEnabled()) {
+        Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+        startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+    }
+}
+
+mBluetoothLeScanner = mBluetoothAdapter.getBluetoothLeScanner();//获取蓝牙扫描器实例
+scanLeDevice(true);
+</code></pre><p>}</p>
+<p>@Override<br>protected void onPause() {<br>    super.onPause();</p>
+<pre><code>scanLeDevice(false);
+mLeDeviceListAdapter.clear();
+</code></pre><p>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">BLE的扫描从API21 开始就不太一样了，之前使用BluetoothAdapter.startLeScan和BluetoothAdapter.stopLeScan来完成，API21开始弃用这两个方法，改成由```BluetoothAdapter.getBluetoothLeScanner()```来获取BLE扫描器，用这个对象来完成扫描的工作。</div><div class="line"></div><div class="line">扫描方法和扫描结果回调：</div></pre></td></tr></table></figure></p>
+<p>//扫描蓝牙设备<br>private void scanLeDevice(final boolean enable) {<br>    if (enable) {//使能扫描<br>        //将Runnable接口对象装入消息队列(message queue)每隔一段时间(SCAN_PERIOD)执行Runnable的run方法<br>        mHandler.postDelayed(new Runnable() {<br>            @Override<br>            public void run() {//循环周期到，标志位复位，关闭扫描<br>                isScanning = false;<br>                mBluetoothLeScanner.stopScan(mLeScanCallback);<br>                //mBluetoothAdapter.stopLeScan(mLeScanCallback);//此方法API21开始已被弃用<br>                invalidateOptionsMenu();<br>            }<br>        }, SCAN_PERIOD);</p>
+<pre><code>    isScanning = true;
+    mBluetoothLeScanner.startScan(mLeScanCallback);
+    //mBluetoothAdapter.startLeScan(mLeScanCallback);
+} else {//关闭扫描
+    isScanning = false;
+    mBluetoothLeScanner.stopScan(mLeScanCallback);
+    //mBluetoothAdapter.stopLeScan(mLeScanCallback);
+}
+invalidateOptionsMenu();
+</code></pre><p>}</p>
+<p>// 扫描结果回调<br>private ScanCallback mLeScanCallback = new ScanCallback() {<br>    @Override<br>    public void onScanResult(int callbackType, ScanResult result) {//扫描结果<br>        //super.onScanResult(callbackType, result);<br>        final BluetoothDevice device = result.getDevice();<br>        runOnUiThread(new Runnable() {<br>            @Override<br>            public void run() {<br>                mLeDeviceListAdapter.addDevice(device);<br>                //刷新RecyclerView<br>                mLeDeviceListAdapter.notifyDataSetChanged();<br>            }<br>        });<br>    }</p>
+<pre><code>@Override
+public void onBatchScanResults(List&lt;ScanResult&gt; results) {//批量结果
+    super.onBatchScanResults(results);
+}
+
+@Override
+public void onScanFailed(int errorCode) {//扫描失败
+    super.onScanFailed(errorCode);
+}
+</code></pre><p>};<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">## BLE后台服务</div><div class="line">UUID的设置：</div></pre></td></tr></table></figure></p>
+<p>//用于数据接收、发送的service和character对应的UUID，由改ble透传模块决定<br>public final static UUID UUID_NOTIFY =<br>        UUID.fromString(“0000ffe1-0000-1000-8000-00805f9b34fb”);<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">BLE通信管理对象初始化：</div></pre></td></tr></table></figure></p>
+<p>/**</p>
+<ul>
+<li>Initializes a reference to the local Bluetooth adapter.<br>*</li>
+<li><p>@return Return true if the initialization is successful.<br>*/<br>public boolean initialize() {<br> // For API level 18 and above, get a reference to BluetoothAdapter through<br> // BluetoothManager.<br> if (mBluetoothManager == null) {</p>
+<pre><code>mBluetoothManager = (BluetoothManager)getSystemService(Context.BLUETOOTH_SERVICE);
+if (mBluetoothManager == null) {
+    Log.e(TAG, &quot;initialize: Unable to initialize BluetoothManager&quot;);
+    return false;
+}
+</code></pre><p> }</p>
+<p> mBluetoothAdapter = mBluetoothManager.getAdapter();<br> if (mBluetoothAdapter == null) {</p>
+<pre><code>Log.e(TAG, &quot;initialize: Unable to obtain a BluetoothAdapter&quot;);
+return false;
+</code></pre><p> }</p>
+<p> return true;<br>}</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">建立BLE链接和断开链接：</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>/**</p>
+<ul>
+<li>Connects to the GATT server hosted on the Bluetooth LE device.<br>*</li>
+<li>@param address The device address of the destination device.<br>*</li>
+<li>@return Return true if the connection is initiated successfully. The connection result</li>
+<li>is reported asynchronously through the</li>
+<li>{@code BluetoothGattCallback#onConnectionStateChange(android.bluetooth.BluetoothGatt, int, int)}</li>
+<li><p>callback.<br>*/<br>public boolean connect(final String address) {<br>if (mBluetoothAdapter == null || address == null) {<br>Log.w(TAG, “connect: BluetoothAdapter not initialized or unspecified address”);<br>return false;<br>}</p>
+<p>// Previously connected device.  Try to reconnect.<br>if (mBluetoothDeviceAddress != null &amp;&amp; address.equals(mBluetoothDeviceAddress)<br> &amp;&amp; mBluetoothGatt != null) {<br>Log.d(TAG, “Trying to use an existing mBluetoothGatt for connection.”);<br>if (mBluetoothGatt.connect()) {<br> mConnectionState = STATE_CONNECTING;<br> return true;<br>} else {<br> return false;<br>}<br>}</p>
+<p>final BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(address);<br>if (device == null) {<br>Log.w(TAG, “Device not found.  Unable to connect.”);<br>return false;<br>}<br>// We want to directly connect to the device, so we are setting the autoConnect<br>// parameter to false.<br>mBluetoothGatt = device.connectGatt(this, false, mGattCallback);<br>Log.d(TAG, “Trying to create a new connection.”);<br>mBluetoothDeviceAddress = address;<br>mConnectionState = STATE_CONNECTING;</p>
+<p>return true;<br>}</p>
+</li>
+</ul>
+<p>/**</p>
+<ul>
+<li>Disconnects an existing connection or cancel a pending connection. The disconnection result</li>
+<li>is reported asynchronously through the</li>
+<li>{@code BluetoothGattCallback#onConnectionStateChange(android.bluetooth.BluetoothGatt, int, int)}</li>
+<li><p>callback.<br>*/<br>public void disconnect() {<br> if (mBluetoothAdapter == null || mBluetoothGatt == null) {</p>
+<pre><code>Log.w(TAG, &quot;BluetoothAdapter not initialized&quot;);
+return;
+</code></pre><p> }</p>
+<p> mBluetoothGatt.disconnect();<br>}</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">建立GATT服务后，数据、链接变动的回调，根据不同的回调结果，将要处理的信息以广播的形式发送给主活动：</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>// Implements callback methods for GATT events that the app cares about.  For example,<br>    // connection change and services discovered.<br>private final BluetoothGattCallback mGattCallback = new BluetoothGattCallback() {<br>    @Override<br>    public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {<br>        String intentAction;<br>        if (newState == BluetoothProfile.STATE_CONNECTED) {<br>            intentAction = ACTION_GATT_CONNECTED;<br>            mConnectionState = STATE_CONNECTED;<br>            broadcastUpdate(intentAction);</p>
+<pre><code>        Log.i(TAG, &quot;Connected to GATT server.&quot;);
+        // Attempts to discover services after successful connection.
+        Log.i(TAG, &quot;Attempting to start service discovery:&quot; +
+                mBluetoothGatt.discoverServices());
+    } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
+        intentAction = ACTION_GATT_DISCONNECTED;
+        mConnectionState = STATE_DISCONNECTED;
+        Log.i(TAG, &quot;Disconnected from GATT server.&quot;);
+        broadcastUpdate(intentAction);
+    }
+}
+
+@Override
+public void onServicesDiscovered(BluetoothGatt gatt, int status) {
+    if (status == BluetoothGatt.GATT_SUCCESS) {
+        broadcastUpdate(ACTION_GATT_SERVICES_DISCOVERED);
+    } else {
+        Log.w(TAG, &quot;onServicesDiscovered received: &quot; + status);
+    }
+}
+
+@Override
+public void onCharacteristicRead(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
+    if (status == BluetoothGatt.GATT_SUCCESS) {
+        broadcastUpdate(ACTION_DATA_AVAILABLE, characteristic);
+    }
+}
+
+@Override
+public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
+    broadcastUpdate(ACTION_DATA_AVAILABLE, characteristic);
+}
+</code></pre><p>};<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">其中，需要携带接收到数据的广播如下，接收到的是byte数组，需要进行数据处理，这里将其装换为hex，十六进制。</div></pre></td></tr></table></figure></p>
+<p>/**</p>
+<ul>
+<li>发送携带数据广播</li>
+<li>@param action</li>
+<li><p>@param characteristic<br>*/<br>private void broadcastUpdate(final String action, final BluetoothGattCharacteristic characteristic) {<br> final Intent intent = new Intent(action);</p>
+<p> final byte[] data = characteristic.getValue();//读取BLE接收到的数据</p>
+<p> if (data != null &amp;&amp; data.length &gt; 0) {</p>
+<pre><code>final StringBuilder stringBuilder = new StringBuilder(data.length);
+for(byte byteChar : data)
+    stringBuilder.append(String.format(&quot;%02X &quot;, byteChar));
+intent.putExtra(EXTRA_DATA, new String(data) + &quot;\n&quot; + stringBuilder.toString());
+
+Log.i(TAG, &quot;broadcastUpdate: RX Data is &quot; + stringBuilder);
+</code></pre><p> }</p>
+<p> //intent.putExtra(EXTRA_DATA, data);<br> sendBroadcast(intent);<br>}</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">发送数据到BLE外设，则是向Characteristic中写入数据，BLE会将其自动发出。</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>/**</p>
+<ul>
+<li>写入数据到Characteristic 从BLE发送出去</li>
+<li><p>@param data<br>*/<br>public void writeCharacteristic(byte[] data)<br>{<br> if (mBluetoothAdapter == null || mBluetoothGatt == null) {</p>
+<pre><code>Log.w(TAG, &quot;BluetoothAdapter not initialized&quot;);
+return;
+</code></pre><p> }</p>
+<p> mNotifyCharacteristic.setValue(data);<br> mBluetoothGatt.writeCharacteristic(mNotifyCharacteristic);<br>}<br>```</p>
+</li>
+</ul>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2017-04-30T03:41:48.358Z" itemprop="dateUpdated">2017年4月30日 11:41</time>
+</span><br>
+
+
+        这里写留言或版权声明：<a href="/2017/04/30/ble-helper/" target="_blank" rel="external">http://linzhs.cm/2017/04/30/ble-helper/</a>
+    </div>
+    <footer>
+        <a href="http://linzhs.cm">
+            <img src="/img/linzh.jpg" alt="Linzh">
+            Linzh
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android-BLE/">Android,BLE</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://linzhs.cm/2017/04/30/ble-helper/&title=《Android的BLE简易收发助手》 — Linzh's Blog&pic=http://linzhs.cm/img/linzh.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://linzhs.cm/2017/04/30/ble-helper/&title=《Android的BLE简易收发助手》 — Linzh's Blog&source=Standing on Shoulders of Giants" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://linzhs.cm/2017/04/30/ble-helper/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Android的BLE简易收发助手》 — Linzh's Blog&url=http://linzhs.cm/2017/04/30/ble-helper/&via=http://linzhs.cm" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://linzhs.cm/2017/04/30/ble-helper/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/04/30/ble-protocal/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">BLE协议栈简析</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+<div class="comments" id="comments">
+    <div class="ds-thread" data-thread-key="ble-helper" data-title="Android的BLE简易收发助手" data-url="http://linzhs.cm/2017/04/30/ble-helper/"></div>
+</div>
+<script>
+lazyScripts.push('//cdn.bootcss.com/marked/0.3.6/marked.min.js');
+
+var duoshuoQuery = {short_name:'ysblog', theme: 'none'};
+lazyScripts.push('/js/embed.min.js?v=1.4.8');
+
+
+</script>
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        �Thanks
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <ul class="reward-items">
+        
+        <li>
+            <img src="/img/wechat.jpg" title="微信打赏二维码" alt="微信打赏二维码">
+            <p>微信</p>
+        </li>
+        
+
+        
+        <li>
+            <img src="/img/alipay.jpg" title="支付宝打赏二维码" alt="支付宝打赏二维码">
+            <p>支付宝</p>
+        </li>
+        
+    </ul>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            <span>博客内容遵循 <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">知识共享 署名 - 非商业性 - 相同方式共享 4.0协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p>
+            <span>Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a></span>
+            <span>Linzh's Blog &copy; 2017</span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://linzhs.cm/2017/04/30/ble-helper/&title=《Android的BLE简易收发助手》 — Linzh's Blog&pic=http://linzhs.cm/img/linzh.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://linzhs.cm/2017/04/30/ble-helper/&title=《Android的BLE简易收发助手》 — Linzh's Blog&source=Standing on Shoulders of Giants" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://linzhs.cm/2017/04/30/ble-helper/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Android的BLE简易收发助手》 — Linzh's Blog&url=http://linzhs.cm/2017/04/30/ble-helper/&via=http://linzhs.cm" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://linzhs.cm/2017/04/30/ble-helper/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAK4AAACuCAAAAACKZ2kyAAABy0lEQVR42u3aQW7DMAwEwPz/0+k1QGFlSVqqUYxOgZNYIx8Ecq3XKx7vj3F1/fe4+u/V3W4buLi4Y25vyupiPq9cfV4bcHFxz3OvEFe/WVPyReYGXFzc53PvLZhwcXH/E3ddEuXNDy4u7jO5SfOTU9Z3PtSr4eLiDrh5UbLv85Z8FxcXt8V9F0d+h7yEKsyOi4t7hJtvKHnBkdOb8+Li4m7m9g5JrKdJFlbdHF+9rAUXF3fArZYpvQamekSjXJHh4uJu4yZRZrIJ9gLZL3Ph4uIe4VZD0smr1vWVfJvDxcXdzZ1sYcm31cMWX0ooXFzcI9zewazqy5J8y4uiGVxc3M3cfAOqhhq9hDPq1XBxcQ9y7zoTlb+GKZdHuLi4R7iTIxQTevUxlZ8lLi7umJs3P9XSpLp5RfkuLi7un3Lnr0mScKQ8Fy4u7nHueluZFDp5cRO1Ori4uNu47+LIJ+gt+LZsBhcXd8DNx2QxSUm0Lo/Ki8HFxR1z89CzF3FWj1x8ea64uLgHudWDWfOotNqM4eLiPplbLUqSX5Y7Nlxc3Idx8zC0F3Y03/zg4uJu4N51uCqPP/IQFhcX9zx3EnasF5O3TPljwsXF3cz9AXMbcbCLaQiVAAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.4.8"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.4.8" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+</body>
+</html>
