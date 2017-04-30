@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://linzhs.cm/"/>
-  <updated>2017-04-20T17:16:52.674Z</updated>
+  <updated>2017-04-30T03:36:45.043Z</updated>
   <id>http://linzhs.cm/</id>
   
   <author>
@@ -14,6 +14,72 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>BLE协议栈简析</title>
+    <link href="http://linzhs.cm/2017/04/30/ble-protocal/"/>
+    <id>http://linzhs.cm/2017/04/30/ble-protocal/</id>
+    <published>2017-04-30T03:36:45.000Z</published>
+    <updated>2017-04-30T03:36:45.043Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="BLE协议栈简析"><a href="#BLE协议栈简析" class="headerlink" title="BLE协议栈简析"></a>BLE协议栈简析</h1><blockquote>
+<p>本文针对蓝牙4.0，也就是低功耗蓝牙BLE的协议栈进行简单分析。</p>
+</blockquote>
+<h2 id="Arch图"><a href="#Arch图" class="headerlink" title="Arch图"></a>Arch图</h2><p>以下为蓝牙协议栈架构图：<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://7rf9ir.com1.z0.glb.clouddn.com/Android-BLE-in-Action.005.jpeg" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure></p>
+<p>蓝牙协议栈分为三个层次，从底层到顶层的名字和其所起到的作用分别如下：</p>
+<ul>
+<li><p>Controller</p>
+<p>  这一层主要是物理层，定义了蓝牙工作的频段（2.4GHz）和频段的通道、广播等。Host层和Controller层之间有个接口层，这个接口建立了Host和Controller之间的交互，也是顶层的应用和芯片的交互关键通道。</p>
+</li>
+<li><p>Host</p>
+<p>  这一层相对比较复杂，包含了裸机链路控制、适配协议、安全管理、GATT、ATT、GAP等。</p>
+<p>  ATT（Attibute Protocal），属性协议，是BLE通信的基础，ATT封装数据，向外暴露为“属性”，提供“属性”的为服务端，读取“属性”的为客户端。</p>
+<p>  GATT（Generic Attribute Profile），通用属性配置文件，建立在ATT的基础上，对ATT做进一步的逻辑封装，定义数据的交互方式和含义。每个GATT里面包含3个层次：服务（service）、特征（Characteristic）、描述（Descriptor）。</p>
+<p>  GAP（Generic Access Profile），停用访问控制配置文件。它定义了 BLE 整个通信过程中的流程，例如广播、扫描、连接等流程。还定义了参与通信的设备角色，以及他们各自的职能，例如广播数据的 Broadcaster，接收广播的 Observer，还有被连接的“外设” Peripheral 和发起连接的“中心设备” Central。</p>
+</li>
+<li><p>Applications</p>
+<p>  这一层为BLE的应用层，可分为两大类，分别为基于连接和非连接。</p>
+<p>  基于非连接的也叫Beacon，依赖于BLE的广播，常用语BLE搜索其他设备。这里的BLE存在两种角色，发送广播方为Broadcaster，监听广播方为Observer。</p>
+<p>  基于连接的需要通过GATT连接来收发数据。这里的BLE也存在两种角色，分别是中心主机设备Central，和被连接的从机外设Peripheral。</p>
+</li>
+</ul>
+<h2 id="GATT内部层次"><a href="#GATT内部层次" class="headerlink" title="GATT内部层次"></a>GATT内部层次</h2><p>GATT内部抽象图：<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://7rf9ir.com1.z0.glb.clouddn.com/Android-BLE-in-Action.008.jpeg" alt="image" title="">
+                </div>
+                <div class="image-caption">image</div>
+            </figure><br>GATT最外层是Profile配置文件，里面又包含了服务（service）、特征（Characteristic）、描述（Descriptor），他们之间的关系是一个 Service 包含若干个 Characteristic，一个 Characteristic 可以包含若干 Descriptor。而 Characteristic 定义了数值和操作。Characteristic 的操作这几种权限：读、写、通知等权限。我们说的 BLE 通信，其实就是对 Characteristic 的读写或者订阅通知。</p>
+<h2 id="UUID"><a href="#UUID" class="headerlink" title="UUID"></a>UUID</h2><p>Service、Characteristic 还有 Descriptor 之间都是使用 UUID 唯一标识来区分的。</p>
+<p>UID 是全球唯一标识符，它是 128bit 的值，为了便于识别和阅读，一般写成8-4-4-12 的16进制形式。如123e4567-e89b-12d3-a456-426655440000。</p>
+<p>16-bit的蓝牙基本UUID形式为 0000XXXX-0000-1000-8000-00805f9b34fb。实际UUID为18位，但是除了XXXX部分需要更改，其他的基本一致，这样对于BLE的数据非常受限的设备使用起来更加方便。</p>
+<p>Android中为了避免UUID的冲突，可以使用UUID.randomUUID()方法来生成一个随机的UUID。</p>
+<p>16-bit的UUID数量只有65536个，数量远不如128-bit的，所以官方事先保留了一些UIID，若是16-bit的基本UUID不够用，可以选择购买。</p>
+<h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><ul>
+<li><p><a href="https://race604.com/android-ble-in-action/" target="_blank" rel="external">Android 上的低功耗蓝牙实践</a></p>
+</li>
+<li><p><a href="https://race604.com/gatt-profile-intro/" target="_blank" rel="external">GATT Profile 简介</a></p>
+</li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;BLE协议栈简析&quot;&gt;&lt;a href=&quot;#BLE协议栈简析&quot; class=&quot;headerlink&quot; title=&quot;BLE协议栈简析&quot;&gt;&lt;/a&gt;BLE协议栈简析&lt;/h1&gt;&lt;blockquote&gt;
+&lt;p&gt;本文针对蓝牙4.0，也就是低功耗蓝牙BLE的协议栈进行简单分析。&lt;
+    
+    </summary>
+    
+    
+      <category term="BLE" scheme="http://linzhs.cm/tags/BLE/"/>
+    
+  </entry>
   
   <entry>
     <title>Android中Activity的启动模式</title>

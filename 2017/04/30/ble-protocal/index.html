@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>BLE协议栈简析 | Linzh&#39;s Blog | Standing on Shoulders of Giants</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="BLE">
+    <meta name="description" content="BLE协议栈简析
+本文针对蓝牙4.0，也就是低功耗蓝牙BLE的协议栈进行简单分析。
+
+Arch图以下为蓝牙协议栈架构图：
+                
+                    
+                    
+                
+                
+            
+蓝牙协议栈分为三个层次，从底层到顶层的名字和其所起到的作用分别如下">
+<meta property="og:type" content="article">
+<meta property="og:title" content="BLE协议栈简析">
+<meta property="og:url" content="http://linzhs.cm/2017/04/30/ble-protocal/index.html">
+<meta property="og:site_name" content="Linzh's Blog">
+<meta property="og:description" content="BLE协议栈简析
+本文针对蓝牙4.0，也就是低功耗蓝牙BLE的协议栈进行简单分析。
+
+Arch图以下为蓝牙协议栈架构图：
+                
+                    
+                    
+                
+                
+            
+蓝牙协议栈分为三个层次，从底层到顶层的名字和其所起到的作用分别如下">
+<meta property="og:image" content="http://7rf9ir.com1.z0.glb.clouddn.com/Android-BLE-in-Action.005.jpeg">
+<meta property="og:image" content="http://7rf9ir.com1.z0.glb.clouddn.com/Android-BLE-in-Action.008.jpeg">
+<meta property="og:updated_time" content="2017-04-30T03:36:45.043Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="BLE协议栈简析">
+<meta name="twitter:description" content="BLE协议栈简析
+本文针对蓝牙4.0，也就是低功耗蓝牙BLE的协议栈进行简单分析。
+
+Arch图以下为蓝牙协议栈架构图：
+                
+                    
+                    
+                
+                
+            
+蓝牙协议栈分为三个层次，从底层到顶层的名字和其所起到的作用分别如下">
+<meta name="twitter:image" content="http://7rf9ir.com1.z0.glb.clouddn.com/Android-BLE-in-Action.005.jpeg">
+    
+        <link rel="alternative" href="/atom.xml" title="Linzh&#39;s Blog" type="application/atom+xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.4.8">
+    <script>window.lazyScripts=[]</script>
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/linzh.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Linzh</h5>
+          <a href="mailto:lzh_547590520@163.com" title="lzh_547590520@163.com" class="mail">lzh_547590520@163.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                Home Page
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/ZehaoLin" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://www.weibo.com/L_Ceylon" target="_blank" >
+                <i class="icon icon-lg icon-weibo"></i>
+                Weibo
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/" target="_blank" >
+                <i class="icon icon-lg icon-link"></i>
+                About
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">BLE协议栈简析</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">BLE协议栈简析</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-04-30T03:36:45.000Z" itemprop="datePublished" class="page-time">
+  2017-04-30
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#BLE协议栈简析"><span class="post-toc-number">1.</span> <span class="post-toc-text">BLE协议栈简析</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Arch图"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">Arch图</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#GATT内部层次"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">GATT内部层次</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#UUID"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">UUID</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#参考文章"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">参考文章</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+    
+<article id="post-ble-protocal"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">BLE协议栈简析</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017年04月30日 11:36" datetime="2017-04-30T03:36:45.000Z"  itemprop="datePublished">2017-04-30</time>
+
+            
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h1 id="BLE协议栈简析"><a href="#BLE协议栈简析" class="headerlink" title="BLE协议栈简析"></a>BLE协议栈简析</h1><blockquote>
+<p>本文针对蓝牙4.0，也就是低功耗蓝牙BLE的协议栈进行简单分析。</p>
+</blockquote>
+<h2 id="Arch图"><a href="#Arch图" class="headerlink" title="Arch图"></a>Arch图</h2><p>以下为蓝牙协议栈架构图：<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://7rf9ir.com1.z0.glb.clouddn.com/Android-BLE-in-Action.005.jpeg" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure></p>
+<p>蓝牙协议栈分为三个层次，从底层到顶层的名字和其所起到的作用分别如下：</p>
+<ul>
+<li><p>Controller</p>
+<p>  这一层主要是物理层，定义了蓝牙工作的频段（2.4GHz）和频段的通道、广播等。Host层和Controller层之间有个接口层，这个接口建立了Host和Controller之间的交互，也是顶层的应用和芯片的交互关键通道。</p>
+</li>
+<li><p>Host</p>
+<p>  这一层相对比较复杂，包含了裸机链路控制、适配协议、安全管理、GATT、ATT、GAP等。</p>
+<p>  ATT（Attibute Protocal），属性协议，是BLE通信的基础，ATT封装数据，向外暴露为“属性”，提供“属性”的为服务端，读取“属性”的为客户端。</p>
+<p>  GATT（Generic Attribute Profile），通用属性配置文件，建立在ATT的基础上，对ATT做进一步的逻辑封装，定义数据的交互方式和含义。每个GATT里面包含3个层次：服务（service）、特征（Characteristic）、描述（Descriptor）。</p>
+<p>  GAP（Generic Access Profile），停用访问控制配置文件。它定义了 BLE 整个通信过程中的流程，例如广播、扫描、连接等流程。还定义了参与通信的设备角色，以及他们各自的职能，例如广播数据的 Broadcaster，接收广播的 Observer，还有被连接的“外设” Peripheral 和发起连接的“中心设备” Central。</p>
+</li>
+<li><p>Applications</p>
+<p>  这一层为BLE的应用层，可分为两大类，分别为基于连接和非连接。</p>
+<p>  基于非连接的也叫Beacon，依赖于BLE的广播，常用语BLE搜索其他设备。这里的BLE存在两种角色，发送广播方为Broadcaster，监听广播方为Observer。</p>
+<p>  基于连接的需要通过GATT连接来收发数据。这里的BLE也存在两种角色，分别是中心主机设备Central，和被连接的从机外设Peripheral。</p>
+</li>
+</ul>
+<h2 id="GATT内部层次"><a href="#GATT内部层次" class="headerlink" title="GATT内部层次"></a>GATT内部层次</h2><p>GATT内部抽象图：<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://7rf9ir.com1.z0.glb.clouddn.com/Android-BLE-in-Action.008.jpeg" alt="image" title="">
+                </div>
+                <div class="image-caption">image</div>
+            </figure><br>GATT最外层是Profile配置文件，里面又包含了服务（service）、特征（Characteristic）、描述（Descriptor），他们之间的关系是一个 Service 包含若干个 Characteristic，一个 Characteristic 可以包含若干 Descriptor。而 Characteristic 定义了数值和操作。Characteristic 的操作这几种权限：读、写、通知等权限。我们说的 BLE 通信，其实就是对 Characteristic 的读写或者订阅通知。</p>
+<h2 id="UUID"><a href="#UUID" class="headerlink" title="UUID"></a>UUID</h2><p>Service、Characteristic 还有 Descriptor 之间都是使用 UUID 唯一标识来区分的。</p>
+<p>UID 是全球唯一标识符，它是 128bit 的值，为了便于识别和阅读，一般写成8-4-4-12 的16进制形式。如123e4567-e89b-12d3-a456-426655440000。</p>
+<p>16-bit的蓝牙基本UUID形式为 0000XXXX-0000-1000-8000-00805f9b34fb。实际UUID为18位，但是除了XXXX部分需要更改，其他的基本一致，这样对于BLE的数据非常受限的设备使用起来更加方便。</p>
+<p>Android中为了避免UUID的冲突，可以使用UUID.randomUUID()方法来生成一个随机的UUID。</p>
+<p>16-bit的UUID数量只有65536个，数量远不如128-bit的，所以官方事先保留了一些UIID，若是16-bit的基本UUID不够用，可以选择购买。</p>
+<h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><ul>
+<li><p><a href="https://race604.com/android-ble-in-action/" target="_blank" rel="external">Android 上的低功耗蓝牙实践</a></p>
+</li>
+<li><p><a href="https://race604.com/gatt-profile-intro/" target="_blank" rel="external">GATT Profile 简介</a></p>
+</li>
+</ul>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2017-04-30T03:36:45.043Z" itemprop="dateUpdated">2017年4月30日 11:36</time>
+</span><br>
+
+
+        这里写留言或版权声明：<a href="/2017/04/30/ble-protocal/" target="_blank" rel="external">http://linzhs.cm/2017/04/30/ble-protocal/</a>
+    </div>
+    <footer>
+        <a href="http://linzhs.cm">
+            <img src="/img/linzh.jpg" alt="Linzh">
+            Linzh
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/BLE/">BLE</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://linzhs.cm/2017/04/30/ble-protocal/&title=《BLE协议栈简析》 — Linzh's Blog&pic=http://linzhs.cm/img/linzh.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://linzhs.cm/2017/04/30/ble-protocal/&title=《BLE协议栈简析》 — Linzh's Blog&source=Standing on Shoulders of Giants" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://linzhs.cm/2017/04/30/ble-protocal/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《BLE协议栈简析》 — Linzh's Blog&url=http://linzhs.cm/2017/04/30/ble-protocal/&via=http://linzhs.cm" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://linzhs.cm/2017/04/30/ble-protocal/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/04/21/android-activity-startmode/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">Android中Activity的启动模式</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+<div class="comments" id="comments">
+    <div class="ds-thread" data-thread-key="ble-protocal" data-title="BLE协议栈简析" data-url="http://linzhs.cm/2017/04/30/ble-protocal/"></div>
+</div>
+<script>
+lazyScripts.push('//cdn.bootcss.com/marked/0.3.6/marked.min.js');
+
+var duoshuoQuery = {short_name:'ysblog', theme: 'none'};
+lazyScripts.push('/js/embed.min.js?v=1.4.8');
+
+
+</script>
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        �Thanks
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <ul class="reward-items">
+        
+        <li>
+            <img src="/img/wechat.jpg" title="微信打赏二维码" alt="微信打赏二维码">
+            <p>微信</p>
+        </li>
+        
+
+        
+        <li>
+            <img src="/img/alipay.jpg" title="支付宝打赏二维码" alt="支付宝打赏二维码">
+            <p>支付宝</p>
+        </li>
+        
+    </ul>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            <span>博客内容遵循 <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">知识共享 署名 - 非商业性 - 相同方式共享 4.0协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p>
+            <span>Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a></span>
+            <span>Linzh's Blog &copy; 2017</span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://linzhs.cm/2017/04/30/ble-protocal/&title=《BLE协议栈简析》 — Linzh's Blog&pic=http://linzhs.cm/img/linzh.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://linzhs.cm/2017/04/30/ble-protocal/&title=《BLE协议栈简析》 — Linzh's Blog&source=Standing on Shoulders of Giants" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://linzhs.cm/2017/04/30/ble-protocal/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《BLE协议栈简析》 — Linzh's Blog&url=http://linzhs.cm/2017/04/30/ble-protocal/&via=http://linzhs.cm" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://linzhs.cm/2017/04/30/ble-protocal/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAK4AAACuCAAAAACKZ2kyAAABwElEQVR42u3aQY7DIAwF0N7/0pntSJ0k3zhY7eixqlJaHllYtuH1isfxNt6fd548PHBxcdvc43JUuWf//PvJ2edrAy4u7jz3bLFn5zzwW1xc3K/irmUpuLi4/4P7Pj9Pj3Bxcb+LmyyZN0qqM7fUari4uA1unpTs+7ylv4uLi7vEPYrjuklaZZVXx8XFHeHmAWWNnm8pb6Dg4uLu5nZCWCH0JO8seDW4uLiT3PyqRD4n+TZpp/4RyHBxcUe40dTLZmi1Abq4Li4u7iA3Dzr9pmd+0HJa/ODi4o5w15oXSelSvWxxszouLu4I99nO6/W288ZrFFJxcXG3cdcalx1EksoUajVcXNwN3Dwp6ac+eYP1RoKLizvCzROXahKzVvzkm8fFxd3HTa5NVI9Y1oJXsnlcXNxJbr5AsoFqsCuUW7i4uOPc/GC10/54IAvDxcXdxj2Ko5+yVKsYXFzceW71QlXnTzvt1/K6uLi4bW41eF0v1r9ycfMtLi7uIDcviqrtj2ooLNRquLi4H8xdO1LNW664uLifz+38aq3QaqU4uLi4DW5S/KwdtVZTpZuZuLi4I9y1duezB7HV14SLi7uN+wMCUSn4PhhN/QAAAABJRU5ErkJggg==" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.4.8"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.4.8" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+</body>
+</html>
