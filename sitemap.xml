@@ -2,6 +2,90 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://linzhs.cm/2017/05/26/java-generic/</loc>
+    
+    <lastmod>2017-05-25T18:17:38.061Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://linzhs.cm/2017/05/26/android-aidl/</loc>
+    
+    <lastmod>2017-05-25T18:16:29.915Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://linzhs.cm/2017/05/26/android-message/</loc>
+    
+    <lastmod>2017-05-25T18:15:40.329Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://linzhs.cm/2017/05/26/android-service/</loc>
+    
+    <lastmod>2017-05-25T18:14:48.504Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://linzhs.cm/2017/05/26/android-process-thread/</loc>
+    
+    <lastmod>2017-05-25T18:14:01.058Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://linzhs.cm/2017/05/26/android-context/</loc>
+    
+    <lastmod>2017-05-25T18:12:37.311Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://linzhs.cm/2017/05/26/android-activity-communication/</loc>
+    
+    <lastmod>2017-05-25T18:11:37.051Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://linzhs.cm/2017/05/26/android-broadcast/</loc>
+    
+    <lastmod>2017-05-25T18:10:10.886Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://linzhs.cm/2017/05/26/android-listview/</loc>
+    
+    <lastmod>2017-05-25T18:07:58.490Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://linzhs.cm/2017/05/26/android-test/</loc>
+    
+    <lastmod>2017-05-25T18:07:10.960Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://linzhs.cm/2017/05/26/android-view-def/</loc>
+    
+    <lastmod>2017-05-25T18:05:33.903Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://linzhs.cm/2017/05/26/android-data-save/</loc>
+    
+    <lastmod>2017-05-25T18:04:00.996Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://linzhs.cm/2017/04/30/ble-helper/</loc>
     
     <lastmod>2017-04-30T03:41:48.358Z</lastmod>

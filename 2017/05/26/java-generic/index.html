@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>Java随笔 - 泛型 | Linzh&#39;s Blog | Standing on Shoulders of Giants</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Java">
+    <meta name="description" content="Java随笔 - 泛型泛型的基本用法泛型类1234567891011121314151617public class Pair&amp;lt;T&amp;gt; &amp;#123;    private T first;    private T second;        public T getFirst() &amp;#123;        return first;    &amp;#125;        public">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java随笔 - 泛型">
+<meta property="og:url" content="http://linzhs.cm/2017/05/26/java-generic/index.html">
+<meta property="og:site_name" content="Linzh's Blog">
+<meta property="og:description" content="Java随笔 - 泛型泛型的基本用法泛型类1234567891011121314151617public class Pair&amp;lt;T&amp;gt; &amp;#123;    private T first;    private T second;        public T getFirst() &amp;#123;        return first;    &amp;#125;        public">
+<meta property="og:updated_time" content="2017-05-25T18:17:38.061Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java随笔 - 泛型">
+<meta name="twitter:description" content="Java随笔 - 泛型泛型的基本用法泛型类1234567891011121314151617public class Pair&amp;lt;T&amp;gt; &amp;#123;    private T first;    private T second;        public T getFirst() &amp;#123;        return first;    &amp;#125;        public">
+    
+        <link rel="alternative" href="/atom.xml" title="Linzh&#39;s Blog" type="application/atom+xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.4.8">
+    <script>window.lazyScripts=[]</script>
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/linzh.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Linzh</h5>
+          <a href="mailto:lzh_547590520@163.com" title="lzh_547590520@163.com" class="mail">lzh_547590520@163.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                Home Page
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/ZehaoLin" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://www.weibo.com/L_Ceylon" target="_blank" >
+                <i class="icon icon-lg icon-weibo"></i>
+                Weibo
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/" target="_blank" >
+                <i class="icon icon-lg icon-link"></i>
+                About
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Java随笔 - 泛型</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Java随笔 - 泛型</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-05-25T18:17:38.000Z" itemprop="datePublished" class="page-time">
+  2017-05-26
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Java随笔-泛型"><span class="post-toc-number">1.</span> <span class="post-toc-text">Java随笔 - 泛型</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#泛型的基本用法"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">泛型的基本用法</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#类型变量的限定"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">类型变量的限定</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+    
+<article id="post-java-generic"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Java随笔 - 泛型</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017年05月26日 2:17" datetime="2017-05-25T18:17:38.000Z"  itemprop="datePublished">2017-05-26</time>
+
+            
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h1 id="Java随笔-泛型"><a href="#Java随笔-泛型" class="headerlink" title="Java随笔 - 泛型"></a>Java随笔 - 泛型</h1><h2 id="泛型的基本用法"><a href="#泛型的基本用法" class="headerlink" title="泛型的基本用法"></a>泛型的基本用法</h2><p>泛型类<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">public class Pair&lt;T&gt; &#123;</div><div class="line">    private T first;</div><div class="line">    private T second;</div><div class="line">    </div><div class="line">    public T getFirst() &#123;</div><div class="line">        return first;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    public void setFirst(T t) &#123;</div><div class="line">        this.first = t;W</div><div class="line">    &#125;</div><div class="line">    ...</div><div class="line">&#125;</div><div class="line"></div><div class="line">public class Pair&lt;K, V&gt; &#123;</div><div class="line">    ...</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>泛型方法，可以在普通类中存在。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">public class ArrayAlg &#123;</div><div class="line">    public static &lt;T&gt; T getMiddle(T...a) &#123;</div><div class="line">        return a[a.lenght / 2];</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>在调用一个泛型方法时，在方法名前的尖括号放入具体的类型，大多数情况下，编译器有能力推导出具体的类型，所以尖括号部分的类型可以省略<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">String middle = ArrayAlg.&lt;String&gt;getMiddle(&quot;John&quot;, &quot;Q.&quot;, &quot;Public&quot;);</div><div class="line">String middle = ArrayAlg.getMiddle(&quot;John&quot;, &quot;Q.&quot;, &quot;Public&quot;);</div></pre></td></tr></table></figure></p>
+<p>少数情况下会报错的情形如下，参数的类型不对应。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">double middle = ArrayAlg.getMiddle(3.14, 122, 0);</div></pre></td></tr></table></figure></p>
+<p>以上例子参数中，参数分别是double和int，编译器会将他们分别打包成Double和Integer，然后生成两种类型的方法，这两个方法都是合法的，但是他们放在一起使用，没有共同的超类型。</p>
+<h2 id="类型变量的限定"><a href="#类型变量的限定" class="headerlink" title="类型变量的限定"></a>类型变量的限定</h2><p>单个限定<figure class="highlight plain"><figcaption><span>extends Comparable>```， 多个限定用&做间隔```<t extends="" comparable="" &="" serializable="">```。</t></span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">以上例子限定T要去实现相应的接口，用的关键词是extends而不是implements，表示T应该是绑定类型的子类型。T和绑定类型可以是类，也可以是接口，选定extends关键词的原因是其更接近子类的意思。</div><div class="line"></div><div class="line">Java中类是单继承的，所以限定类型为类时，只能是限定列表的第一个。</div><div class="line"></div><div class="line">## 泛型的实现细节</div><div class="line">编译器将代码编译完成后交给虚拟机来运行时，虚拟机中是不存在泛型这种类型对象的，所有泛型的对象都会变成指定类型的普通类对象。也就是说泛型其实是一种类，可以指定为很多种类型变量的类，很多工作都交给了编译器来完成。</div><div class="line"></div><div class="line">### 类型擦除</div><div class="line">为什么在编译过后，运行在虚拟机上的代码是没有泛型类型的，这是因为编译器对泛型做了类型擦除（type erasure）操作。经过类型擦除后，泛型类型都会自动转换为相应的原始类型。原始类型的名字就是删去类型参数后的泛型类型名。</div><div class="line"></div><div class="line">擦除变量有以下两种情况：</div><div class="line">* 无限定类型</div><div class="line"></div><div class="line">此情况下T将被替换成Object类型，并擦除&lt;T&gt;，如下示例：</div></pre></td></tr></table></figure></p>
+<p>public class Pair<t> {<br>    private T first;<br>    public T getFirst() {<br>        return first;<br>    }</t></p>
+<pre><code>...
+</code></pre><p>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">擦除后 -&gt;</div></pre></td></tr></table></figure></p>
+<p>public class Pair {<br>    private Object first;<br>    public Object getFirst() {<br>        return first;<br>    }</p>
+<pre><code>...
+</code></pre><p>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&gt; C\++的模板和Java泛型在这一点上的实现有很大的区别，C++的每个模板的实例化产生的类型都是不一样的，这样很容易导致“模板代码膨胀”现象。</div><div class="line"></div><div class="line">* 有限定类型</div><div class="line"></div><div class="line">泛型类型变量若有限定类型，那原始类型用限定表中的第一个类型变量来替换。</div></pre></td></tr></table></figure></p>
+<p>public class Interval<t extends="" comparable="" &="" serializable=""> implements Serializable {<br>    private T lower;<br>    private T upper;<br>    …<br>    public Interval(T first, T second) {<br>        if (first.compareTo(second) &gt;= 0) {<br>            lower = first;<br>            upper = second;<br>        } else {<br>            lower = second;<br>            upper = first;<br>        }<br>    }<br>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">擦除后 -&gt;</div></pre></td></tr></table></figure></t></p>
+<p>public class Interval implements Serializable {<br>    private ComparableComparable lower;<br>    private Comparable upper;<br>    …<br>    public Interval(Comparable first, Comparable second) {<br>        if (first.compareTo(second) &gt;= 0) {<br>            lower = first;<br>            upper = second;<br>        } else {<br>            lower = second;<br>            upper = first;<br>        }<br>    }<br>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">T的限定变量书写的顺序并没有严格的要求，也可以写成```class Interval&lt;T extends Serializable &amp; Comparable&gt;```。这样书写，编译器会把T替换成Serializable，而需要用到Comparable时，编译器会在相应的代码中插入强制类型转换。为了提高效率，比较好的习惯是将标签（tagging）接口，也就是没有方法的接口放在限定列表的末尾。</div><div class="line"></div><div class="line">### 翻译泛型表达式</div><div class="line">在T没有限定类型时，调用一个有返回值的泛型方法时，由于类型擦除，返回的是Object类型，所以编译器会在返回值的代码上插入强制类型转换。</div></pre></td></tr></table></figure></p>
+<p>Pair<employee> buddies = …;<br>Employee buddy = buddies.getFirst();<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">以上代码，翻译成虚拟指令就是：</div><div class="line">* 调用原始方法Pair.getFirst</div><div class="line">* 将返回的Object类型强制转换为Employee类型。</div><div class="line"></div><div class="line">同理，对于泛型的公有域也是如此，但是不推荐有公有泛型域。</div><div class="line"></div><div class="line">### 翻译泛型方法</div><div class="line">泛型方法的翻译要注意的问题是保持多态性。实例分析：</div></pre></td></tr></table></figure></employee></p>
+<p>public class DateInterval extends Pair<localdate> {<br>    public void setSecond(LocalDate second) {<br>        if (second.compareTo(getFirst()) &gt;= 0) {<br>            super.setSecond(second);<br>        }<br>    }<br>    …<br>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">类型擦除后 -&gt;</div></pre></td></tr></table></figure></localdate></p>
+<p>public class DateInterval extends Pair {<br>    public void setSecond(LocalDate second) {<br>        …<br>    }<br>    …<br>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">DateInterval继承自Pair，Pair中也有一个setSecond方法，为```public void setSecond(Object second)```，也就是DateInterval被编译器做完类型擦除处理后，内部存在两个setSecond方法:</div></pre></td></tr></table></figure></p>
+<p>public void setSecond(LocalDate second);<br>public void setSecond(Object second);<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">现在，要使用setSecond方法，</div></pre></td></tr></table></figure></p>
+<p>DateInterval interval = new DateInterval(…);<br>Pair<localdate> pair = interval;//super类对象引用子类，多态性<br>pair.setSecond(aDate);<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">在调用setSecond方法的时候，为了适合多态性，编译器需要给调用的方法选择最合适的实现方法。因为pair应用的是子类DateInterval对象，正常来说调用的应该是DateInterval.setSecond，但是现在由于类型擦除的原因使得与多态性发生了冲突，不能去调用DateInterval.setSecond方法。</div><div class="line"></div><div class="line">要解决此问题，就需要编译器做一些中间工作，那就是z在DataInterval类中生成一个桥方法（bridge method）：</div></pre></td></tr></table></figure></localdate></p>
+<p>public void setSecond(Object second) {<br>    setSecond((Date)second);<br>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">## 泛型的约束和局限性</div><div class="line">&gt; Java中泛型的很多限制其实都来自其底层的实现，就是类型擦除。</div><div class="line"></div><div class="line">### 不能用基本类型实例化类型参数</div><div class="line">没有```Pair&lt;double&gt;```，只有```Pair&lt;Double&gt;```，原因是经过类型擦除后，类型会被替换成Object，double和Object不对应，所以不能存储double值，只有Object类型的域。</div><div class="line"></div><div class="line">### 运行时的类型查询只适用于原始类型</div><div class="line">泛型经过编译器的类型擦除后，虚拟中只剩下一个非泛型类型，比如Pair&lt;T&gt;，类型擦除后，放在虚拟机中运行，只有Pair。</div><div class="line"></div><div class="line">运行时试图查询一个对象是否属于某个泛型类型时，若使用instanceof编译器会报错，若用强制类型转换则会得到一个警告。</div></pre></td></tr></table></figure></p>
+<p>if (a instanceof Pair<string>)//error<br>if (a instanceof Pair<t>)//error<br>Pair<string> p = (Pair<string>)a;//warning<br>if (a instanceof Pair)//ok,it is true<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">另一个例子：</div></pre></td></tr></table></figure></string></string></t></string></p>
+<p>Pair<string> stringPair = …;<br>Pair<employee> employeePair = …;<br>System.out.println(stringPair.getClass() == employeePair.getClass());// print “true”<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">比较后的结果是true，因为虚拟机中只有Pair，返回的都是Pair.class。</div><div class="line"></div><div class="line">### 不能创建参数化类型的数组</div><div class="line">可以声明参数类化型的数组，但是不能实例化</div></pre></td></tr></table></figure></employee></string></p>
+<p>Pair<string>[] table;//OK<br>table = new Pair<string>[10];//error<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">原因是，经过编译器的类型擦除后，数组会变成Pair[]。</div><div class="line"></div><div class="line">### Varargs警告</div><div class="line">有时候泛型方法的参数是可变的，这时候参数其实是接收了一个参数数组，若这个数组接收的都是泛型，那么就存在上面的问题--不能创建参数化类型的数组。为了能通过编译，可以加入注解（二选一）：</div></pre></td></tr></table></figure></string></string></p>
+<p>@SuppressWarnings(“unchecked”)<br>@SafeVarargs<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">通过注解可以顺利运行，但是在处理table[0]的时候还是会抛出一个异常。</div><div class="line"></div><div class="line">### 不能实例化类型变量</div><div class="line">不能如此使用类型变量：</div></pre></td></tr></table></figure></p>
+<p>new T(…)<br>new T[…]<br>T.calss<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">原因是，类型擦除后都会变成Object，但是本意却不是想new  Object()。</div><div class="line"></div><div class="line">### 不能构造泛型数组</div></pre></td></tr></table></figure></p>
+<p>public static <t extends="" comparable=""> T[] minmax(T[] a) {<br>    T[] t = new T[2];<br>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">类型擦除后，得到的数组永远是Comapable[2]。</div><div class="line"></div><div class="line">可以使用强制类型转换，让类型擦除无法察觉，但是运行的时候还是会抛出异常。</div><div class="line"></div><div class="line">### 方形类的静态上下文中类型变量无效</div><div class="line">不能在静态域或者方法中应用类型变量。</div></pre></td></tr></table></figure></t></p>
+<p>public class Singleton<t> {<br>    private static T singleInstance;//error</t></p>
+<pre><code>public static T getSingleInstance() {//error
+    if (singleInstance == null)
+        singleInstance = new Singleton&lt;&gt;();
+    return singleInstance;
+}
+</code></pre><p>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">类型擦除后，只剩下Singleton类，且只包含singleInstance域，不能再被指定泛型并且创建。</div><div class="line"></div><div class="line">### 不能抛出或者捕获泛型类的实例</div><div class="line">不能抛出，也不能捕获泛型类对象，泛型类也不能扩展Throwable。</div></pre></td></tr></table></figure></p>
+<p>public class Problem<t> extends Exception {}//error<br>public static <t extends="" throwable=""> void doWork(Class<t> t) {//error<br>    try {</t></t></t></p>
+<pre><code>} catch (T e) {
+
+}
+</code></pre><p>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">不过以下例子是允许的:</div></pre></td></tr></table></figure></p>
+<p>public static <t extends="" throwable=""> void doWork(T t) throws T {<br>    try {</t></p>
+<pre><code>} catch (Throwable e) {
+    t.initCause(e);
+    throw t;
+}
+</code></pre><p>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">### 可以消除对受查异常的检查</div><div class="line">Java异常处理的一个原则是，对所有受查异常，必须提供一个处理器。若是使用泛型，可以绕开这个原则，然后包装到非受查异常中，就可以欺骗编译器。</div></pre></td></tr></table></figure></p>
+<p>@SuppressWarnings(“unchecked”)<br>public static <t extends="" trowable=""> void doWorkAs(Throwable e) throws T {<br>    throw (T) e;<br>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">### 注意擦除后的冲突</div></pre></td></tr></table></figure></t></p>
+<p>public calss Pair<t> {<br>    public boolean equals(T values) {<br>        …<br>    }<br>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">泛型类Pair，在类型擦除后，equal方法变成了boolean equals(Object)，这是和Object中的equals方法冲突的。</div><div class="line"></div><div class="line">## 泛型类型的继承规则</div><div class="line">假设Manager是Employee的子类，但是，Pair&lt;Manager&gt;不是Pair&lt;Employee&gt;的子类，两者并没有什么关系，所以不能用Pair&lt;Employee&gt;对象变量引用Pair&lt;Manager&gt;，但是两者都可以用Pair引用，因为两者都继承于Pair。</div></pre></td></tr></table></figure></t></p>
+<p>Manager[] m = …;<br>Pair<employee> e = ArraAlg.minmax(m);//error<br>Pair<manager> p = new Pair&lt;&gt;(…);<br> Pair t = p;//ok<br> <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">## 通配符类型</div><div class="line">通配符类型中，允许类型参数变化，比如：</div></pre></td></tr></table></figure></manager></employee></p>
+<p> Pair&lt;? extends Employee&gt;<br> <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">表示任何泛型Pair类型，它的类型参数是Employee的子类，如Pair&lt;Manager&gt;，而Pair&lt;String&gt;就不是。</div><div class="line"></div><div class="line">### 通配符的超类限定</div></pre></td></tr></table></figure></p>
+<p> ? super Manager<br> <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">这个通配符限定Manger为所有类型的超类。</div><div class="line"></div><div class="line">### 无限定通配符</div></pre></td></tr></table></figure></p>
+<p> public class Pair&lt;?&gt; {<br>     ? getFirst() {…}<br>     void setFirst(?) {…}<br> }<br> ```<br> 例子中getFirst的返回值只能赋给一个Object，而setFirst方法不能被调用，甚至不能用Object调用。</p>
+<p> Pair&lt;?&gt;和Pair本质的区别在于，可以用任意Object对象调用原始Pair类的setOnjevt方法。</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2017-05-25T18:17:38.061Z" itemprop="dateUpdated">2017年5月26日 2:17</time>
+</span><br>
+
+
+        这里写留言或版权声明：<a href="/2017/05/26/java-generic/" target="_blank" rel="external">http://linzhs.cm/2017/05/26/java-generic/</a>
+    </div>
+    <footer>
+        <a href="http://linzhs.cm">
+            <img src="/img/linzh.jpg" alt="Linzh">
+            Linzh
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://linzhs.cm/2017/05/26/java-generic/&title=《Java随笔 - 泛型》 — Linzh's Blog&pic=http://linzhs.cm/img/linzh.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://linzhs.cm/2017/05/26/java-generic/&title=《Java随笔 - 泛型》 — Linzh's Blog&source=Standing on Shoulders of Giants" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://linzhs.cm/2017/05/26/java-generic/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Java随笔 - 泛型》 — Linzh's Blog&url=http://linzhs.cm/2017/05/26/java-generic/&via=http://linzhs.cm" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://linzhs.cm/2017/05/26/java-generic/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/05/26/android-aidl/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">Android接口定义语言（AIDL）</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+<div class="comments" id="comments">
+    <div class="ds-thread" data-thread-key="java-generic" data-title="Java随笔 - 泛型" data-url="http://linzhs.cm/2017/05/26/java-generic/"></div>
+</div>
+<script>
+lazyScripts.push('//cdn.bootcss.com/marked/0.3.6/marked.min.js');
+
+var duoshuoQuery = {short_name:'ysblog', theme: 'none'};
+lazyScripts.push('/js/embed.min.js?v=1.4.8');
+
+
+</script>
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        �Thanks
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <ul class="reward-items">
+        
+        <li>
+            <img src="/img/wechat.jpg" title="微信打赏二维码" alt="微信打赏二维码">
+            <p>微信</p>
+        </li>
+        
+
+        
+        <li>
+            <img src="/img/alipay.jpg" title="支付宝打赏二维码" alt="支付宝打赏二维码">
+            <p>支付宝</p>
+        </li>
+        
+    </ul>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            <span>博客内容遵循 <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">知识共享 署名 - 非商业性 - 相同方式共享 4.0协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p>
+            <span>Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a></span>
+            <span>Linzh's Blog &copy; 2017</span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://linzhs.cm/2017/05/26/java-generic/&title=《Java随笔 - 泛型》 — Linzh's Blog&pic=http://linzhs.cm/img/linzh.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://linzhs.cm/2017/05/26/java-generic/&title=《Java随笔 - 泛型》 — Linzh's Blog&source=Standing on Shoulders of Giants" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://linzhs.cm/2017/05/26/java-generic/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Java随笔 - 泛型》 — Linzh's Blog&url=http://linzhs.cm/2017/05/26/java-generic/&via=http://linzhs.cm" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://linzhs.cm/2017/05/26/java-generic/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAK4AAACuCAAAAACKZ2kyAAABvUlEQVR42u3aQY6DMAwF0N7/0h1pViMxhW8H3CxeVqgIeOnCin/yesXj/TuO139/OY7j3U+/3DxwcXGXue/TcU6svqF6958p4eLiDnKT4pVMo1rgcgMuLu6e3KSoJYuYfNq4uLj7c6uIlYYKFxd3B2412ui1QDc8i4uLO8JdKTp3XQ/lu7i4uMu7Er1itBKXXHwdFxd3hJvHHEls2otOqkEJLi7u09xeKcmPYiSFLP9TcHFxJ7nzDU8zfMHFxR3kPle2qjHrxbO4uLgbcJNX5KFJMuGLL+Li4g5y8xalUHRa2zPRbjAuLu4gt7eUWQ9TClPFxcUd5Fbjy6SlWWl1Pk4VFxd3kJuXtt7hjGpIiouLuwO3d2zifDK9JqewlYKLi/sYt7qIScKUaudSjWhxcXGf5q6HHb3N2mpAg4uLO89NFjd5FFINTfLyh4uLO8nNRx6PJrhkOfWq1ldcXNxlbu+oRC9azZc1yV1cXNynub3DE9UgtReUlKsvLi7urdyVYxN58JEvfcq3cXFxv8TtUZKyWHgnLi7ultze4qZwAAsXF3cbbu/IVK8dWtl2xcXFneFOBqa9bVpcXNxB7g+FgmzDd4w8wQAAAABJRU5ErkJggg==" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.4.8"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.4.8" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+</body>
+</html>

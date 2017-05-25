@@ -158,11 +158,11 @@
     <ul class="post-list">
     
         <li class="post-list-item fade">
-            <article id="post-ble-helper"
+            <article id="post-java-generic"
   class="article-card article-type-post" itemprop="blogPost">
 
     <div class="post-meta">
-        <time class="post-time" title="2017年04月30日 11:41" datetime="2017-04-30T03:41:48.000Z"  itemprop="datePublished">2017-04-30</time>
+        <time class="post-time" title="2017年05月26日 2:17" datetime="2017-05-25T18:17:38.000Z"  itemprop="datePublished">2017-05-26</time>
 
         
 
@@ -176,7 +176,7 @@
 
   
     <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2017/04/30/ble-helper/">Android的BLE简易收发助手</a>
+      <a class="post-title-link" href="/2017/05/26/java-generic/">Java随笔 - 泛型</a>
     </h3>
   
 
@@ -186,21 +186,17 @@
     <div class="post-content" id="post-content" itemprop="postContent">
 
     
-        Android简易蓝牙BLE收发助手
-本文参考Android开发者说明文档，通过制作一个简易的BLE收发助手，和外置BLE模块进行通信，来学习Android的BLE开发基础知识。
-GitHub源码：Android简易BLE收发助手、Android官方BluetoothLeGatt源码
-
-前言从Android4.3（API 18）开始，Android开始支持低功耗蓝牙（Bluetooth Lo...
+        Java随笔 - 泛型泛型的基本用法泛型类1234567891011121314151617public class Pair&lt;T&gt; &#123;    private T first;    private T second;        public T getFirst() &#123;        return first;    &#125;        publ...
     
 
-        <a href="/2017/04/30/ble-helper/" class="post-more waves-effect waves-button">
+        <a href="/2017/05/26/java-generic/" class="post-more waves-effect waves-button">
             阅读全文...
         </a>
     </div>
     
     <div class="post-footer">
         
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android-BLE/">Android,BLE</a></li></ul>
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li></ul>
 
     </div>
     
@@ -209,11 +205,11 @@ GitHub源码：Android简易BLE收发助手、Android官方BluetoothLeGatt源码
         </li>
     
         <li class="post-list-item fade">
-            <article id="post-ble-protocal"
+            <article id="post-android-aidl"
   class="article-card article-type-post" itemprop="blogPost">
 
     <div class="post-meta">
-        <time class="post-time" title="2017年04月30日 11:36" datetime="2017-04-30T03:36:45.000Z"  itemprop="datePublished">2017-04-30</time>
+        <time class="post-time" title="2017年05月26日 2:16" datetime="2017-05-25T18:16:29.000Z"  itemprop="datePublished">2017-05-26</time>
 
         
 
@@ -227,7 +223,7 @@ GitHub源码：Android简易BLE收发助手、Android官方BluetoothLeGatt源码
 
   
     <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2017/04/30/ble-protocal/">BLE协议栈简析</a>
+      <a class="post-title-link" href="/2017/05/26/android-aidl/">Android接口定义语言（AIDL）</a>
     </h3>
   
 
@@ -237,67 +233,213 @@ GitHub源码：Android简易BLE收发助手、Android官方BluetoothLeGatt源码
     <div class="post-content" id="post-content" itemprop="postContent">
 
     
-        BLE协议栈简析
-本文针对蓝牙4.0，也就是低功耗蓝牙BLE的协议栈进行简单分析。
+        Android 接口定义语言 (AIDL)AIDL可以定义客户端与服务使用IPC机型互相通信时都认可的编程接口。在Android，进程是fork形式存在的，独自占有一块内存，一个进程无法访问另一个进程的内存。但是，进程需要将其对象分解成操作系统能够识别的原语，并将对象编组成跨越边界的对象。Android使用AIDL来执行这一编组操作的代码繁琐工作。
 
-Arch图以下为蓝牙协议栈架构图：
+注：只有允许不同应用的客户端用IPC方式...
+    
+
+        <a href="/2017/05/26/android-aidl/" class="post-more waves-effect waves-button">
+            阅读全文...
+        </a>
+    </div>
+    
+    <div class="post-footer">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li></ul>
+
+    </div>
+    
+</article>
+
+        </li>
+    
+        <li class="post-list-item fade">
+            <article id="post-android-message"
+  class="article-card article-type-post" itemprop="blogPost">
+
+    <div class="post-meta">
+        <time class="post-time" title="2017年05月26日 2:15" datetime="2017-05-25T18:15:40.000Z"  itemprop="datePublished">2017-05-26</time>
+
+        
+
+
+        
+
+    </div>
+
+    
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2017/05/26/android-message/">Android的异步消息处理机制</a>
+    </h3>
+  
+
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        Android的异步消息处理机制HandlerAndroid中的异步消息处理机制由4个部分组成：Message、Handler、MessageQueue、Looper。
+
+Message
+ Message是在线程之间传递的消息，它可以在内部携带少量的信息，用于在不同线程之间交换数据。
+
+Handler
+ Handler（处理者）主要是用于发送和处理信息的。发送一般是使用Handler的sen...
+    
+
+        <a href="/2017/05/26/android-message/" class="post-more waves-effect waves-button">
+            阅读全文...
+        </a>
+    </div>
+    
+    <div class="post-footer">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li></ul>
+
+    </div>
+    
+</article>
+
+        </li>
+    
+        <li class="post-list-item fade">
+            <article id="post-android-service"
+  class="article-card article-type-post" itemprop="blogPost">
+
+    <div class="post-meta">
+        <time class="post-time" title="2017年05月26日 2:14" datetime="2017-05-25T18:14:48.000Z"  itemprop="datePublished">2017-05-26</time>
+
+        
+
+
+        
+
+    </div>
+
+    
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2017/05/26/android-service/">Android的Service</a>
+    </h3>
+  
+
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        Android的ServiceService 是一个可以在后台执行长时间运行操作而不提供用户界面的应用组件。服务可由其他应用组件启动，而且即使用户切换到其他应用，服务仍将在后台继续运行。此外，组件可以绑定到服务，以与之进行交互，甚至是执行进程间通信(IPC)。例如，服务可以处理网络事务、播放音乐，执行文件 I/O 或与内容提供程序交互，而所有这一切均可在后台进行。
+服务基本上分为两种形式：
+...
+    
+
+        <a href="/2017/05/26/android-service/" class="post-more waves-effect waves-button">
+            阅读全文...
+        </a>
+    </div>
+    
+    <div class="post-footer">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li></ul>
+
+    </div>
+    
+</article>
+
+        </li>
+    
+        <li class="post-list-item fade">
+            <article id="post-android-process-thread"
+  class="article-card article-type-post" itemprop="blogPost">
+
+    <div class="post-meta">
+        <time class="post-time" title="2017年05月26日 2:14" datetime="2017-05-25T18:14:01.000Z"  itemprop="datePublished">2017-05-26</time>
+
+        
+
+
+        
+
+    </div>
+
+    
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2017/05/26/android-process-thread/">Android的进程和线程</a>
+    </h3>
+  
+
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        Android的进程和线程当某个应用组件启动且该应用没有运行其他任何组件时，Android 系统会使用单个执行线程为应用启动新的 Linux 进程。默认情况下，同一应用的所有组件在相同的进程和线程（称为“主”线程）中运行。 如果某个应用组件启动且该应用已存在进程（因为存在该应用的其他组件），则该组件会在此进程内启动并使用相同的执行线程。 但是，您可以安排应用中的其他组件在单独的进程中运行，并...
+    
+
+        <a href="/2017/05/26/android-process-thread/" class="post-more waves-effect waves-button">
+            阅读全文...
+        </a>
+    </div>
+    
+    <div class="post-footer">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li></ul>
+
+    </div>
+    
+</article>
+
+        </li>
+    
+        <li class="post-list-item fade">
+            <article id="post-android-context"
+  class="article-card article-type-post" itemprop="blogPost">
+
+    <div class="post-meta">
+        <time class="post-time" title="2017年05月26日 2:12" datetime="2017-05-25T18:12:37.000Z"  itemprop="datePublished">2017-05-26</time>
+
+        
+
+
+        
+
+    </div>
+
+    
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2017/05/26/android-context/">Android的Context及其子类</a>
+    </h3>
+  
+
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        Android的Context及其子类Android的系统组件很多，Activity、Service、BroadcastReceiver等都是很常用的，这些组件的创建都不能是凭空的，都需要借助Context这个核心功能类或者其子类。
+Context继承结构
                 
                     
                     
-                
-                
-            
-蓝牙协议栈分为三个层次，从底层到顶层的名字和其所起到的作用分...
+         ...
     
 
-        <a href="/2017/04/30/ble-protocal/" class="post-more waves-effect waves-button">
-            阅读全文...
-        </a>
-    </div>
-    
-    <div class="post-footer">
-        
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/BLE/">BLE</a></li></ul>
-
-    </div>
-    
-</article>
-
-        </li>
-    
-        <li class="post-list-item fade">
-            <article id="post-android-activity-startmode"
-  class="article-card article-type-post" itemprop="blogPost">
-
-    <div class="post-meta">
-        <time class="post-time" title="2017年04月21日 1:16" datetime="2017-04-20T17:16:52.000Z"  itemprop="datePublished">2017-04-21</time>
-
-        
-
-
-        
-
-    </div>
-
-    
-
-
-  
-    <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2017/04/21/android-activity-startmode/">Android中Activity的启动模式</a>
-    </h3>
-  
-
-
-
-
-    <div class="post-content" id="post-content" itemprop="postContent">
-
-    
-        Android中Activity的启动模式在Android中，每一个任务（应用程序）都有一个放回栈（back stack），每一个应用都有一到多个Activity，返回栈就是来存储这些活动的，当Activity处于栈顶的时候，该Activity也是正显示在手机屏幕上的。若用户按下“返回”按钮后，一个Activity将会被弹出栈，也就等于被销毁，而前一个Activity也将被执行。返回栈中永远...
-    
-
-        <a href="/2017/04/21/android-activity-startmode/" class="post-more waves-effect waves-button">
+        <a href="/2017/05/26/android-context/" class="post-more waves-effect waves-button">
             阅读全文...
         </a>
     </div>
@@ -313,11 +455,11 @@ Arch图以下为蓝牙协议栈架构图：
         </li>
     
         <li class="post-list-item fade">
-            <article id="post-android-lifecycle"
+            <article id="post-android-activity-communication"
   class="article-card article-type-post" itemprop="blogPost">
 
     <div class="post-meta">
-        <time class="post-time" title="2017年04月21日 1:15" datetime="2017-04-20T17:15:48.000Z"  itemprop="datePublished">2017-04-21</time>
+        <time class="post-time" title="2017年05月26日 2:11" datetime="2017-05-25T18:11:37.000Z"  itemprop="datePublished">2017-05-26</time>
 
         
 
@@ -331,7 +473,7 @@ Arch图以下为蓝牙协议栈架构图：
 
   
     <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2017/04/21/android-lifecycle/">Android中Activity、Fragment、Service的生命周期</a>
+      <a class="post-title-link" href="/2017/05/26/android-activity-communication/">Android中Activity之间的通信</a>
     </h3>
   
 
@@ -341,13 +483,14 @@ Arch图以下为蓝牙协议栈架构图：
     <div class="post-content" id="post-content" itemprop="postContent">
 
     
-        Android中Activity、Fragment、Service的生命周期
-在Android系统中，常见的应用组件都有它的生命周期，以便于系统对内存的管理，接下来总结一下Activity，Fragment，Service这三个常见、重要的组件的生命周期。
+        Android中Activity之间的通信
+此篇随笔将总结Activity之间的通信，数据交流，如何保存Activity的状态。
 
-Activity的生命周期用回调方法的方式来管理Activity的生命周期对于开发强大、灵活的应用来说那是至关重要的。Activity...
+IntentIntent，即意图，用于描述你想在某个Intent对象的简单操作，再通过startActivity或者startActivityForResult方法来启动这个意图所对应的活动。
+意图有隐式和显式之分。显式的意图是在java文件中直接调用指定的活动...
     
 
-        <a href="/2017/04/21/android-lifecycle/" class="post-more waves-effect waves-button">
+        <a href="/2017/05/26/android-activity-communication/" class="post-more waves-effect waves-button">
             阅读全文...
         </a>
     </div>
@@ -363,11 +506,11 @@ Activity的生命周期用回调方法的方式来管理Activity的生命周期�
         </li>
     
         <li class="post-list-item fade">
-            <article id="post-android-system-architecture"
+            <article id="post-android-broadcast"
   class="article-card article-type-post" itemprop="blogPost">
 
     <div class="post-meta">
-        <time class="post-time" title="2017年04月21日 1:13" datetime="2017-04-20T17:13:30.000Z"  itemprop="datePublished">2017-04-21</time>
+        <time class="post-time" title="2017年05月26日 2:10" datetime="2017-05-25T18:10:10.000Z"  itemprop="datePublished">2017-05-26</time>
 
         
 
@@ -381,7 +524,7 @@ Activity的生命周期用回调方法的方式来管理Activity的生命周期�
 
   
     <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2017/04/21/android-system-architecture/">Android系统的体系架构</a>
+      <a class="post-title-link" href="/2017/05/26/android-broadcast/">Android的广播机制</a>
     </h3>
   
 
@@ -391,12 +534,13 @@ Activity的生命周期用回调方法的方式来管理Activity的生命周期�
     <div class="post-content" id="post-content" itemprop="postContent">
 
     
-        Android系统的体系架构前言
-Android 5.0 （API 21）开始，Android开发者官网给出的平台架构层次稍微有些不一样，从原先的四层结构变成五层，更加易懂。Android系统的平台架构从下至上分为：
-Linux内核层 -&gt; 硬件抽象层（HAL） -&gt; 原生C/C++层 + Android Runtime层 -&gt; Java API框架层 -&gt; 系统应用...
+        Android的广播机制Android的广播机制Broadcast Receiver可以实现应用程序之间、Activity之间的信息传递。广播的通信是跨进程的。
+广播类型Android提供的广播类型有两种，标准广播和有序广播。
+标准广播是一种完全异步执行的广播，其是无序的，在发出后，所有接收器都能在同一时刻接收到此广播。这种广播的效率比较高，但同时也意味着无法被截断，也就是可能是不安全的。
+...
     
 
-        <a href="/2017/04/21/android-system-architecture/" class="post-more waves-effect waves-button">
+        <a href="/2017/05/26/android-broadcast/" class="post-more waves-effect waves-button">
             阅读全文...
         </a>
     </div>
@@ -412,11 +556,11 @@ Linux内核层 -&gt; 硬件抽象层（HAL） -&gt; 原生C/C++层 + Android Run
         </li>
     
         <li class="post-list-item fade">
-            <article id="post-java-innerclass"
+            <article id="post-android-listview"
   class="article-card article-type-post" itemprop="blogPost">
 
     <div class="post-meta">
-        <time class="post-time" title="2017年04月21日 1:11" datetime="2017-04-20T17:11:22.000Z"  itemprop="datePublished">2017-04-21</time>
+        <time class="post-time" title="2017年05月26日 2:07" datetime="2017-05-25T18:07:58.000Z"  itemprop="datePublished">2017-05-26</time>
 
         
 
@@ -430,7 +574,7 @@ Linux内核层 -&gt; 硬件抽象层（HAL） -&gt; 原生C/C++层 + Android Run
 
   
     <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2017/04/21/java-innerclass/">Java随笔 - 内部类和闭包</a>
+      <a class="post-title-link" href="/2017/05/26/android-listview/">Android的ListView实现</a>
     </h3>
   
 
@@ -440,23 +584,18 @@ Linux内核层 -&gt; 硬件抽象层（HAL） -&gt; 原生C/C++层 + Android Run
     <div class="post-content" id="post-content" itemprop="postContent">
 
     
-        Java随笔 - 内部类和闭包前言
-内部类（inner class），就是类中类，与其对应的就是外部类。接下来将学习内部类的各种形式，内部类和外部类的联系，还Java中的闭包。
-
-内部类的作用每一项技术的诞生都有它的用处，内部类的出现，我们为什么要使用内部类，主要有以下三点：
-
-内部类作为外部类的成员，其方法可以访问外部类作用域中的数据，包括私有数据，这个是很重要的一点
-内部类可以实现进一步...
+        Android自定义View和ViewGroup
+Android中提供了丰富、复杂的视图系统，widget类的组件：Button, TextView, EditText, ListView, CheckBox, RadioButton, Gallery, Spinner都是直接或间接继承于super类View，布局类：LinearLayout, FrameLayout, RelativeLa...
     
 
-        <a href="/2017/04/21/java-innerclass/" class="post-more waves-effect waves-button">
+        <a href="/2017/05/26/android-listview/" class="post-more waves-effect waves-button">
             阅读全文...
         </a>
     </div>
     
     <div class="post-footer">
         
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li></ul>
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li></ul>
 
     </div>
     
@@ -465,11 +604,11 @@ Linux内核层 -&gt; 硬件抽象层（HAL） -&gt; 原生C/C++层 + Android Run
         </li>
     
         <li class="post-list-item fade">
-            <article id="post-java-enum"
+            <article id="post-android-test"
   class="article-card article-type-post" itemprop="blogPost">
 
     <div class="post-meta">
-        <time class="post-time" title="2017年04月21日 1:10" datetime="2017-04-20T17:10:21.000Z"  itemprop="datePublished">2017-04-21</time>
+        <time class="post-time" title="2017年05月26日 2:07" datetime="2017-05-25T18:07:10.000Z"  itemprop="datePublished">2017-05-26</time>
 
         
 
@@ -483,7 +622,7 @@ Linux内核层 -&gt; 硬件抽象层（HAL） -&gt; 原生C/C++层 + Android Run
 
   
     <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2017/04/21/java-enum/">Java随笔 - 枚举类</a>
+      <a class="post-title-link" href="/2017/05/26/android-test/">Android的单元测试和UI测试基础</a>
     </h3>
   
 
@@ -493,170 +632,18 @@ Linux内核层 -&gt; 硬件抽象层（HAL） -&gt; 原生C/C++层 + Android Run
     <div class="post-content" id="post-content" itemprop="postContent">
 
     
-        Java随笔 - 枚举类前言
-枚举类是JDK 5开始引入的，其知识点比较少，又较C/C++中的枚举类型不一样，在这里，枚举以类的形式存在，下面学习枚举类的常见语法和在单例模式（设计模式）中的应用。
-
-常用语法先看一个典型例子，在C/C++/C#中都是很常见的例子：123enum Week &#123;	Monday, Tuesday, Wednesday, Thursday, Friday,...
+        Android自定义View和ViewGroup
+Android中提供了丰富、复杂的视图系统，widget类的组件：Button, TextView, EditText, ListView, CheckBox, RadioButton, Gallery, Spinner都是直接或间接继承于super类View，布局类：LinearLayout, FrameLayout, RelativeLa...
     
 
-        <a href="/2017/04/21/java-enum/" class="post-more waves-effect waves-button">
+        <a href="/2017/05/26/android-test/" class="post-more waves-effect waves-button">
             阅读全文...
         </a>
     </div>
     
     <div class="post-footer">
         
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li></ul>
-
-    </div>
-    
-</article>
-
-        </li>
-    
-        <li class="post-list-item fade">
-            <article id="post-java-interface-abstract"
-  class="article-card article-type-post" itemprop="blogPost">
-
-    <div class="post-meta">
-        <time class="post-time" title="2017年04月21日 1:08" datetime="2017-04-20T17:08:54.000Z"  itemprop="datePublished">2017-04-21</time>
-
-        
-
-
-        
-
-    </div>
-
-    
-
-
-  
-    <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2017/04/21/java-interface-abstract/">Java随笔 - 接口和抽象</a>
-    </h3>
-  
-
-
-
-
-    <div class="post-content" id="post-content" itemprop="postContent">
-
-    
-        Java随笔 - 接口和抽象类
-接口和抽象类有着相似和不同的地方，相似的地方在于都是为了在继承层次中，让上层更加通用的类更好地将数据隔离、封装、抽象出来，不同之处是两者使用的一些特性。
-
-抽象类在继承的层次中，处在上层的类更具通用性，也就是通用的超类，让此类作为抽象类，抽象类中的通用的方法进行抽象，在类中起到占位的作用，自己不去实现它，而让继承它的之类去实现它。
-抽象类的修饰词是abstra...
-    
-
-        <a href="/2017/04/21/java-interface-abstract/" class="post-more waves-effect waves-button">
-            阅读全文...
-        </a>
-    </div>
-    
-    <div class="post-footer">
-        
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li></ul>
-
-    </div>
-    
-</article>
-
-        </li>
-    
-        <li class="post-list-item fade">
-            <article id="post-java-note-object-copy"
-  class="article-card article-type-post" itemprop="blogPost">
-
-    <div class="post-meta">
-        <time class="post-time" title="2017年04月18日 0:48" datetime="2017-04-17T16:48:32.000Z"  itemprop="datePublished">2017-04-18</time>
-
-        
-
-
-        
-
-    </div>
-
-    
-
-
-  
-    <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2017/04/18/java-note-object-copy/">Java随笔 - 对象克隆</a>
-    </h3>
-  
-
-
-
-
-    <div class="post-content" id="post-content" itemprop="postContent">
-
-    
-        Java随笔 - 对象克隆
-本文总结Java对象的浅复制和深复制，以及Clonable接口。
-
-前言对象在传递的时候，会进行对象复制。对象的复制，可以分为浅复制和深复制。
-浅复制在下面的例子中，可以实现对象的复制，origin和copy对象变量引用同一个内存区域，copy调用raiseSalary方法可以修改origin对象所引用的内容。123456789101112131415161718...
-    
-
-        <a href="/2017/04/18/java-note-object-copy/" class="post-more waves-effect waves-button">
-            阅读全文...
-        </a>
-    </div>
-    
-    <div class="post-footer">
-        
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li></ul>
-
-    </div>
-    
-</article>
-
-        </li>
-    
-        <li class="post-list-item fade">
-            <article id="post-Android中的Animation"
-  class="article-card article-type-post" itemprop="blogPost">
-
-    <div class="post-meta">
-        <time class="post-time" title="2017年03月25日 14:29" datetime="2017-03-25T06:29:28.131Z"  itemprop="datePublished">2017-03-25</time>
-
-        
-
-
-        
-
-    </div>
-
-    
-
-
-  
-    <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2017/03/25/Android中的Animation/">Android中的动画和图形绘制</a>
-    </h3>
-  
-
-
-
-
-    <div class="post-content" id="post-content" itemprop="postContent">
-
-    
-        Android中的动画和图形绘制前言Android框架中提供了比较丰富的动画UI和2D、3D图形绘制API，包括底层的OpenGL和封装好的Animation。
-动画Android框架提供了两种动画模式，分别是属性动画（property animation）和视图动画（view animation）。Android官方比较推荐属性动画，它比较灵活，也具备更多的功能。除此之外，还可以利用dra...
-    
-
-        <a href="/2017/03/25/Android中的Animation/" class="post-more waves-effect waves-button">
-            阅读全文...
-        </a>
-    </div>
-    
-    <div class="post-footer">
-        
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DataStructure-Algorithm/">DataStructure&Algorithm</a></li></ul>
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li></ul>
 
     </div>
     
@@ -669,7 +656,7 @@ Linux内核层 -&gt; 硬件抽象层（HAL） -&gt; 原生C/C++层 + Android Run
     
 <nav id="page-nav">
     <div class="inner">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">下一页</a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">下一页</a>
     </div>
 </nav>
 

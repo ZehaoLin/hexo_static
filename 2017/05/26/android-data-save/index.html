@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>Android的数据储存 | Linzh&#39;s Blog | Standing on Shoulders of Giants</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Android">
+    <meta name="description" content="Android的数据存储与共享
+Android提供了多种数据储存与共享的方式，其中文件存储、SharedPreferences、数据库等只能用于当前应用程序中，而Content Provider不仅可以在应用程序内部进行数据存储和共享，还可以跨程序数据共享，而且是更加安全可靠的。
+
+文件存储文件存储数据是一种较常用的方法，在Android中读取/写入文件的方法，与Java中实现I/O的程序是完全一">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android的数据储存">
+<meta property="og:url" content="http://linzhs.cm/2017/05/26/android-data-save/index.html">
+<meta property="og:site_name" content="Linzh's Blog">
+<meta property="og:description" content="Android的数据存储与共享
+Android提供了多种数据储存与共享的方式，其中文件存储、SharedPreferences、数据库等只能用于当前应用程序中，而Content Provider不仅可以在应用程序内部进行数据存储和共享，还可以跨程序数据共享，而且是更加安全可靠的。
+
+文件存储文件存储数据是一种较常用的方法，在Android中读取/写入文件的方法，与Java中实现I/O的程序是完全一">
+<meta property="og:updated_time" content="2017-05-25T18:04:00.996Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android的数据储存">
+<meta name="twitter:description" content="Android的数据存储与共享
+Android提供了多种数据储存与共享的方式，其中文件存储、SharedPreferences、数据库等只能用于当前应用程序中，而Content Provider不仅可以在应用程序内部进行数据存储和共享，还可以跨程序数据共享，而且是更加安全可靠的。
+
+文件存储文件存储数据是一种较常用的方法，在Android中读取/写入文件的方法，与Java中实现I/O的程序是完全一">
+    
+        <link rel="alternative" href="/atom.xml" title="Linzh&#39;s Blog" type="application/atom+xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.4.8">
+    <script>window.lazyScripts=[]</script>
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/linzh.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Linzh</h5>
+          <a href="mailto:lzh_547590520@163.com" title="lzh_547590520@163.com" class="mail">lzh_547590520@163.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                Home Page
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/ZehaoLin" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://www.weibo.com/L_Ceylon" target="_blank" >
+                <i class="icon icon-lg icon-weibo"></i>
+                Weibo
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/" target="_blank" >
+                <i class="icon icon-lg icon-link"></i>
+                About
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Android的数据储存</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Android的数据储存</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-05-25T18:04:00.000Z" itemprop="datePublished" class="page-time">
+  2017-05-26
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Android的数据存储与共享"><span class="post-toc-number">1.</span> <span class="post-toc-text">Android的数据存储与共享</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#文件存储"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">文件存储</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#写操作"><span class="post-toc-number">1.1.1.</span> <span class="post-toc-text">写操作</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#读操作"><span class="post-toc-number">1.1.2.</span> <span class="post-toc-text">读操作</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#SharedPreferences"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">SharedPreferences</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#存储数据步骤"><span class="post-toc-number">1.2.1.</span> <span class="post-toc-text">存储数据步骤</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#读取数据"><span class="post-toc-number">1.2.2.</span> <span class="post-toc-text">读取数据</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#SQLite"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">SQLite</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#创建数据库"><span class="post-toc-number">1.3.1.</span> <span class="post-toc-text">创建数据库</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#升级数据库"><span class="post-toc-number">1.3.2.</span> <span class="post-toc-text">升级数据库</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#添加数据"><span class="post-toc-number">1.3.3.</span> <span class="post-toc-text">添加数据</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#更新数据"><span class="post-toc-number">1.3.4.</span> <span class="post-toc-text">更新数据</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#删除数据"><span class="post-toc-number">1.3.5.</span> <span class="post-toc-text">删除数据</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#查询数据"><span class="post-toc-number">1.3.6.</span> <span class="post-toc-text">查询数据</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Content-Provider"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">Content Provider</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#访问现有内容提供器"><span class="post-toc-number">1.4.1.</span> <span class="post-toc-text">访问现有内容提供器</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#定制内容提供器"><span class="post-toc-number">1.4.2.</span> <span class="post-toc-text">定制内容提供器</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#网络存储"><span class="post-toc-number">1.5.</span> <span class="post-toc-text">网络存储</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+    
+<article id="post-android-data-save"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Android的数据储存</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017年05月26日 2:04" datetime="2017-05-25T18:04:00.000Z"  itemprop="datePublished">2017-05-26</time>
+
+            
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h1 id="Android的数据存储与共享"><a href="#Android的数据存储与共享" class="headerlink" title="Android的数据存储与共享"></a>Android的数据存储与共享</h1><blockquote>
+<p>Android提供了多种数据储存与共享的方式，其中文件存储、SharedPreferences、数据库等只能用于当前应用程序中，而Content Provider不仅可以在应用程序内部进行数据存储和共享，还可以跨程序数据共享，而且是更加安全可靠的。</p>
+</blockquote>
+<h2 id="文件存储"><a href="#文件存储" class="headerlink" title="文件存储"></a>文件存储</h2><p>文件存储数据是一种较常用的方法，在Android中读取/写入文件的方法，与Java中实现I/O的程序是完全一样的，提供了openFileInput()和openFileOutput()方法来读取设备上的文件。</p>
+<p>文件储存是不可以包含文件目录的，默认存储在/data/data/<package name="">/files下。</package></p>
+<h3 id="写操作"><a href="#写操作" class="headerlink" title="写操作"></a>写操作</h3><p>使用Context的openFileOutput()方法，有两个参数：</p>
+<ul>
+<li>文件名</li>
+<li>文件操作模式 默认为MODE_PRIVATE，表示当指定文件名的时候，所写入内容覆盖源文件内容。还可以指定MODE_APPEND模式，即表示源文件存在的时候追加内容，不存在的时候创建</li>
+</ul>
+<blockquote>
+<p>MODE_WORLD_READAVLE和MODE_WORLD_WRITEABLE模式已被弃用，使用存在风险</p>
+</blockquote>
+<p>demo:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">String data = &quot;Data to save&quot;;</div><div class="line">FileOutputStream out = null;</div><div class="line">BufferWriter writer = null;</div><div class="line">try &#123;</div><div class="line">    out = openFileOutput(&quot;data&quot;, Context.MODE_PRIVATE);</div><div class="line">    writer = new BufferWriter(new OutputStreamWriter(out));</div><div class="line">    writer.write(data);</div><div class="line">&#125; catch (IOException e) &#123;</div><div class="line">    e.printStackTrace();</div><div class="line">&#125; finally &#123;</div><div class="line">    try &#123;</div><div class="line">        if (writer != null) &#123;</div><div class="line">            writer.close();</div><div class="line">        &#125;</div><div class="line">    &#125; catch (IOException e) &#123;</div><div class="line">        e.printStackTrace();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="读操作"><a href="#读操作" class="headerlink" title="读操作"></a>读操作</h3><p>使用Context的openFileInput()方法，接收一个文件名字符串参数。</p>
+<p>demo:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">FileInputStream in = null;</div><div class="line">BufferReader reader = null;</div><div class="line">StringBuffer content = new StringBuffer();</div><div class="line">try &#123;</div><div class="line">    in = openFileInput(&quot;data&quot;);</div><div class="line">    reader = new BufferWirter(new InputStreamWriter(in));</div><div class="line">    String line = &quot;&quot;;</div><div class="line">    while ((line = reader.readLine() != null) &#123;</div><div class="line">        content.append(line);</div><div class="line">    &#125;</div><div class="line">&#125; catch (IOException e) &#123;</div><div class="line">    e.printStackTrace();</div><div class="line">&#125; finally &#123;</div><div class="line">    try &#123;</div><div class="line">        if (reader != null) &#123;</div><div class="line">            reader.close();</div><div class="line">        &#125;</div><div class="line">    &#125; catch (IOException e) &#123;</div><div class="line">        e.printStackTrace();</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">System.out.println(content.toString());</div></pre></td></tr></table></figure></p>
+<h2 id="SharedPreferences"><a href="#SharedPreferences" class="headerlink" title="SharedPreferences"></a>SharedPreferences</h2><p>SharedPreferences是Android提供的用来存储一些简单配置信息的一种机制，采用了XML格式将数据以键值对的形式存储到设备中。只能在同一个包内使用，不能在不同的包之间使用。</p>
+<p>SharedPreferences的默认文件位置是/data/data/<package name="">/shared_prefs/，Android提供了3种用于获取SharedPreferences对象的方法。</package></p>
+<ul>
+<li>Context.getSharedPreferences()</li>
+</ul>
+<p>此方法接收两个参数，第一个为文件名，不存在就创建。第二个参数为操作模式，Android6.0开始只有一个默认操作模式，为MODE_PRIVATE，也就是指定为0。</p>
+<ul>
+<li>Activity.getPreferences()</li>
+</ul>
+<p>这个方法是getSharedPreferences()方法的特殊形式，只有一个操作模式参数，文件名自动设置为当前活动类名。</p>
+<ul>
+<li>PreferenceManager.getDefaultSharedPreferences()</li>
+</ul>
+<p>这是一个静态方法，接收一个Context参数，并自动使用当前应用程序的报名作为前缀来命名SharedPreference文件。</p>
+<h3 id="存储数据步骤"><a href="#存储数据步骤" class="headerlink" title="存储数据步骤"></a>存储数据步骤</h3><p>首选根据以上三种方法中的一种获取SharedPreferences对象，然后：</p>
+<ul>
+<li>调用SharedPreferences.edit()方法获取一个SharedPreferences.Editor对象；</li>
+<li>想SharedPreferences.Editor对象添加数据，以putXXX的形式；</li>
+<li>调用apply()方法将添加的数据提交完成保存。</li>
+</ul>
+<p>demo:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">SharedPreferences.Editor editor = getSharedPreferences(&quot;data&quot;, MODE_PRIVATE).edit();</div><div class="line">editor.putString(&quot;name&quot;, &quot;Tom&quot;);</div><div class="line">editor.putInt(&quot;age&quot;, 28);</div><div class="line">editor.putBoolean(&quot;married&quot;, false);</div><div class="line">editor.apply();</div></pre></td></tr></table></figure></p>
+<h3 id="读取数据"><a href="#读取数据" class="headerlink" title="读取数据"></a>读取数据</h3><p>demo:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">SharedPreferences pref = getSharedPreferences(&quot;data&quot;, MODE_PRIVATE);</div><div class="line">String name = pref.getString(&quot;name&quot;, &quot;&quot;);//第二参数为键没有对应的值时会以这个参数的数据返回</div><div class="line">int age = pref.getInt(&quot;age&quot;, 0);</div><div class="line">boolean married = pref.getBoolean(&quot;married&quot;, false);</div></pre></td></tr></table></figure></p>
+<h2 id="SQLite"><a href="#SQLite" class="headerlink" title="SQLite"></a>SQLite</h2><p>SQLite是Android所带的一个标准的数据库，它支持SQL语句，它是一个轻量级的嵌入式数据库。</p>
+<p>Android提供了一个抽象类，SQLiteOpenHelper帮助类来更加方便地管理数据库，借助这个类可以轻松地对数据库进行创建和升级。</p>
+<p>SQLiteOpenHelper抽象类有两个抽象方法：</p>
+<ul>
+<li>onCreate()</li>
+<li>onUpgrade()</li>
+</ul>
+<p>另外还提供了两个实例方法：</p>
+<ul>
+<li>getReadableDataBase() </li>
+<li>getWritableDatavase()</li>
+</ul>
+<p>这两个方法都可以创建或者打开一个现有的数据库，没有则创建，并返回一个可对数据库进行读写操作的对象。若磁盘已满，则R方法只能读，W方法则会抛出异常。</p>
+<p>SQLiteOpenHelper提供了两个可重写构造方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">public SQLiteOpenHelper(Context context, String name, CursorFactory factory, int version)</div><div class="line">public SQLiteOpenHelper(Context context, String name, CursorFactory factory, int version,DatabaseErrorHandler errorHandler)</div></pre></td></tr></table></figure></p>
+<p>参数：</p>
+<ul>
+<li>context</li>
+<li>name  数据库名 默认存放在/dat/data/<package name="">/databases/</package></li>
+<li>factory 查询数据返回的Cursor，一般为null</li>
+<li>version 数据库版本号，可用于升级数据库</li>
+</ul>
+<p>执行数据库语句：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">db.execSQL(string);</div></pre></td></tr></table></figure></p>
+<p>实现模板：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">public class MyDatabaseHelper extends SQLiteOpenHelper &#123;</div><div class="line"> </div><div class="line">    public static final String CREATE_BOOK = &quot;create table Book (&quot;</div><div class="line">            + &quot;id integer primary key autoincrement, &quot;</div><div class="line">            + &quot;author text, &quot;</div><div class="line">            + &quot;price real, &quot;</div><div class="line">            + &quot;pages integer, &quot;</div><div class="line">            + &quot;name text)&quot;;   </div><div class="line">            </div><div class="line">    private Context mContext;</div><div class="line"></div><div class="line">    public MyDatabaseHelper(Context context, String name,</div><div class="line">                            SQLiteDatabase.CursorFactory factory, int version) &#123;</div><div class="line">        super(context, name, factory, version);</div><div class="line">        mContext = context;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    @Override</div><div class="line">    public void onCreate(SQLiteDatabase db) &#123;</div><div class="line">        db.execSQL(CREATE_BOOK);</div><div class="line">        Toast.makeText(mContext, &quot;Create succeeded&quot;, Toast.LENGTH_SHORT).show();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) &#123;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="创建数据库"><a href="#创建数据库" class="headerlink" title="创建数据库"></a>创建数据库</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">MyDatabaseHelper dbHelper = new MyDatabaseHelper(this, &quot;BookStore.db&quot;, null, 1);</div><div class="line">dbHelper.getWritableDatabase();</div></pre></td></tr></table></figure>
+<h3 id="升级数据库"><a href="#升级数据库" class="headerlink" title="升级数据库"></a>升级数据库</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">public static final String CREATE_CATEGORY = &quot;create table Category (&quot;</div><div class="line">            + &quot;id integer primary key autoincrement, &quot;</div><div class="line">            + &quot;category_name text, &quot;</div><div class="line">            + &quot;category_code integer)&quot;;</div><div class="line">            </div><div class="line">@Override</div><div class="line">public void onCreate(SQLiteDatabase db) &#123;</div><div class="line">    db.execSQL(CREATE_BOOK);</div><div class="line">    db.execSQL(CREATE_CATEGORY);</div><div class="line">    Toast.makeText(mContext, &quot;Create succeeded&quot;, Toast.LENGTH_SHORT).show();</div><div class="line">&#125;</div><div class="line"></div><div class="line">@Override</div><div class="line">public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) &#123;</div><div class="line">    db.execSQL(&quot;drop table if exists Book&quot;);</div><div class="line">    db.execSQL(&quot;drop table if exists Category&quot;);</div><div class="line">    onCreate(db);</div><div class="line">&#125;</div><div class="line"></div><div class="line">MyDatabaseHelper dbHelper = new MyDatabaseHelper(this, &quot;BookStore.db&quot;, null, 2);</div><div class="line">dbHelper.getWritableDatabase();</div></pre></td></tr></table></figure>
+<h3 id="添加数据"><a href="#添加数据" class="headerlink" title="添加数据"></a>添加数据</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">SQLiteDatabase db = dbHelper.getWritableDatabase();</div><div class="line">ContentValues values = new ContentValues();</div><div class="line">// 开始组装第一条数据</div><div class="line">values.put(&quot;name&quot;, &quot;The Da Vinci Code&quot;);</div><div class="line">values.put(&quot;author&quot;, &quot;Dan Brown&quot;);</div><div class="line">values.put(&quot;pages&quot;, 454);</div><div class="line">values.put(&quot;price&quot;, 16.96);</div><div class="line">db.insert(&quot;Book&quot;, null, values); // 插入第一条数据</div><div class="line">values.clear();</div><div class="line">// 开始组装第二条数据</div><div class="line">values.put(&quot;name&quot;, &quot;The Lost Symbol&quot;);</div><div class="line">values.put(&quot;author&quot;, &quot;Dan Brown&quot;);</div><div class="line">values.put(&quot;pages&quot;, 510);</div><div class="line">values.put(&quot;price&quot;, 19.95);</div><div class="line">db.insert(&quot;Book&quot;, null, values); // 插入第二条数据</div></pre></td></tr></table></figure>
+<h3 id="更新数据"><a href="#更新数据" class="headerlink" title="更新数据"></a>更新数据</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">SQLiteDatabase db = dbHelper.getWritableDatabase();</div><div class="line">ContentValues values = new ContentValues();</div><div class="line">values.put(&quot;price&quot;, 10.99);</div><div class="line">db.update(&quot;Book&quot;, values, &quot;name = ?&quot;, new String[] &#123; &quot;The Da Vinci Code&quot; &#125;);</div></pre></td></tr></table></figure>
+<h3 id="删除数据"><a href="#删除数据" class="headerlink" title="删除数据"></a>删除数据</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">SQLiteDatabase db = dbHelper.getWritableDatabase();</div><div class="line">db.delete(&quot;Book&quot;, &quot;pages &gt; ?&quot;, new String[] &#123; &quot;500&quot; &#125;);</div></pre></td></tr></table></figure>
+<h3 id="查询数据"><a href="#查询数据" class="headerlink" title="查询数据"></a>查询数据</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">SQLiteDatabase db = dbHelper.getWritableDatabase();</div><div class="line">// 查询Book表中所有的数据</div><div class="line">Cursor cursor = db.query(&quot;Book&quot;, null, null, null, null, null, null);</div><div class="line">if (cursor.moveToFirst()) &#123;</div><div class="line">    do &#123;</div><div class="line">        // 遍历Cursor对象，取出数据并打印</div><div class="line">        String name = cursor.getString(cursor.getColumnIndex(&quot;name&quot;));</div><div class="line">        String author = cursor.getString(cursor.getColumnIndex(&quot;author&quot;));</div><div class="line">        int pages = cursor.getInt(cursor.getColumnIndex(&quot;pages&quot;));</div><div class="line">        double price = cursor.getDouble(cursor.getColumnIndex(&quot;price&quot;));</div><div class="line">        Log.d(&quot;MainActivity&quot;, &quot;book name is &quot; + name);</div><div class="line">        Log.d(&quot;MainActivity&quot;, &quot;book author is &quot; + author);</div><div class="line">        Log.d(&quot;MainActivity&quot;, &quot;book pages is &quot; + pages);</div><div class="line">        Log.d(&quot;MainActivity&quot;, &quot;book price is &quot; + price);</div><div class="line">    &#125; while (cursor.moveToNext());</div><div class="line">&#125;</div><div class="line">cursor.close();</div></pre></td></tr></table></figure>
+<h2 id="Content-Provider"><a href="#Content-Provider" class="headerlink" title="Content Provider"></a>Content Provider</h2><p>Content Provider是Android的四大组件之一，主要用于应用程序之间进行数据交换，从而能够让其他的应用保存或读取此Content Provider的各种数据类型。</p>
+<p>内容提供器有两种用法：</p>
+<ul>
+<li>使用现用内容提供器来读取或者操作相应程序中的数据</li>
+<li>创建自己的内容提供器供程序使用的外部接口</li>
+</ul>
+<p>访问内容提供器共享数据，必须使用Context.getContentResolver()静态方法获取ContentResolver对象实例来进行数据的CRUD操作。</p>
+<ul>
+<li>insert()</li>
+<li>delete()</li>
+<li>query()</li>
+<li>update()</li>
+</ul>
+<p>不同于数据库，内容提供器的访问是安全的，其需要提供一个指定的uri才能够访问。</p>
+<h3 id="访问现有内容提供器"><a href="#访问现有内容提供器" class="headerlink" title="访问现有内容提供器"></a>访问现有内容提供器</h3><p>查询现有的联系人内容提供器demo：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">List&lt;String&gt; contactsList = new ArrayList&lt;&gt;();</div><div class="line">Cursor cursor = null;</div><div class="line">try &#123;</div><div class="line">    // 查询联系人数据</div><div class="line">    cursor = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null);</div><div class="line">    if (cursor != null) &#123;</div><div class="line">        while (cursor.moveToNext()) &#123;</div><div class="line">            // 获取联系人姓名</div><div class="line">            String displayName = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));</div><div class="line">            // 获取联系人手机号</div><div class="line">            String number = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));</div><div class="line">            contactsList.add(displayName + &quot;\n&quot; + number);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125; catch (Exception e) &#123;</div><div class="line">    e.printStackTrace();</div><div class="line">&#125; finally &#123;</div><div class="line">    if (cursor != null) &#123;</div><div class="line">        cursor.close();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="定制内容提供器"><a href="#定制内容提供器" class="headerlink" title="定制内容提供器"></a>定制内容提供器</h3><p>创建自己的内容提供器，需要去继承抽象类ContentProvider，并实现6个抽象方法，以下为模板：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line">public class MyProvider extends ContentProvider &#123;</div><div class="line">    @Overrride</div><div class="line">    public boolean onCreate() &#123;</div><div class="line">        return fasle;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    @Override</div><div class="line">    public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) &#123;</div><div class="line">        return null;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    @Override</div><div class="line">    public Uri insert(Uri uri, ContentValues values) &#123;</div><div class="line">        return null;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    @Override</div><div class="line">    public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) &#123;</div><div class="line">        return 0;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    @Override</div><div class="line">    public int delete(Uri uri, String selection, String[] selectionArgs) &#123;</div><div class="line">        return 0;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    @Override</div><div class="line">    public String getType(Uri uri) &#123;</div><div class="line">        return null;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>参数说明：</p>
+<ul>
+<li>返回值boolean 创建是否成功</li>
+<li>projection 用于确定查询哪些列</li>
+<li>selection和selectionArgs用于约束查询哪些行</li>
+<li>sortOder 用于对结果进行排序</li>
+<li>Cursor查询结果对象</li>
+<li>getType返回相应的MIME类型</li>
+</ul>
+<p>Uri通配符</p>
+<ul>
+<li>*：表示匹配任意长度的任意字符</li>
+<li>#：表示匹配任意长度的数字</li>
+</ul>
+<p>demo:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div></pre></td><td class="code"><pre><div class="line">public class DatabaseProvider extends ContentProvider &#123;</div><div class="line"></div><div class="line">    public static final int BOOK_DIR = 0;</div><div class="line"></div><div class="line">    public static final int BOOK_ITEM = 1;</div><div class="line"></div><div class="line">    public static final int CATEGORY_DIR = 2;</div><div class="line"></div><div class="line">    public static final int CATEGORY_ITEM = 3;</div><div class="line"></div><div class="line">    public static final String AUTHORITY = &quot;com.example.databasetest.provider&quot;;</div><div class="line"></div><div class="line">    private static UriMatcher uriMatcher;</div><div class="line"></div><div class="line">    private MyDatabaseHelper dbHelper;</div><div class="line"></div><div class="line">    static &#123;</div><div class="line">        uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);</div><div class="line">        uriMatcher.addURI(AUTHORITY, &quot;book&quot;, BOOK_DIR);</div><div class="line">        uriMatcher.addURI(AUTHORITY, &quot;book/#&quot;, BOOK_ITEM);</div><div class="line">        uriMatcher.addURI(AUTHORITY, &quot;category&quot;, CATEGORY_DIR);</div><div class="line">        uriMatcher.addURI(AUTHORITY, &quot;category/#&quot;, CATEGORY_ITEM);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public boolean onCreate() &#123;</div><div class="line">        dbHelper = new MyDatabaseHelper(getContext(), &quot;BookStore.db&quot;, null, 2);</div><div class="line">        return true;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) &#123;</div><div class="line">        // 查询数据</div><div class="line">        SQLiteDatabase db = dbHelper.getReadableDatabase();</div><div class="line">        Cursor cursor = null;</div><div class="line">        switch (uriMatcher.match(uri)) &#123;</div><div class="line">            case BOOK_DIR:</div><div class="line">                cursor = db.query(&quot;Book&quot;, projection, selection, selectionArgs, null, null, sortOrder);</div><div class="line">                break;</div><div class="line">            case BOOK_ITEM:</div><div class="line">                String bookId = uri.getPathSegments().get(1);</div><div class="line">                cursor = db.query(&quot;Book&quot;, projection, &quot;id = ?&quot;, new String[] &#123; bookId &#125;, null, null, sortOrder);</div><div class="line">                break;</div><div class="line">            case CATEGORY_DIR:</div><div class="line">                cursor = db.query(&quot;Category&quot;, projection, selection, selectionArgs, null, null, sortOrder);</div><div class="line">                break;</div><div class="line">            case CATEGORY_ITEM:</div><div class="line">                String categoryId = uri.getPathSegments().get(1);</div><div class="line">                cursor = db.query(&quot;Category&quot;, projection, &quot;id = ?&quot;, new String[] &#123; categoryId &#125;, null, null, sortOrder);</div><div class="line">                break;</div><div class="line">            default:</div><div class="line">                break;</div><div class="line">        &#125;</div><div class="line">        return cursor;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public Uri insert(Uri uri, ContentValues values) &#123;</div><div class="line">        // 添加数据</div><div class="line">        SQLiteDatabase db = dbHelper.getWritableDatabase();</div><div class="line">        Uri uriReturn = null;</div><div class="line">        switch (uriMatcher.match(uri)) &#123;</div><div class="line">            case BOOK_DIR:</div><div class="line">            case BOOK_ITEM:</div><div class="line">                long newBookId = db.insert(&quot;Book&quot;, null, values);</div><div class="line">                uriReturn = Uri.parse(&quot;content://&quot; + AUTHORITY + &quot;/book/&quot; + newBookId);</div><div class="line">                break;</div><div class="line">            case CATEGORY_DIR:</div><div class="line">            case CATEGORY_ITEM:</div><div class="line">                long newCategoryId = db.insert(&quot;Category&quot;, null, values);</div><div class="line">                uriReturn = Uri.parse(&quot;content://&quot; + AUTHORITY + &quot;/category/&quot; + newCategoryId);</div><div class="line">                break;</div><div class="line">            default:</div><div class="line">                break;</div><div class="line">        &#125;</div><div class="line">        return uriReturn;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) &#123;</div><div class="line">        // 更新数据</div><div class="line">        SQLiteDatabase db = dbHelper.getWritableDatabase();</div><div class="line">        int updatedRows = 0;</div><div class="line">        switch (uriMatcher.match(uri)) &#123;</div><div class="line">            case BOOK_DIR:</div><div class="line">                updatedRows = db.update(&quot;Book&quot;, values, selection, selectionArgs);</div><div class="line">                break;</div><div class="line">            case BOOK_ITEM:</div><div class="line">                String bookId = uri.getPathSegments().get(1);</div><div class="line">                updatedRows = db.update(&quot;Book&quot;, values, &quot;id = ?&quot;, new String[] &#123; bookId &#125;);</div><div class="line">                break;</div><div class="line">            case CATEGORY_DIR:</div><div class="line">                updatedRows = db.update(&quot;Category&quot;, values, selection, selectionArgs);</div><div class="line">                break;</div><div class="line">            case CATEGORY_ITEM:</div><div class="line">                String categoryId = uri.getPathSegments().get(1);</div><div class="line">                updatedRows = db.update(&quot;Category&quot;, values, &quot;id = ?&quot;, new String[] &#123; categoryId &#125;);</div><div class="line">                break;</div><div class="line">            default:</div><div class="line">                break;</div><div class="line">        &#125;</div><div class="line">        return updatedRows;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public int delete(Uri uri, String selection, String[] selectionArgs) &#123;</div><div class="line">        // 删除数据</div><div class="line">        SQLiteDatabase db = dbHelper.getWritableDatabase();</div><div class="line">        int deletedRows = 0;</div><div class="line">        switch (uriMatcher.match(uri)) &#123;</div><div class="line">            case BOOK_DIR:</div><div class="line">                deletedRows = db.delete(&quot;Book&quot;, selection, selectionArgs);</div><div class="line">                break;</div><div class="line">            case BOOK_ITEM:</div><div class="line">                String bookId = uri.getPathSegments().get(1);</div><div class="line">                deletedRows = db.delete(&quot;Book&quot;, &quot;id = ?&quot;, new String[] &#123; bookId &#125;);</div><div class="line">                break;</div><div class="line">            case CATEGORY_DIR:</div><div class="line">                deletedRows = db.delete(&quot;Category&quot;, selection, selectionArgs);</div><div class="line">                break;</div><div class="line">            case CATEGORY_ITEM:</div><div class="line">                String categoryId = uri.getPathSegments().get(1);</div><div class="line">                deletedRows = db.delete(&quot;Category&quot;, &quot;id = ?&quot;, new String[] &#123; categoryId &#125;);</div><div class="line">                break;</div><div class="line">            default:</div><div class="line">                break;</div><div class="line">        &#125;</div><div class="line">        return deletedRows;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public String getType(Uri uri) &#123;</div><div class="line">        switch (uriMatcher.match(uri)) &#123;</div><div class="line">            case BOOK_DIR:</div><div class="line">                return &quot;vnd.android.cursor.dir/vnd.com.example.databasetest. provider.book&quot;;</div><div class="line">            case BOOK_ITEM:</div><div class="line">                return &quot;vnd.android.cursor.item/vnd.com.example.databasetest. provider.book&quot;;</div><div class="line">            case CATEGORY_DIR:</div><div class="line">                return &quot;vnd.android.cursor.dir/vnd.com.example.databasetest. provider.category&quot;;</div><div class="line">            case CATEGORY_ITEM:</div><div class="line">                return &quot;vnd.android.cursor.item/vnd.com.example.databasetest. provider.category&quot;;</div><div class="line">        &#125;</div><div class="line">        return null;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="网络存储"><a href="#网络存储" class="headerlink" title="网络存储"></a>网络存储</h2>
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2017-05-25T18:04:00.996Z" itemprop="dateUpdated">2017年5月26日 2:04</time>
+</span><br>
+
+
+        这里写留言或版权声明：<a href="/2017/05/26/android-data-save/" target="_blank" rel="external">http://linzhs.cm/2017/05/26/android-data-save/</a>
+    </div>
+    <footer>
+        <a href="http://linzhs.cm">
+            <img src="/img/linzh.jpg" alt="Linzh">
+            Linzh
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://linzhs.cm/2017/05/26/android-data-save/&title=《Android的数据储存》 — Linzh's Blog&pic=http://linzhs.cm/img/linzh.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://linzhs.cm/2017/05/26/android-data-save/&title=《Android的数据储存》 — Linzh's Blog&source=Standing on Shoulders of Giants" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://linzhs.cm/2017/05/26/android-data-save/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Android的数据储存》 — Linzh's Blog&url=http://linzhs.cm/2017/05/26/android-data-save/&via=http://linzhs.cm" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://linzhs.cm/2017/05/26/android-data-save/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2017/05/26/android-view-def/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">Android自定义View和ViewGroup</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/04/30/ble-helper/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">Android的BLE简易收发助手</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+<div class="comments" id="comments">
+    <div class="ds-thread" data-thread-key="android-data-save" data-title="Android的数据储存" data-url="http://linzhs.cm/2017/05/26/android-data-save/"></div>
+</div>
+<script>
+lazyScripts.push('//cdn.bootcss.com/marked/0.3.6/marked.min.js');
+
+var duoshuoQuery = {short_name:'ysblog', theme: 'none'};
+lazyScripts.push('/js/embed.min.js?v=1.4.8');
+
+
+</script>
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        �Thanks
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <ul class="reward-items">
+        
+        <li>
+            <img src="/img/wechat.jpg" title="微信打赏二维码" alt="微信打赏二维码">
+            <p>微信</p>
+        </li>
+        
+
+        
+        <li>
+            <img src="/img/alipay.jpg" title="支付宝打赏二维码" alt="支付宝打赏二维码">
+            <p>支付宝</p>
+        </li>
+        
+    </ul>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            <span>博客内容遵循 <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">知识共享 署名 - 非商业性 - 相同方式共享 4.0协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p>
+            <span>Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a></span>
+            <span>Linzh's Blog &copy; 2017</span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://linzhs.cm/2017/05/26/android-data-save/&title=《Android的数据储存》 — Linzh's Blog&pic=http://linzhs.cm/img/linzh.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://linzhs.cm/2017/05/26/android-data-save/&title=《Android的数据储存》 — Linzh's Blog&source=Standing on Shoulders of Giants" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://linzhs.cm/2017/05/26/android-data-save/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Android的数据储存》 — Linzh's Blog&url=http://linzhs.cm/2017/05/26/android-data-save/&via=http://linzhs.cm" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://linzhs.cm/2017/05/26/android-data-save/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACKklEQVR42u3aS27jMBAFwNz/0s52gCSa95rUQlRxJRiKxLKBTn/49RWvzz/r+vO/7vz5Vz+v//pk28LAwHgs43O5ru/JX3zNa9/7y3MwMDBewNgVFlve7AkYGBgY149LrmfBFAMDA2MvY7aJPAHFwMDAmBWx6wnfLIhvrsUxMDAeyFgpLO++vmW+gYGB8SjGp1x5sboSyutdYWBgHM2YDSDz5Ox6nJC03oqBKAYGxgsY7QGL2UGN/I3XRzSiWhwDA+M4xvowIHnlbIQQHfjAwMA4mpEncyttuJa6bQCAgYHxcEYbOmdttfw4xYbcFgMD4zjGrsQuHxjkobZu82FgYBzNyBPEvOxcb9Jdh91opIGBgXEEY2V4mX9P7bCz/cowMDDOZuw6SNEGylmi+Z8dYmBgHMpoW/ltQz9/fttiw8DAeA8jafrPxpD3IeshAQYGxsMZ7TByJbFr09CiX4iBgfEaRl7EtjOHWXlcDEQxMDCOZswOh+Wft4cnVspaDAyMNzBWgmZ7CGN2dKzoHWJgYBzKuG5+Ja9cKYnbcrf4v4GBgXEoI3/07Al3FLcYGBinMj7lysPiHalk9DtgYGAcx8hXXmS27bMcWZwZwcDAOI6RBMrZVmahc7YHDAyMNzCSgrMtfVeGlHkZjIGBgZHf0zbL2iAeNd0wMDAwAsYwscsPVexNDTEwMB7FSMrOlRK3HXDW40wMDIyjGSul4/qmZ6F8ab6BgYHxJMY3cH8ZBrjCz4cAAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.4.8"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.4.8" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+</body>
+</html>

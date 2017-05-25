@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>Android的异步消息处理机制 | Linzh&#39;s Blog | Standing on Shoulders of Giants</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Android">
+    <meta name="description" content="Android的异步消息处理机制HandlerAndroid中的异步消息处理机制由4个部分组成：Message、Handler、MessageQueue、Looper。
+
+Message
+ Message是在线程之间传递的消息，它可以在内部携带少量的信息，用于在不同线程之间交换数据。
+
+Handler
+ Handler（处理者）主要是用于发送和处理信息的。发送一般是使用Handler的sendMe">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android的异步消息处理机制">
+<meta property="og:url" content="http://linzhs.cm/2017/05/26/android-message/index.html">
+<meta property="og:site_name" content="Linzh's Blog">
+<meta property="og:description" content="Android的异步消息处理机制HandlerAndroid中的异步消息处理机制由4个部分组成：Message、Handler、MessageQueue、Looper。
+
+Message
+ Message是在线程之间传递的消息，它可以在内部携带少量的信息，用于在不同线程之间交换数据。
+
+Handler
+ Handler（处理者）主要是用于发送和处理信息的。发送一般是使用Handler的sendMe">
+<meta property="og:updated_time" content="2017-05-25T18:15:40.329Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android的异步消息处理机制">
+<meta name="twitter:description" content="Android的异步消息处理机制HandlerAndroid中的异步消息处理机制由4个部分组成：Message、Handler、MessageQueue、Looper。
+
+Message
+ Message是在线程之间传递的消息，它可以在内部携带少量的信息，用于在不同线程之间交换数据。
+
+Handler
+ Handler（处理者）主要是用于发送和处理信息的。发送一般是使用Handler的sendMe">
+    
+        <link rel="alternative" href="/atom.xml" title="Linzh&#39;s Blog" type="application/atom+xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.4.8">
+    <script>window.lazyScripts=[]</script>
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/linzh.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Linzh</h5>
+          <a href="mailto:lzh_547590520@163.com" title="lzh_547590520@163.com" class="mail">lzh_547590520@163.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                Home Page
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/ZehaoLin" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://www.weibo.com/L_Ceylon" target="_blank" >
+                <i class="icon icon-lg icon-weibo"></i>
+                Weibo
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/" target="_blank" >
+                <i class="icon icon-lg icon-link"></i>
+                About
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Android的异步消息处理机制</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Android的异步消息处理机制</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-05-25T18:15:40.000Z" itemprop="datePublished" class="page-time">
+  2017-05-26
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Android的异步消息处理机制"><span class="post-toc-number">1.</span> <span class="post-toc-text">Android的异步消息处理机制</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Handler"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">Handler</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#AsyncTask"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">AsyncTask</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+    
+<article id="post-android-message"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Android的异步消息处理机制</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017年05月26日 2:15" datetime="2017-05-25T18:15:40.000Z"  itemprop="datePublished">2017-05-26</time>
+
+            
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h1 id="Android的异步消息处理机制"><a href="#Android的异步消息处理机制" class="headerlink" title="Android的异步消息处理机制"></a>Android的异步消息处理机制</h1><h2 id="Handler"><a href="#Handler" class="headerlink" title="Handler"></a>Handler</h2><p>Android中的异步消息处理机制由4个部分组成：Message、Handler、MessageQueue、Looper。</p>
+<ol>
+<li><p>Message</p>
+<p> Message是在线程之间传递的消息，它可以在内部携带少量的信息，用于在不同线程之间交换数据。</p>
+</li>
+<li><p>Handler</p>
+<p> Handler（处理者）主要是用于发送和处理信息的。发送一般是使用Handler的sendMessage方法，而发出去的信息经过一些地处理后，最终会传递到Handler的handleMessage方法中。</p>
+</li>
+<li><p>MessageQueue</p>
+<p> MessageQueue（消息队列）主要用于存放所有通过Handler发送出来的信息。这部分信息会一直存在于消息队列中等待被处理。每个线程中只会有一个MessageQueue对象。</p>
+</li>
+<li><p>Looper</p>
+<p> Looper是每个线程中的MessageQueue管家，调用Looper的loop方法后，就会进入到一个无线循环当中，然后每当发现MessageQueue中存在信息，就会将队列头部的信息取出，并传递给Handler的handleMessage方法。每个线程只有一个Looper对象。</p>
+</li>
+</ol>
+<p>demo：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">pubblic class MainActivity extends AppCompatActivity &#123;</div><div class="line">    public static final int UPDATE_TEXT = 1;</div><div class="line">    </div><div class="line">    private Handler handler = new Handler() &#123;</div><div class="line">        @Override</div><div class="line">        public void handleMessage(Message msg) &#123;</div><div class="line">            switch (msg.what) &#123;</div><div class="line">                case UPDATE_TEXT:</div><div class="line">                    // 刷新UI</div><div class="line">                    break;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    @Override </div><div class="line">    public void onClick(View v) &#123;</div><div class="line">        switch (v.getId()) &#123;</div><div class="line">            case R.id.test_button:</div><div class="line">                new Thread(new Runnable() &#123;</div><div class="line">                    @Overrride</div><div class="line">                    public void run() &#123;</div><div class="line">                        Message message = new Message();</div><div class="line">                        message.what = UPDATE_TEXT;</div><div class="line">                        handler.sendMessage(message);</div><div class="line">                    &#125;</div><div class="line">                &#125;).start();</div><div class="line">                break;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="AsyncTask"><a href="#AsyncTask" class="headerlink" title="AsyncTask"></a>AsyncTask</h2><p>为了更好地在子线程中对UI主线程进行操作，Android提供了一个异步的工具–AsyncTask，其能轻易地从子线程切换到主线程。</p>
+<p>AsyncTask是一个抽象类，要使用必须是集成并且实现抽象方法。AsyncTask类指定了三个参数，结构如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">public abstract class AsyncTask&lt;Params, Progress, Result&gt; &#123; ... &#125;</div></pre></td></tr></table></figure></p>
+<p>参数的作用：</p>
+<ul>
+<li><p>Params </p>
+<p>  在执行AsyncTask时需要传入的参数，可用于在后台任务中使用。</p>
+</li>
+<li><p>Progress</p>
+<p>  在后台任务执行时，如果需要在界面上显示当前的进度，则使用这个泛型参数来作为进度单位。</p>
+</li>
+<li><p>Result</p>
+<p>  当任务执行完毕后，如果需要对结果进行返回，则使用这里的指定泛型作为返回类型。</p>
+</li>
+</ul>
+<p>demo：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">public abstract class AsyncTask&lt;Void, Integer, Boolean&gt; &#123; ... &#125;</div></pre></td></tr></table></figure></p>
+<p>继承AsyncTask经常用到的重写方法有：</p>
+<ol>
+<li><p>onPreExecute()</p>
+<p> 这个方法在后台任务开始执行之前调用，用于进行一些界面上的初始化操作。</p>
+</li>
+<li><p>doInBackground(Params…)</p>
+<p> 这个方法的所有代码都在子线程中运行，可以用来执行所有耗时任务。任务一旦完成就可以通过return语句来将任务的执行结果返回，如果AsyncTask的第三个参数为Void，就可以不返回任务的执行结果。注意，此方法在子线程中运行，不可以刷新UI线程，应该调用publishProgress方法触发onProgressUpdate()方法来完成。</p>
+</li>
+<li><p>onProgressUpdate(Progress…)</p>
+<p> 当在后台任务中调用publishProgress()方法后，onProgressUpdate方法很快就会被调用，该方法中携带的参数就是在后台任务中传递过来的。在这个方法中可以对UI进行操作，利用参数中的数值就可以对界面元素进行相应的更新。</p>
+</li>
+<li><p>onPostExecute(Result)</p>
+<p> 当后台任务执行完毕并通过return语句进行返回时，这个方法就很快被调用。返回的数据会作为参数传递到此方法中，可以利用返回的数据来进行一些UI操作，比如提醒任务执行的结果，以及关闭进度对话框等。</p>
+</li>
+</ol>
+<p>demo:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line">class DownloadTask extends AsyncTask&lt;Void, Integer, Boolean&gt; &#123;</div><div class="line">    </div><div class="line">    @Override</div><div class="line">    protected void onPreExecute() &#123;</div><div class="line">        progressDialog.show();//显示进度对话框</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    @Override</div><div class="line">    protected Boolean doInBackground(Void... params) &#123;</div><div class="line">        try &#123;</div><div class="line">            while (true) &#123;</div><div class="line">                int downloadPercent = doDownload();</div><div class="line">                pubulishProgress(downloadPercent);//触发onProgressUpdate</div><div class="line">                if (downloadPercent &gt;= 100) &#123;</div><div class="line">                    break;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125; catch (Exception e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">            return false;</div><div class="line">        &#125;</div><div class="line">        </div><div class="line">        return true;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    @Override</div><div class="line">    protected void onProgressUpdate(Integer... values) &#123;</div><div class="line">        //在这里更新下载进度</div><div class="line">        progressDialog.setMessage(&quot;Downloaded &quot; + values[0] + &quot;%&quot;);</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    @Override</div><div class="line">    protected void onPostExecute(Boolean result) &#123;</div><div class="line">        progressDialog.dismiss();//关闭进度对话框</div><div class="line">        //显示结果</div><div class="line">        if (result) &#123;</div><div class="line">            Toast.makeText(context, &quot;Download succeeded&quot;, Toast.LENGTH_SHORT).show():</div><div class="line">        &#125; else &#123;</div><div class="line">            Toast.makeText(context, &quot;Download failed&quot;, Toast.LENGTH_SHORT).show():</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>执行：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">new DownloadTask().execute();</div></pre></td></tr></table></figure></p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2017-05-25T18:15:40.329Z" itemprop="dateUpdated">2017年5月26日 2:15</time>
+</span><br>
+
+
+        这里写留言或版权声明：<a href="/2017/05/26/android-message/" target="_blank" rel="external">http://linzhs.cm/2017/05/26/android-message/</a>
+    </div>
+    <footer>
+        <a href="http://linzhs.cm">
+            <img src="/img/linzh.jpg" alt="Linzh">
+            Linzh
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://linzhs.cm/2017/05/26/android-message/&title=《Android的异步消息处理机制》 — Linzh's Blog&pic=http://linzhs.cm/img/linzh.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://linzhs.cm/2017/05/26/android-message/&title=《Android的异步消息处理机制》 — Linzh's Blog&source=Standing on Shoulders of Giants" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://linzhs.cm/2017/05/26/android-message/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Android的异步消息处理机制》 — Linzh's Blog&url=http://linzhs.cm/2017/05/26/android-message/&via=http://linzhs.cm" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://linzhs.cm/2017/05/26/android-message/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2017/05/26/android-aidl/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">Android接口定义语言（AIDL）</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/05/26/android-service/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">Android的Service</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+<div class="comments" id="comments">
+    <div class="ds-thread" data-thread-key="android-message" data-title="Android的异步消息处理机制" data-url="http://linzhs.cm/2017/05/26/android-message/"></div>
+</div>
+<script>
+lazyScripts.push('//cdn.bootcss.com/marked/0.3.6/marked.min.js');
+
+var duoshuoQuery = {short_name:'ysblog', theme: 'none'};
+lazyScripts.push('/js/embed.min.js?v=1.4.8');
+
+
+</script>
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        �Thanks
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <ul class="reward-items">
+        
+        <li>
+            <img src="/img/wechat.jpg" title="微信打赏二维码" alt="微信打赏二维码">
+            <p>微信</p>
+        </li>
+        
+
+        
+        <li>
+            <img src="/img/alipay.jpg" title="支付宝打赏二维码" alt="支付宝打赏二维码">
+            <p>支付宝</p>
+        </li>
+        
+    </ul>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            <span>博客内容遵循 <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">知识共享 署名 - 非商业性 - 相同方式共享 4.0协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p>
+            <span>Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a></span>
+            <span>Linzh's Blog &copy; 2017</span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://linzhs.cm/2017/05/26/android-message/&title=《Android的异步消息处理机制》 — Linzh's Blog&pic=http://linzhs.cm/img/linzh.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://linzhs.cm/2017/05/26/android-message/&title=《Android的异步消息处理机制》 — Linzh's Blog&source=Standing on Shoulders of Giants" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://linzhs.cm/2017/05/26/android-message/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Android的异步消息处理机制》 — Linzh's Blog&url=http://linzhs.cm/2017/05/26/android-message/&via=http://linzhs.cm" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://linzhs.cm/2017/05/26/android-message/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACIUlEQVR42u3a3WrDMAwG0L7/S2e3g9L0k5SMxT6+Kix1fDoQ1s/rFa/j15o/ebyt97++7lgYGBiPZRyn66oXf9rzfP/kbBgYGPswPr34/HP+rTw0JztgYGBgJNudB9D8Itj7yTAwMDByxgR/fh3EwMDAmG+dhNF/motjYGA8kJFX3f/+8y39DQwMjEcxjuI6D529cJk//3EfDAyMpRm9BmR+RasW/UcjHRgYGIsyqiX7JCnNA/R5wM3bnBgYGGszqu3JO4Ynqj/Hl/8JBgbGBox5uOw1EqrhPqoIYmBgLMHItz5/Zl6q64VvDAyMHRh58M2va9V42CvzYWBg7MPoFdqSFyShPL8yfjkhBgbG0ozeK6uFuXmLNOJhYGAszeit8thWcA3NO5IXADAwMB7CmATQSVkt/9aNPVgMDIxHMeaDDvNG5ugMGBgYSzPy9mSvATnvVxT2x8DAWJrRGxerlu+rOfRlu2FgYCzEyFPKXrpbbXxW01oMDIy1GXm6WE4s44A7GdrAwMDYjZEcolq+zxPXXmsBAwNjT8Y81awmxsk+X57EwMBYlHEU12RQrDoQljchMDAw1mZUA2XhojZogiajG00YBgbGYxlJoOyNcPVCZ3V0DAMDYx9GknAmSeykqdlLgzEwMDCqQfaqy2U+5IGBgYHRS1mvSnqTkhwGBsY+jOQQvYGt5PJXbUVgYGDsxugNVZSvbsUn8zYDBgbG0owfeQSJh6tRj0sAAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.4.8"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.4.8" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+</body>
+</html>

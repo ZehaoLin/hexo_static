@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>Android接口定义语言（AIDL） | Linzh&#39;s Blog | Standing on Shoulders of Giants</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Android">
+    <meta name="description" content="Android 接口定义语言 (AIDL)AIDL可以定义客户端与服务使用IPC机型互相通信时都认可的编程接口。在Android，进程是fork形式存在的，独自占有一块内存，一个进程无法访问另一个进程的内存。但是，进程需要将其对象分解成操作系统能够识别的原语，并将对象编组成跨越边界的对象。Android使用AIDL来执行这一编组操作的代码繁琐工作。
+
+注：只有允许不同应用的客户端用IPC方式访问服">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android接口定义语言（AIDL）">
+<meta property="og:url" content="http://linzhs.cm/2017/05/26/android-aidl/index.html">
+<meta property="og:site_name" content="Linzh's Blog">
+<meta property="og:description" content="Android 接口定义语言 (AIDL)AIDL可以定义客户端与服务使用IPC机型互相通信时都认可的编程接口。在Android，进程是fork形式存在的，独自占有一块内存，一个进程无法访问另一个进程的内存。但是，进程需要将其对象分解成操作系统能够识别的原语，并将对象编组成跨越边界的对象。Android使用AIDL来执行这一编组操作的代码繁琐工作。
+
+注：只有允许不同应用的客户端用IPC方式访问服">
+<meta property="og:updated_time" content="2017-05-25T18:16:29.915Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android接口定义语言（AIDL）">
+<meta name="twitter:description" content="Android 接口定义语言 (AIDL)AIDL可以定义客户端与服务使用IPC机型互相通信时都认可的编程接口。在Android，进程是fork形式存在的，独自占有一块内存，一个进程无法访问另一个进程的内存。但是，进程需要将其对象分解成操作系统能够识别的原语，并将对象编组成跨越边界的对象。Android使用AIDL来执行这一编组操作的代码繁琐工作。
+
+注：只有允许不同应用的客户端用IPC方式访问服">
+    
+        <link rel="alternative" href="/atom.xml" title="Linzh&#39;s Blog" type="application/atom+xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.4.8">
+    <script>window.lazyScripts=[]</script>
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/linzh.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Linzh</h5>
+          <a href="mailto:lzh_547590520@163.com" title="lzh_547590520@163.com" class="mail">lzh_547590520@163.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                Home Page
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/ZehaoLin" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://www.weibo.com/L_Ceylon" target="_blank" >
+                <i class="icon icon-lg icon-weibo"></i>
+                Weibo
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/" target="_blank" >
+                <i class="icon icon-lg icon-link"></i>
+                About
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Android接口定义语言（AIDL）</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Android接口定义语言（AIDL）</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-05-25T18:16:29.000Z" itemprop="datePublished" class="page-time">
+  2017-05-26
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Android-接口定义语言-AIDL"><span class="post-toc-number">1.</span> <span class="post-toc-text">Android 接口定义语言 (AIDL)</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#定义AIDL接口"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">定义AIDL接口</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#创建-aidl文件"><span class="post-toc-number">1.1.1.</span> <span class="post-toc-text">创建.aidl文件</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#实现接口"><span class="post-toc-number">1.1.2.</span> <span class="post-toc-text">实现接口</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#向客户端公开该接口"><span class="post-toc-number">1.1.3.</span> <span class="post-toc-text">向客户端公开该接口</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#通过IPC传递对象"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">通过IPC传递对象</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#调用IPC方法"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">调用IPC方法</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+    
+<article id="post-android-aidl"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Android接口定义语言（AIDL）</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017年05月26日 2:16" datetime="2017-05-25T18:16:29.000Z"  itemprop="datePublished">2017-05-26</time>
+
+            
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h1 id="Android-接口定义语言-AIDL"><a href="#Android-接口定义语言-AIDL" class="headerlink" title="Android 接口定义语言 (AIDL)"></a>Android 接口定义语言 (AIDL)</h1><p>AIDL可以定义客户端与服务使用IPC机型互相通信时都认可的编程接口。在Android，进程是fork形式存在的，独自占有一块内存，一个进程无法访问另一个进程的内存。但是，进程需要将其对象分解成操作系统能够识别的原语，并将对象编组成跨越边界的对象。Android使用AIDL来执行这一编组操作的代码繁琐工作。</p>
+<blockquote>
+<p>注：只有允许不同应用的客户端用IPC方式访问服务，并且想要在服务中处理多线程，才有必要使用AIDL。如果不需要执行跨越不同应用的并发 IPC，就应该通过实现一个 Binder 创建接口；或者，如果想执行 IPC，但根本不需要处理多线程，则使用 Messenger 类来实现接口。</p>
+</blockquote>
+<h2 id="定义AIDL接口"><a href="#定义AIDL接口" class="headerlink" title="定义AIDL接口"></a>定义AIDL接口</h2><p>Android Studio下新建AIDL文件（基本已经全自动完成了），会默认生成一个aidl文件夹，并把.aidl文件放入这里。Android SDK工具都会生成一个基于该.aidl文件的IBinder接口。并且保存到项目的 gen/ 目录中，生成的文件名与.aidl文件名一致，只是使用了.java（例如：IRemoteService.aidl 生成的文件名是 IRemoteService.java）。服务必须视情况实现IBinder接口，然后客户端应用便可绑定到该服务，并调用IBinder中的方法来执行IPC。</p>
+<p>使用AIDL创建绑定服务，执行以下步骤：</p>
+<ol>
+<li><p>创建.aidl文件</p>
+<p> 此文件定义带有方法签名的编程接口。</p>
+</li>
+<li><p>实现接口</p>
+<p> Android SDK工具基于创建的.aidl文件，使用Java编程语言生成一个接口。此接口另有一个名为Stub的内部抽象类，用于拓展Binder类并实现AIDL接口中的方法。必须要拓展Stub类并实现方法。</p>
+</li>
+<li><p>向客户端公开该接口</p>
+<p> 实现 Service 并重写 onBind() 以返回 Stub 类的实现。</p>
+</li>
+</ol>
+<blockquote>
+<p>注意：在 AIDL 接口首次发布后对其进行的任何更改都必须保持向后兼容性，以避免中断其他应用对服务的使用。 也就是说，因为必须将自己的 .aidl 文件复制到其他应用，才能让这些应用访问这个服务的接口，因此必须保留对原始接口的支持。</p>
+</blockquote>
+<h3 id="创建-aidl文件"><a href="#创建-aidl文件" class="headerlink" title="创建.aidl文件"></a>创建.aidl文件</h3><p>AIDL使用简单的语法，这样可以通过可带参数和返回值的一个或多个方法来声明接口。参数和返回值可以是任意类型，甚至可以是其他AIDL生成的接口。</p>
+<p>.aidl文件有Java构建，每个.aidl文件都必须定义单个接口，并且只需包含接口声明和方法签名。</p>
+<p>默认情况下，AIDL支持以下数据类型：</p>
+<ul>
+<li>Java支持的所有基本数据类型（int, double, float, boolean, char long等）</li>
+<li>String</li>
+<li>CharSequence</li>
+<li>List</li>
+<li>Map</li>
+</ul>
+<blockquote>
+<p>List和Map中的所有元素都必须是以上列表中支持的数据类型，其他AIDL生成的接口或自己声明的可打包的类型。不支持通用 Map（如 Map<string,integer> 形式的 Map）。 另一端实际接收的具体类始终是 HashMap/ArrayList，但生成的方法使用的是 Map/List 接口。</string,integer></p>
+</blockquote>
+<p>定义服务接口时要注意：</p>
+<ul>
+<li>方法可带0到多个参数，返回值可以为空</li>
+<li>所有非原语参数都需要指示数据走向的方向标记。可以是in、out、inout。原语（基本类型）默认是in，不能是其他方向。应该将方法限定为真正需要的方向，因为编组参数的开销极大。</li>
+<li>.aidl文件中包括的所有代码注释都包含在生成的IBinder接口中（import和package语句之前的注释除外）</li>
+<li>只支持方法，不能公开AIDL中的静态字段。</li>
+</ul>
+<p>.aidl demo:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">// IRemoteService.aidl</div><div class="line">package com.example.android;</div><div class="line"></div><div class="line">// Declare any non-default types here with import statements</div><div class="line"></div><div class="line">/** Example service interface */</div><div class="line">interface IRemoteService &#123;</div><div class="line">    /** Request the process ID of this service, to do evil things with it. */</div><div class="line">    int getPid();</div><div class="line"></div><div class="line">    /** Demonstrates some basic types that you can use as parameters</div><div class="line">     * and return values in AIDL.</div><div class="line">     * 默认生成的方法，告知你可以使用哪些数据类型</div><div class="line">     */</div><div class="line">    void basicTypes(int anInt, long aLong, boolean aBoolean, float aFloat,</div><div class="line">            double aDouble, String aString);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="实现接口"><a href="#实现接口" class="headerlink" title="实现接口"></a>实现接口</h3><p>创建的AIDL文件会被转换成同名的.java文件，并且内部包含一个Stub子类，这个子类是其父接口（例如：YourInterface.Stub）的抽象实现，用于声明.aidl文件中的所有方法。</p>
+<p>要实现.aidl生成的接口，就要拓展生成的Binder接口并实现从.aidl文件继承的方法。</p>
+<p>demo：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">private final IRemoteService.Stub mBinder = new IRemoteService.Stub() &#123;</div><div class="line">    public int getPid()&#123;</div><div class="line">        return Process.myPid();</div><div class="line">    &#125;</div><div class="line">    public void basicTypes(int anInt, long aLong, boolean aBoolean,</div><div class="line">        float aFloat, double aDouble, String aString) &#123;</div><div class="line">        // Does nothing</div><div class="line">    &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>现在，mBinder 是 Stub 类的一个实例（一个 Binder），用于定义服务的 RPC 接口。 在下一步中，将向客户端公开该实例，以便客户端能与服务进行交互。</p>
+<p>在实现 AIDL 接口时应注意遵守以下这几个规则：</p>
+<ul>
+<li>由于不能保证在主线程上执行传入调用，因此一开始就需要做好多线程处理准备，并将服务正确地编译为线程安全服务。</li>
+<li>默认情况下，RPC 调用是同步调用。如果您明知服务完成请求的时间不止几毫秒，就不应该从 Activity 的主线程调用服务，因为这样做可能会使应用挂起（Android 可能会显示“Application is Not Responding”对话框）— 您通常应该从客户端内的单独线程调用服务。</li>
+<li>引发的任何异常都不会回传给调用方。</li>
+</ul>
+<h3 id="向客户端公开该接口"><a href="#向客户端公开该接口" class="headerlink" title="向客户端公开该接口"></a>向客户端公开该接口</h3><p>服务实现该接口后，就需要向客户端公开该接口，以便客户端进行绑定。要为服务公开该接口，需要拓展Service类并且实现onBinder()，以返回一个类实例，这个类实现了生成的Stub。</p>
+<p>demo：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">public class RemoteService extends Service &#123;</div><div class="line">    @Override</div><div class="line">    public void onCreate() &#123;</div><div class="line">        super.onCreate();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public IBinder onBind(Intent intent) &#123;</div><div class="line">        // Return the interface</div><div class="line">        return mBinder;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    private final IRemoteService.Stub mBinder = new IRemoteService.Stub() &#123;</div><div class="line">        public int getPid()&#123;</div><div class="line">            return Process.myPid();</div><div class="line">        &#125;</div><div class="line">        public void basicTypes(int anInt, long aLong, boolean aBoolean,</div><div class="line">            float aFloat, double aDouble, String aString) &#123;</div><div class="line">            // Does nothing</div><div class="line">        &#125;</div><div class="line">    &#125;;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>客户端还必须具有对 interface 类的访问权限，因此如果客户端和服务在不同的应用内，则客户端的应用 src/ 目录内必须包含 .aidl 文件（它生成 android.os.Binder 接口 — 为客户端提供对 AIDL 方法的访问权限）的副本。</p>
+<p>当客户端在 onServiceConnected() 回调中收到 IBinder 时，它必须调用 YourServiceInterface.Stub.asInterface(service) 以将返回的参数转换成 YourServiceInterface 类型。例如：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">IRemoteService mIRemoteService;</div><div class="line">private ServiceConnection mConnection = new ServiceConnection() &#123;</div><div class="line">    // Called when the connection with the service is established</div><div class="line">    public void onServiceConnected(ComponentName className, IBinder service) &#123;</div><div class="line">        // Following the example above for an AIDL interface,</div><div class="line">        // this gets an instance of the IRemoteInterface, which we can use to call on the service</div><div class="line">        mIRemoteService = IRemoteService.Stub.asInterface(service);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    // Called when the connection with the service disconnects unexpectedly</div><div class="line">    public void onServiceDisconnected(ComponentName className) &#123;</div><div class="line">        Log.e(TAG, &quot;Service has unexpectedly disconnected&quot;);</div><div class="line">        mIRemoteService = null;</div><div class="line">    &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<h2 id="通过IPC传递对象"><a href="#通过IPC传递对象" class="headerlink" title="通过IPC传递对象"></a>通过IPC传递对象</h2><p>通过IPC接口把某个类从一个进程发送到另一进程是可以实现的。不过必须要确保该类的代码对IPC通信的另一端可用，并且该类必须支持Parcelable接口。支持Parcelable接口是很重要的，Android系统可通过它将对象分解成可编组到各进程的原语。</p>
+<blockquote>
+<p>.aidl与C语言中的头文件类似，编译的时候不用添加.aidl文件，其并未被编译。</p>
+</blockquote>
+<p>以下这个 Rect.aidl 文件可创建一个可打包的 Rect 类：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">package android.graphics;</div><div class="line"></div><div class="line">// Declare Rect so AIDL can find it and knows that it implements</div><div class="line">// the parcelable protocol.</div><div class="line">parcelable Rect;</div></pre></td></tr></table></figure></p>
+<p>Rect类实现Parcelable接口实例：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div></pre></td><td class="code"><pre><div class="line">import android.os.Parcel;</div><div class="line">import android.os.Parcelable;</div><div class="line"></div><div class="line">public final class Rect implements Parcelable &#123;</div><div class="line">    public int left;</div><div class="line">    public int top;</div><div class="line">    public int right;</div><div class="line">    public int bottom;</div><div class="line"></div><div class="line">    public static final Parcelable.Creator&lt;Rect&gt; CREATOR = new</div><div class="line">Parcelable.Creator&lt;Rect&gt;() &#123;</div><div class="line">        public Rect createFromParcel(Parcel in) &#123;</div><div class="line">            return new Rect(in);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        public Rect[] newArray(int size) &#123;</div><div class="line">            return new Rect[size];</div><div class="line">        &#125;</div><div class="line">    &#125;;</div><div class="line"></div><div class="line">    public Rect() &#123;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    private Rect(Parcel in) &#123;</div><div class="line">        readFromParcel(in);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public void writeToParcel(Parcel out) &#123;</div><div class="line">        out.writeInt(left);</div><div class="line">        out.writeInt(top);</div><div class="line">        out.writeInt(right);</div><div class="line">        out.writeInt(bottom);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public void readFromParcel(Parcel in) &#123;</div><div class="line">        left = in.readInt();</div><div class="line">        top = in.readInt();</div><div class="line">        right = in.readInt();</div><div class="line">        bottom = in.readInt();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="调用IPC方法"><a href="#调用IPC方法" class="headerlink" title="调用IPC方法"></a>调用IPC方法</h2><p>调用类必须执行以下步骤，才能调用使用AIDL定义的远程接口：</p>
+<ol>
+<li>在项目src/目录中加入.aidl文件（Android Studio已默认创建）。</li>
+<li>声明一个IBinder接口实例（基于AIDL生成）。</li>
+<li>实现ServiceConnection</li>
+<li>调用Context.bindService()，以传入ServiceConnection的实现。</li>
+<li>再实现的onServiceConnected()中，将收到一个名为service的IBinder实例。调用YourInt<a href="">erfaceName.Stub.asInterface((IBinder)service)</a>，以将返回的参数转换为 YourInterface 类型。</li>
+<li>调用再接口上定义的方法。注意要始终捕获DeadObjectException异常，他们是连接中断时引发的，这也是远程方法引起的唯一异常。</li>
+<li>如需断开连接，需要在接口中调用Conext.unBindService()。</li>
+</ol>
+<p>有关调用 IPC 服务的几点说明：</p>
+<ul>
+<li>对象是跨进程计数的引用。</li>
+<li>可以将匿名对象作为方法参数发送。</li>
+</ul>
+<p>demo：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div><div class="line">172</div><div class="line">173</div><div class="line">174</div><div class="line">175</div><div class="line">176</div><div class="line">177</div><div class="line">178</div><div class="line">179</div><div class="line">180</div><div class="line">181</div><div class="line">182</div><div class="line">183</div><div class="line">184</div><div class="line">185</div><div class="line">186</div><div class="line">187</div><div class="line">188</div><div class="line">189</div><div class="line">190</div><div class="line">191</div><div class="line">192</div><div class="line">193</div><div class="line">194</div><div class="line">195</div><div class="line">196</div><div class="line">197</div><div class="line">198</div><div class="line">199</div><div class="line">200</div><div class="line">201</div><div class="line">202</div></pre></td><td class="code"><pre><div class="line">public static class Binding extends Activity &#123;</div><div class="line">    /** The primary interface we will be calling on the service. */</div><div class="line">    IRemoteService mService = null;</div><div class="line">    /** Another interface we use on the service. */</div><div class="line">    ISecondary mSecondaryService = null;</div><div class="line"></div><div class="line">    Button mKillButton;</div><div class="line">    TextView mCallbackText;</div><div class="line"></div><div class="line">    private boolean mIsBound;</div><div class="line"></div><div class="line">    /**</div><div class="line">     * Standard initialization of this activity.  Set up the UI, then wait</div><div class="line">     * for the user to poke it before doing anything.</div><div class="line">     */</div><div class="line">    @Override</div><div class="line">    protected void onCreate(Bundle savedInstanceState) &#123;</div><div class="line">        super.onCreate(savedInstanceState);</div><div class="line"></div><div class="line">        setContentView(R.layout.remote_service_binding);</div><div class="line"></div><div class="line">        // Watch for button clicks.</div><div class="line">        Button button = (Button)findViewById(R.id.bind);</div><div class="line">        button.setOnClickListener(mBindListener);</div><div class="line">        button = (Button)findViewById(R.id.unbind);</div><div class="line">        button.setOnClickListener(mUnbindListener);</div><div class="line">        mKillButton = (Button)findViewById(R.id.kill);</div><div class="line">        mKillButton.setOnClickListener(mKillListener);</div><div class="line">        mKillButton.setEnabled(false);</div><div class="line"></div><div class="line">        mCallbackText = (TextView)findViewById(R.id.callback);</div><div class="line">        mCallbackText.setText(&quot;Not attached.&quot;);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">     * Class for interacting with the main interface of the service.</div><div class="line">     */</div><div class="line">    private ServiceConnection mConnection = new ServiceConnection() &#123;</div><div class="line">        public void onServiceConnected(ComponentName className,</div><div class="line">                IBinder service) &#123;</div><div class="line">            // This is called when the connection with the service has been</div><div class="line">            // established, giving us the service object we can use to</div><div class="line">            // interact with the service.  We are communicating with our</div><div class="line">            // service through an IDL interface, so get a client-side</div><div class="line">            // representation of that from the raw service object.</div><div class="line">            mService = IRemoteService.Stub.asInterface(service);</div><div class="line">            mKillButton.setEnabled(true);</div><div class="line">            mCallbackText.setText(&quot;Attached.&quot;);</div><div class="line"></div><div class="line">            // We want to monitor the service for as long as we are</div><div class="line">            // connected to it.</div><div class="line">            try &#123;</div><div class="line">                mService.registerCallback(mCallback);</div><div class="line">            &#125; catch (RemoteException e) &#123;</div><div class="line">                // In this case the service has crashed before we could even</div><div class="line">                // do anything with it; we can count on soon being</div><div class="line">                // disconnected (and then reconnected if it can be restarted)</div><div class="line">                // so there is no need to do anything here.</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            // As part of the sample, tell the user what happened.</div><div class="line">            Toast.makeText(Binding.this, R.string.remote_service_connected,</div><div class="line">                    Toast.LENGTH_SHORT).show();</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        public void onServiceDisconnected(ComponentName className) &#123;</div><div class="line">            // This is called when the connection with the service has been</div><div class="line">            // unexpectedly disconnected -- that is, its process crashed.</div><div class="line">            mService = null;</div><div class="line">            mKillButton.setEnabled(false);</div><div class="line">            mCallbackText.setText(&quot;Disconnected.&quot;);</div><div class="line"></div><div class="line">            // As part of the sample, tell the user what happened.</div><div class="line">            Toast.makeText(Binding.this, R.string.remote_service_disconnected,</div><div class="line">                    Toast.LENGTH_SHORT).show();</div><div class="line">        &#125;</div><div class="line">    &#125;;</div><div class="line"></div><div class="line">    /**</div><div class="line">     * Class for interacting with the secondary interface of the service.</div><div class="line">     */</div><div class="line">    private ServiceConnection mSecondaryConnection = new ServiceConnection() &#123;</div><div class="line">        public void onServiceConnected(ComponentName className,</div><div class="line">                IBinder service) &#123;</div><div class="line">            // Connecting to a secondary interface is the same as any</div><div class="line">            // other interface.</div><div class="line">            mSecondaryService = ISecondary.Stub.asInterface(service);</div><div class="line">            mKillButton.setEnabled(true);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        public void onServiceDisconnected(ComponentName className) &#123;</div><div class="line">            mSecondaryService = null;</div><div class="line">            mKillButton.setEnabled(false);</div><div class="line">        &#125;</div><div class="line">    &#125;;</div><div class="line"></div><div class="line">    private OnClickListener mBindListener = new OnClickListener() &#123;</div><div class="line">        public void onClick(View v) &#123;</div><div class="line">            // Establish a couple connections with the service, binding</div><div class="line">            // by interface names.  This allows other applications to be</div><div class="line">            // installed that replace the remote service by implementing</div><div class="line">            // the same interface.</div><div class="line">            Intent intent = new Intent(Binding.this, RemoteService.class);</div><div class="line">            intent.setAction(IRemoteService.class.getName());</div><div class="line">            bindService(intent, mConnection, Context.BIND_AUTO_CREATE);</div><div class="line">            intent.setAction(ISecondary.class.getName());</div><div class="line">            bindService(intent, mSecondaryConnection, Context.BIND_AUTO_CREATE);</div><div class="line">            mIsBound = true;</div><div class="line">            mCallbackText.setText(&quot;Binding.&quot;);</div><div class="line">        &#125;</div><div class="line">    &#125;;</div><div class="line"></div><div class="line">    private OnClickListener mUnbindListener = new OnClickListener() &#123;</div><div class="line">        public void onClick(View v) &#123;</div><div class="line">            if (mIsBound) &#123;</div><div class="line">                // If we have received the service, and hence registered with</div><div class="line">                // it, then now is the time to unregister.</div><div class="line">                if (mService != null) &#123;</div><div class="line">                    try &#123;</div><div class="line">                        mService.unregisterCallback(mCallback);</div><div class="line">                    &#125; catch (RemoteException e) &#123;</div><div class="line">                        // There is nothing special we need to do if the service</div><div class="line">                        // has crashed.</div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line"></div><div class="line">                // Detach our existing connection.</div><div class="line">                unbindService(mConnection);</div><div class="line">                unbindService(mSecondaryConnection);</div><div class="line">                mKillButton.setEnabled(false);</div><div class="line">                mIsBound = false;</div><div class="line">                mCallbackText.setText(&quot;Unbinding.&quot;);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;;</div><div class="line"></div><div class="line">    private OnClickListener mKillListener = new OnClickListener() &#123;</div><div class="line">        public void onClick(View v) &#123;</div><div class="line">            // To kill the process hosting our service, we need to know its</div><div class="line">            // PID.  Conveniently our service has a call that will return</div><div class="line">            // to us that information.</div><div class="line">            if (mSecondaryService != null) &#123;</div><div class="line">                try &#123;</div><div class="line">                    int pid = mSecondaryService.getPid();</div><div class="line">                    // Note that, though this API allows us to request to</div><div class="line">                    // kill any process based on its PID, the kernel will</div><div class="line">                    // still impose standard restrictions on which PIDs you</div><div class="line">                    // are actually able to kill.  Typically this means only</div><div class="line">                    // the process running your application and any additional</div><div class="line">                    // processes created by that app as shown here; packages</div><div class="line">                    // sharing a common UID will also be able to kill each</div><div class="line">                    // other&apos;s processes.</div><div class="line">                    Process.killProcess(pid);</div><div class="line">                    mCallbackText.setText(&quot;Killed service process.&quot;);</div><div class="line">                &#125; catch (RemoteException ex) &#123;</div><div class="line">                    // Recover gracefully from the process hosting the</div><div class="line">                    // server dying.</div><div class="line">                    // Just for purposes of the sample, put up a notification.</div><div class="line">                    Toast.makeText(Binding.this,</div><div class="line">                            R.string.remote_call_failed,</div><div class="line">                            Toast.LENGTH_SHORT).show();</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;;</div><div class="line"></div><div class="line">    // ----------------------------------------------------------------------</div><div class="line">    // Code showing how to deal with callbacks.</div><div class="line">    // ----------------------------------------------------------------------</div><div class="line"></div><div class="line">    /**</div><div class="line">     * This implementation is used to receive callbacks from the remote</div><div class="line">     * service.</div><div class="line">     */</div><div class="line">    private IRemoteServiceCallback mCallback = new IRemoteServiceCallback.Stub() &#123;</div><div class="line">        /**</div><div class="line">         * This is called by the remote service regularly to tell us about</div><div class="line">         * new values.  Note that IPC calls are dispatched through a thread</div><div class="line">         * pool running in each process, so the code executing here will</div><div class="line">         * NOT be running in our main thread like most other things -- so,</div><div class="line">         * to update the UI, we need to use a Handler to hop over there.</div><div class="line">         */</div><div class="line">        public void valueChanged(int value) &#123;</div><div class="line">            mHandler.sendMessage(mHandler.obtainMessage(BUMP_MSG, value, 0));</div><div class="line">        &#125;</div><div class="line">    &#125;;</div><div class="line"></div><div class="line">    private static final int BUMP_MSG = 1;</div><div class="line"></div><div class="line">    private Handler mHandler = new Handler() &#123;</div><div class="line">        @Override public void handleMessage(Message msg) &#123;</div><div class="line">            switch (msg.what) &#123;</div><div class="line">                case BUMP_MSG:</div><div class="line">                    mCallbackText.setText(&quot;Received from service: &quot; + msg.arg1);</div><div class="line">                    break;</div><div class="line">                default:</div><div class="line">                    super.handleMessage(msg);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">    &#125;;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2017-05-25T18:16:29.915Z" itemprop="dateUpdated">2017年5月26日 2:16</time>
+</span><br>
+
+
+        这里写留言或版权声明：<a href="/2017/05/26/android-aidl/" target="_blank" rel="external">http://linzhs.cm/2017/05/26/android-aidl/</a>
+    </div>
+    <footer>
+        <a href="http://linzhs.cm">
+            <img src="/img/linzh.jpg" alt="Linzh">
+            Linzh
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://linzhs.cm/2017/05/26/android-aidl/&title=《Android接口定义语言（AIDL）》 — Linzh's Blog&pic=http://linzhs.cm/img/linzh.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://linzhs.cm/2017/05/26/android-aidl/&title=《Android接口定义语言（AIDL）》 — Linzh's Blog&source=Standing on Shoulders of Giants" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://linzhs.cm/2017/05/26/android-aidl/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Android接口定义语言（AIDL）》 — Linzh's Blog&url=http://linzhs.cm/2017/05/26/android-aidl/&via=http://linzhs.cm" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://linzhs.cm/2017/05/26/android-aidl/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2017/05/26/java-generic/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">Java随笔 - 泛型</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/05/26/android-message/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">Android的异步消息处理机制</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+<div class="comments" id="comments">
+    <div class="ds-thread" data-thread-key="android-aidl" data-title="Android接口定义语言（AIDL）" data-url="http://linzhs.cm/2017/05/26/android-aidl/"></div>
+</div>
+<script>
+lazyScripts.push('//cdn.bootcss.com/marked/0.3.6/marked.min.js');
+
+var duoshuoQuery = {short_name:'ysblog', theme: 'none'};
+lazyScripts.push('/js/embed.min.js?v=1.4.8');
+
+
+</script>
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        �Thanks
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <ul class="reward-items">
+        
+        <li>
+            <img src="/img/wechat.jpg" title="微信打赏二维码" alt="微信打赏二维码">
+            <p>微信</p>
+        </li>
+        
+
+        
+        <li>
+            <img src="/img/alipay.jpg" title="支付宝打赏二维码" alt="支付宝打赏二维码">
+            <p>支付宝</p>
+        </li>
+        
+    </ul>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            <span>博客内容遵循 <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">知识共享 署名 - 非商业性 - 相同方式共享 4.0协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p>
+            <span>Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a></span>
+            <span>Linzh's Blog &copy; 2017</span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://linzhs.cm/2017/05/26/android-aidl/&title=《Android接口定义语言（AIDL）》 — Linzh's Blog&pic=http://linzhs.cm/img/linzh.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://linzhs.cm/2017/05/26/android-aidl/&title=《Android接口定义语言（AIDL）》 — Linzh's Blog&source=Standing on Shoulders of Giants" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://linzhs.cm/2017/05/26/android-aidl/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Android接口定义语言（AIDL）》 — Linzh's Blog&url=http://linzhs.cm/2017/05/26/android-aidl/&via=http://linzhs.cm" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://linzhs.cm/2017/05/26/android-aidl/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAK4AAACuCAAAAACKZ2kyAAABwklEQVR42u3ay47CMAwFUP7/p5ktEkO5tpu0MzpZISjNaRdW/Hg84vV8Wa/fvP/66crjb05euLi4Y+7zcFVB74jjh8wNuLi4+7mfIsbxNUlgmtwfFxf3r3CPQ1X+ALi4uP+bOzkw4eLi3pmbbHCc6vRSpoW5Gi4u7oCbVynXfV5S38XFxW1xn8V1VqrT3B0XF3cLNw8oyZZJ6lINZLi4uNdye8WLvNXaC3xRroaLi3sqNx+b6DVUeqGwcCLDxcXdws1LltUS6nzwCxcX9ypuPlTRK5Tk9/zlPri4uBu5efpRbZdWhy2+HKRwcXG3cPMNeuHsrBfxsTiCi4u7jDsZ3JyHueoIFy4u7h5utfTZOx5NDkO4uLhXcfMN8uJpL/n58lJwcXFvwE0OOnmBIz8YNQMZLi7uqdxkg0nTtDqKESU/uLi427nzcmeeMhWuwcXFXcztBal8nKLXVin8ARcXdwE3X5OWalKWTcqvuLi4O7l5MlNtyp5VEMHFxb2KOw9DvWtGuRouLu7NuHnykw9qFDI2XFzcm3Hz0kkv0yqPbOLi4i7j5k3TPKUptE7zMIqLi7uFmweX/ICSoHuvCRcXdzH3B5nmkJ9HSN4pAAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.4.8"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.4.8" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+</body>
+</html>

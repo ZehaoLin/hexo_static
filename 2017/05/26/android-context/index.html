@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>Android的Context及其子类 | Linzh&#39;s Blog | Standing on Shoulders of Giants</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Android">
+    <meta name="description" content="Android的Context及其子类Android的系统组件很多，Activity、Service、BroadcastReceiver等都是很常用的，这些组件的创建都不能是凭空的，都需要借助Context这个核心功能类或者其子类。
+Context继承结构">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android的Context及其子类">
+<meta property="og:url" content="http://linzhs.cm/2017/05/26/android-context/index.html">
+<meta property="og:site_name" content="Linzh's Blog">
+<meta property="og:description" content="Android的Context及其子类Android的系统组件很多，Activity、Service、BroadcastReceiver等都是很常用的，这些组件的创建都不能是凭空的，都需要借助Context这个核心功能类或者其子类。
+Context继承结构">
+<meta property="og:image" content="http://img.blog.csdn.net/20151022212109519?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQv/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta property="og:updated_time" content="2017-05-25T18:12:37.311Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android的Context及其子类">
+<meta name="twitter:description" content="Android的Context及其子类Android的系统组件很多，Activity、Service、BroadcastReceiver等都是很常用的，这些组件的创建都不能是凭空的，都需要借助Context这个核心功能类或者其子类。
+Context继承结构">
+<meta name="twitter:image" content="http://img.blog.csdn.net/20151022212109519?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQv/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+    
+        <link rel="alternative" href="/atom.xml" title="Linzh&#39;s Blog" type="application/atom+xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.4.8">
+    <script>window.lazyScripts=[]</script>
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/linzh.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Linzh</h5>
+          <a href="mailto:lzh_547590520@163.com" title="lzh_547590520@163.com" class="mail">lzh_547590520@163.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                Home Page
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/ZehaoLin" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://www.weibo.com/L_Ceylon" target="_blank" >
+                <i class="icon icon-lg icon-weibo"></i>
+                Weibo
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/" target="_blank" >
+                <i class="icon icon-lg icon-link"></i>
+                About
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Android的Context及其子类</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Android的Context及其子类</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-05-25T18:12:37.000Z" itemprop="datePublished" class="page-time">
+  2017-05-26
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Android的Context及其子类"><span class="post-toc-number">1.</span> <span class="post-toc-text">Android的Context及其子类</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Context继承结构"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">Context继承结构</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Context的功能"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">Context的功能</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Context的数量"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">Context的数量</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Application-Context"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">Application Context</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#注意点"><span class="post-toc-number">1.5.</span> <span class="post-toc-text">注意点</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+    
+<article id="post-android-context"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Android的Context及其子类</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017年05月26日 2:12" datetime="2017-05-25T18:12:37.000Z"  itemprop="datePublished">2017-05-26</time>
+
+            
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h1 id="Android的Context及其子类"><a href="#Android的Context及其子类" class="headerlink" title="Android的Context及其子类"></a>Android的Context及其子类</h1><p>Android的系统组件很多，Activity、Service、BroadcastReceiver等都是很常用的，这些组件的创建都不能是凭空的，都需要借助Context这个核心功能类或者其子类。</p>
+<h2 id="Context继承结构"><a href="#Context继承结构" class="headerlink" title="Context继承结构"></a>Context继承结构</h2><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://img.blog.csdn.net/20151022212109519?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQv/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="image" title="">
+                </div>
+                <div class="image-caption">image</div>
+            </figure>
+<p>Context（android.content）是一个抽象类，它有两个继承类，分别是上下文封装的封装类ContextWrapper和上下文功能的实现类ContextImpl（可以从命名看出，Wrapper和Implments）。</p>
+<p>ContextWrapper有三个子类，分别是Application，Service，ContextThemeWrapper，ContextThemeWrapper是一个带主题的封装类，而它有一个直接子类就是Activity。</p>
+<p>从以上的继承关系上总结，Context有三种类型，分别是Apllication、Activity、Service。三个类分别承担着不同的任务，而他们具体的Context功能有ContextImpl去实现。</p>
+<h2 id="Context的功能"><a href="#Context的功能" class="headerlink" title="Context的功能"></a>Context的功能</h2><p>Context的功能很多，很强大。Toast、启动Activity、启动Service、发送广播、操作数据库等都需要用到Context。</p>
+<p>由于Context的具体能力是由ContextImpl去实现的，所以绝大多数场景下，Apllication、Activity、Service三类的Context是可以通用的。</p>
+<p>出于安全的考虑，Android做了一些限制，Android是不允许Activity或Dialog凭空出现的，一个Activity的启动必须要建立在另一个Activity的基础之上，也就是以此形成的返回栈。而Dialog则必须在一个Activity上面弹出（除非是System Alert类型的Dialog），因此在这种场景下，我们只能使用Activity类型的Context，否则将会出错。</p>
+<h2 id="Context的数量"><a href="#Context的数量" class="headerlink" title="Context的数量"></a>Context的数量</h2><p>Context数量 = Activity数量 + Service数量 + 1</p>
+<p>一个应用只能有一个Application，但是活动和服务可以有多个。</p>
+<h2 id="Application-Context"><a href="#Application-Context" class="headerlink" title="Application Context"></a>Application Context</h2><p>每个应用程序都会在AndroidManifest.xml上注册一个Application，默认是没有指定名字的。在Activity上获取Context的相关信息：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">public class MainActivity extends AppCompatActivity &#123;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    protected void onCreate(Bundle savedInstanceState) &#123;</div><div class="line">        super.onCreate(savedInstanceState);</div><div class="line">        setContentView(R.layout.activity_main);</div><div class="line"></div><div class="line">        Application application = (Application)getApplication();</div><div class="line">        Log.d(&quot;MainActivity&quot;, &quot;getApplication is&quot; + application);</div><div class="line"></div><div class="line">        Context appContext = getApplicationContext();</div><div class="line">        Log.d(&quot;MainActivity&quot;, &quot;getApplicationContext is&quot; + appContext);</div><div class="line"></div><div class="line">        Context baseContext = getBaseContext();</div><div class="line">        Log.d(&quot;MainActivity&quot;, &quot;getBaseContext is&quot; + baseContext);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>logcat输出结果<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">com.example.linzh.contexttest D/MainActivity: getApplication isandroid.app.Application@421b137</div><div class="line">com.example.linzh.contexttest D/MainActivity: getApplicationContext isandroid.app.Application@421b137</div><div class="line">com.example.linzh.contexttest D/MainActivity: getBaseContext isandroid.app.ContextImpl@de166a4</div></pre></td></tr></table></figure></p>
+<p>输出结果分析：</p>
+<p>在输出的结果里，getApplication和getApplicationContext的结果是一样的，因为Application本身也是Context（其子类）。所以这里获取的getApplicationContext就是Application本身的实例。</p>
+<p>但是，getApplicationContext和getApplication两者的应用范围是不一样的。getApplication只能在Activity和Service中被调用，而getApplicationContext适用范围更广，比如BroadcastReceiver是不能调用getApplication的，但是getApplicationContext可以。</p>
+<p>在输出的log里还有baseContext，这个是ContextImpl功能实现类的。</p>
+<h2 id="注意点"><a href="#注意点" class="headerlink" title="注意点"></a>注意点</h2><p>Application不能被new，不能和单例混在一起。</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2017-05-25T18:12:37.311Z" itemprop="dateUpdated">2017年5月26日 2:12</time>
+</span><br>
+
+
+        这里写留言或版权声明：<a href="/2017/05/26/android-context/" target="_blank" rel="external">http://linzhs.cm/2017/05/26/android-context/</a>
+    </div>
+    <footer>
+        <a href="http://linzhs.cm">
+            <img src="/img/linzh.jpg" alt="Linzh">
+            Linzh
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://linzhs.cm/2017/05/26/android-context/&title=《Android的Context及其子类》 — Linzh's Blog&pic=http://linzhs.cm/img/linzh.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://linzhs.cm/2017/05/26/android-context/&title=《Android的Context及其子类》 — Linzh's Blog&source=Standing on Shoulders of Giants" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://linzhs.cm/2017/05/26/android-context/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Android的Context及其子类》 — Linzh's Blog&url=http://linzhs.cm/2017/05/26/android-context/&via=http://linzhs.cm" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://linzhs.cm/2017/05/26/android-context/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2017/05/26/android-process-thread/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">Android的进程和线程</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/05/26/android-activity-communication/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">Android中Activity之间的通信</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+<div class="comments" id="comments">
+    <div class="ds-thread" data-thread-key="android-context" data-title="Android的Context及其子类" data-url="http://linzhs.cm/2017/05/26/android-context/"></div>
+</div>
+<script>
+lazyScripts.push('//cdn.bootcss.com/marked/0.3.6/marked.min.js');
+
+var duoshuoQuery = {short_name:'ysblog', theme: 'none'};
+lazyScripts.push('/js/embed.min.js?v=1.4.8');
+
+
+</script>
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        �Thanks
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <ul class="reward-items">
+        
+        <li>
+            <img src="/img/wechat.jpg" title="微信打赏二维码" alt="微信打赏二维码">
+            <p>微信</p>
+        </li>
+        
+
+        
+        <li>
+            <img src="/img/alipay.jpg" title="支付宝打赏二维码" alt="支付宝打赏二维码">
+            <p>支付宝</p>
+        </li>
+        
+    </ul>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            <span>博客内容遵循 <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">知识共享 署名 - 非商业性 - 相同方式共享 4.0协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p>
+            <span>Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a></span>
+            <span>Linzh's Blog &copy; 2017</span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://linzhs.cm/2017/05/26/android-context/&title=《Android的Context及其子类》 — Linzh's Blog&pic=http://linzhs.cm/img/linzh.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://linzhs.cm/2017/05/26/android-context/&title=《Android的Context及其子类》 — Linzh's Blog&source=Standing on Shoulders of Giants" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://linzhs.cm/2017/05/26/android-context/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Android的Context及其子类》 — Linzh's Blog&url=http://linzhs.cm/2017/05/26/android-context/&via=http://linzhs.cm" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://linzhs.cm/2017/05/26/android-context/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACHUlEQVR42u3aS26DQBAFQN//0s42UgR5bxpbYihWCNswxaI9/Xm94uP96zi/8vfT8++cn198YGBg3JbxPj2Obp1/esQ+X0O+NgwMjOcwjm7dBsT2m+0LOryOgYGBEZ9PDgwMDIw5Y5Kmrm1DMTAwMNpbn1+5TS6OgYFxQ0Zedf/++Uf6GxgYGLdirCWZ+WZxLX2tf4uBgbE1Y5JYJmHxO41PDAyM5zDmD06Ka/mi6/YnBgbG1oy2WJaUzNao7egGBgbGExh5mX7tMde2LYu3joGBsRFj3m5sX1DbeCgamRgYGFszcky+x2wHyNoe5SjsYmBg3IoxaQYkyWrS/mzHyw6TWAwMjE0Zbbm/DZ0to20hLPZLMTAwbsioQ1u8lPyelzU4MTAwtmPko13JmGm+0HYD+g8SAwNja8akuNZu7NrrGBgYGG1gzR+wFr4va5FiYGBsx1grtH2uj7o2ZIaBgbE3YzKrkCS3+eLWwBgYGM9krO215n2JtjB3uEHEwMB4AOOqoljb4GxHx6L/DQwMjI0YawMQeXkueTUXp8QYGBgbMd7lMRnLyN9oHpTrCTUMDIwbMq5qPbaB9XMJMwYGxq6MPMnMmwTzsbC6wYCBgfEARpLQtlvGSaJbD2RgYGBgxCG1Da/zUh0GBgbGWgks/23b1IwiMQYGxqaMPIltS/bJuMYkxGNgYDyB0aaOSahda3kmTxw1NTEwMO7H+AFanx3zSvIIvAAAAABJRU5ErkJggg==" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.4.8"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.4.8" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+</body>
+</html>
