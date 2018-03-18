@@ -1,26 +1,87 @@
 <!DOCTYPE html>
-<html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
 <head>
-    
-
-    
-
-    
-
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
 
 
-    <meta charset="utf-8">
-    
-    
-    
-    <title>Android接口定义语言（AIDL） | Linzh&#39;s Blog | Standing on Shoulders of Giants</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    
-    <meta name="theme-color" content="#3F51B5">
-    
-    
-    <meta name="keywords" content="Android">
-    <meta name="description" content="Android 接口定义语言 (AIDL)AIDL可以定义客户端与服务使用IPC机型互相通信时都认可的编程接口。在Android，进程是fork形式存在的，独自占有一块内存，一个进程无法访问另一个进程的内存。但是，进程需要将其对象分解成操作系统能够识别的原语，并将对象编组成跨越边界的对象。Android使用AIDL来执行这一编组操作的代码繁琐工作。
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Android," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Linzh's Blog" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="Android 接口定义语言 (AIDL)AIDL可以定义客户端与服务使用IPC机型互相通信时都认可的编程接口。在Android，进程是fork形式存在的，独自占有一块内存，一个进程无法访问另一个进程的内存。但是，进程需要将其对象分解成操作系统能够识别的原语，并将对象编组成跨越边界的对象。Android使用AIDL来执行这一编组操作的代码繁琐工作。
 
 注：只有允许不同应用的客户端用IPC方式访问服">
 <meta property="og:type" content="article">
@@ -36,166 +97,216 @@
 <meta name="twitter:description" content="Android 接口定义语言 (AIDL)AIDL可以定义客户端与服务使用IPC机型互相通信时都认可的编程接口。在Android，进程是fork形式存在的，独自占有一块内存，一个进程无法访问另一个进程的内存。但是，进程需要将其对象分解成操作系统能够识别的原语，并将对象编组成跨越边界的对象。Android使用AIDL来执行这一编组操作的代码繁琐工作。
 
 注：只有允许不同应用的客户端用IPC方式访问服">
-    
-        <link rel="alternative" href="/atom.xml" title="Linzh&#39;s Blog" type="application/atom+xml">
-    
-    <link rel="shortcut icon" href="/favicon.ico">
-    <link rel="stylesheet" href="/css/style.css?v=1.4.8">
-    <script>window.lazyScripts=[]</script>
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://linzhs.cm/2017/05/26/android-aidl/"/>
+
+
+
+
+
+  <title>Android接口定义语言（AIDL） | Linzh's Blog</title>
+  
+
+
+
+
+
+
+
+
 </head>
 
-<body>
-    <div id="loading" class="active"></div>
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
 
-    <aside id="menu" class="hide" >
-  <div class="inner flex-row-vertical">
-    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
-        <i class="icon icon-lg icon-close"></i>
-    </a>
-    <div class="brand-wrap">
-      <div class="brand">
-        <a href="/" class="avatar waves-effect waves-circle waves-light">
-          <img src="/img/linzh.jpg">
-        </a>
-        <hgroup class="introduce">
-          <h5 class="nickname">Linzh</h5>
-          <a href="mailto:lzh_547590520@163.com" title="lzh_547590520@163.com" class="mail">lzh_547590520@163.com</a>
-        </hgroup>
-      </div>
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Linzh's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
     </div>
-    <div class="scroll-wrap flex-col">
-      <ul class="nav">
-        
-            <li class="waves-block waves-effect">
-              <a href="/"  >
-                <i class="icon icon-lg icon-home"></i>
-                Home Page
-              </a>
-            </li>
-        
-            <li class="waves-block waves-effect">
-              <a href="/archives"  >
-                <i class="icon icon-lg icon-archives"></i>
-                Archives
-              </a>
-            </li>
-        
-            <li class="waves-block waves-effect">
-              <a href="/tags"  >
-                <i class="icon icon-lg icon-tags"></i>
-                Tags
-              </a>
-            </li>
-        
-            <li class="waves-block waves-effect">
-              <a href="/categories"  >
-                <i class="icon icon-lg icon-th-list"></i>
-                Categories
-              </a>
-            </li>
-        
-            <li class="waves-block waves-effect">
-              <a href="https://github.com/ZehaoLin" target="_blank" >
-                <i class="icon icon-lg icon-github"></i>
-                Github
-              </a>
-            </li>
-        
-            <li class="waves-block waves-effect">
-              <a href="http://www.weibo.com/L_Ceylon" target="_blank" >
-                <i class="icon icon-lg icon-weibo"></i>
-                Weibo
-              </a>
-            </li>
-        
-            <li class="waves-block waves-effect">
-              <a href="/" target="_blank" >
-                <i class="icon icon-lg icon-link"></i>
-                About
-              </a>
-            </li>
-        
-      </ul>
-    </div>
+      
+        <p class="site-subtitle">Standing on Shoulders of Giants</p>
+      
   </div>
-</aside>
 
-    <main id="main">
-        <header class="top-header" id="header">
-    <div class="flex-row">
-        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
-          <i class="icon icon-lg icon-navicon"></i>
-        </a>
-        <div class="flex-col header-title ellipsis">Android接口定义语言（AIDL）</div>
-        
-        <div class="search-wrap" id="search-wrap">
-            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
-                <i class="icon icon-lg icon-chevron-left"></i>
-            </a>
-            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
-            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
-                <i class="icon icon-lg icon-search"></i>
-            </a>
-        </div>
-        
-        
-        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
-            <i class="icon icon-lg icon-share-alt"></i>
-        </a>
-        
-    </div>
-</header>
-<header class="content-header post-header">
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
 
-    <div class="container fade-scale">
-        <h1 class="title">Android接口定义语言（AIDL）</h1>
-        <h5 class="subtitle">
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
             
-                <time datetime="2017-05-25T18:16:29.000Z" itemprop="datePublished" class="page-time">
-  2017-05-26
-</time>
-
-
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
-        </h5>
-    </div>
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
 
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
     
 
-</header>
+  
 
+  
+  
+  
 
-<div class="container body-wrap">
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://linzhs.cm/2017/05/26/android-aidl/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Linzh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Linzh's Blog">
+    </span>
+
     
-    <aside class="post-widget">
-        <nav class="post-toc-wrap" id="post-toc">
-            <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Android-接口定义语言-AIDL"><span class="post-toc-number">1.</span> <span class="post-toc-text">Android 接口定义语言 (AIDL)</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#定义AIDL接口"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">定义AIDL接口</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#创建-aidl文件"><span class="post-toc-number">1.1.1.</span> <span class="post-toc-text">创建.aidl文件</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#实现接口"><span class="post-toc-number">1.1.2.</span> <span class="post-toc-text">实现接口</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#向客户端公开该接口"><span class="post-toc-number">1.1.3.</span> <span class="post-toc-text">向客户端公开该接口</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#通过IPC传递对象"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">通过IPC传递对象</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#调用IPC方法"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">调用IPC方法</span></a></li></ol></li></ol>
-        </nav>
-    </aside>
-    
-<article id="post-android-aidl"
-  class="post-article article-type-post fade" itemprop="blogPost">
+      <header class="post-header">
 
-    <div class="post-card">
-        <h1 class="post-card-title">Android接口定义语言（AIDL）</h1>
+        
+        
+          <h1 class="post-title" itemprop="name headline">Android接口定义语言（AIDL）</h1>
+        
+
         <div class="post-meta">
-            <time class="post-time" title="2017年05月26日 2:16" datetime="2017-05-25T18:16:29.000Z"  itemprop="datePublished">2017-05-26</time>
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Veröffentlicht am</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-05-26T02:16:29+08:00">
+                2017-05-26
+              </time>
+            
 
             
 
-
             
-<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
-    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
-</span>
+          </span>
 
+          
 
+          
             
+          
+
+          
+          
+
+          
+
+          
+
+          
 
         </div>
-        <div class="post-content" id="post-content" itemprop="postContent">
-            <h1 id="Android-接口定义语言-AIDL"><a href="#Android-接口定义语言-AIDL" class="headerlink" title="Android 接口定义语言 (AIDL)"></a>Android 接口定义语言 (AIDL)</h1><p>AIDL可以定义客户端与服务使用IPC机型互相通信时都认可的编程接口。在Android，进程是fork形式存在的，独自占有一块内存，一个进程无法访问另一个进程的内存。但是，进程需要将其对象分解成操作系统能够识别的原语，并将对象编组成跨越边界的对象。Android使用AIDL来执行这一编组操作的代码繁琐工作。</p>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Android-接口定义语言-AIDL"><a href="#Android-接口定义语言-AIDL" class="headerlink" title="Android 接口定义语言 (AIDL)"></a>Android 接口定义语言 (AIDL)</h1><p>AIDL可以定义客户端与服务使用IPC机型互相通信时都认可的编程接口。在Android，进程是fork形式存在的，独自占有一块内存，一个进程无法访问另一个进程的内存。但是，进程需要将其对象分解成操作系统能够识别的原语，并将对象编组成跨越边界的对象。Android使用AIDL来执行这一编组操作的代码繁琐工作。</p>
 <blockquote>
 <p>注：只有允许不同应用的客户端用IPC方式访问服务，并且想要在服务中处理多线程，才有必要使用AIDL。如果不需要执行跨越不同应用的并发 IPC，就应该通过实现一个 Binder 创建接口；或者，如果想执行 IPC，但根本不需要处理多线程，则使用 Messenger 类来实现接口。</p>
 </blockquote>
@@ -273,276 +384,381 @@
 </ul>
 <p>demo：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div><div class="line">172</div><div class="line">173</div><div class="line">174</div><div class="line">175</div><div class="line">176</div><div class="line">177</div><div class="line">178</div><div class="line">179</div><div class="line">180</div><div class="line">181</div><div class="line">182</div><div class="line">183</div><div class="line">184</div><div class="line">185</div><div class="line">186</div><div class="line">187</div><div class="line">188</div><div class="line">189</div><div class="line">190</div><div class="line">191</div><div class="line">192</div><div class="line">193</div><div class="line">194</div><div class="line">195</div><div class="line">196</div><div class="line">197</div><div class="line">198</div><div class="line">199</div><div class="line">200</div><div class="line">201</div><div class="line">202</div></pre></td><td class="code"><pre><div class="line">public static class Binding extends Activity &#123;</div><div class="line">    /** The primary interface we will be calling on the service. */</div><div class="line">    IRemoteService mService = null;</div><div class="line">    /** Another interface we use on the service. */</div><div class="line">    ISecondary mSecondaryService = null;</div><div class="line"></div><div class="line">    Button mKillButton;</div><div class="line">    TextView mCallbackText;</div><div class="line"></div><div class="line">    private boolean mIsBound;</div><div class="line"></div><div class="line">    /**</div><div class="line">     * Standard initialization of this activity.  Set up the UI, then wait</div><div class="line">     * for the user to poke it before doing anything.</div><div class="line">     */</div><div class="line">    @Override</div><div class="line">    protected void onCreate(Bundle savedInstanceState) &#123;</div><div class="line">        super.onCreate(savedInstanceState);</div><div class="line"></div><div class="line">        setContentView(R.layout.remote_service_binding);</div><div class="line"></div><div class="line">        // Watch for button clicks.</div><div class="line">        Button button = (Button)findViewById(R.id.bind);</div><div class="line">        button.setOnClickListener(mBindListener);</div><div class="line">        button = (Button)findViewById(R.id.unbind);</div><div class="line">        button.setOnClickListener(mUnbindListener);</div><div class="line">        mKillButton = (Button)findViewById(R.id.kill);</div><div class="line">        mKillButton.setOnClickListener(mKillListener);</div><div class="line">        mKillButton.setEnabled(false);</div><div class="line"></div><div class="line">        mCallbackText = (TextView)findViewById(R.id.callback);</div><div class="line">        mCallbackText.setText(&quot;Not attached.&quot;);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">     * Class for interacting with the main interface of the service.</div><div class="line">     */</div><div class="line">    private ServiceConnection mConnection = new ServiceConnection() &#123;</div><div class="line">        public void onServiceConnected(ComponentName className,</div><div class="line">                IBinder service) &#123;</div><div class="line">            // This is called when the connection with the service has been</div><div class="line">            // established, giving us the service object we can use to</div><div class="line">            // interact with the service.  We are communicating with our</div><div class="line">            // service through an IDL interface, so get a client-side</div><div class="line">            // representation of that from the raw service object.</div><div class="line">            mService = IRemoteService.Stub.asInterface(service);</div><div class="line">            mKillButton.setEnabled(true);</div><div class="line">            mCallbackText.setText(&quot;Attached.&quot;);</div><div class="line"></div><div class="line">            // We want to monitor the service for as long as we are</div><div class="line">            // connected to it.</div><div class="line">            try &#123;</div><div class="line">                mService.registerCallback(mCallback);</div><div class="line">            &#125; catch (RemoteException e) &#123;</div><div class="line">                // In this case the service has crashed before we could even</div><div class="line">                // do anything with it; we can count on soon being</div><div class="line">                // disconnected (and then reconnected if it can be restarted)</div><div class="line">                // so there is no need to do anything here.</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            // As part of the sample, tell the user what happened.</div><div class="line">            Toast.makeText(Binding.this, R.string.remote_service_connected,</div><div class="line">                    Toast.LENGTH_SHORT).show();</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        public void onServiceDisconnected(ComponentName className) &#123;</div><div class="line">            // This is called when the connection with the service has been</div><div class="line">            // unexpectedly disconnected -- that is, its process crashed.</div><div class="line">            mService = null;</div><div class="line">            mKillButton.setEnabled(false);</div><div class="line">            mCallbackText.setText(&quot;Disconnected.&quot;);</div><div class="line"></div><div class="line">            // As part of the sample, tell the user what happened.</div><div class="line">            Toast.makeText(Binding.this, R.string.remote_service_disconnected,</div><div class="line">                    Toast.LENGTH_SHORT).show();</div><div class="line">        &#125;</div><div class="line">    &#125;;</div><div class="line"></div><div class="line">    /**</div><div class="line">     * Class for interacting with the secondary interface of the service.</div><div class="line">     */</div><div class="line">    private ServiceConnection mSecondaryConnection = new ServiceConnection() &#123;</div><div class="line">        public void onServiceConnected(ComponentName className,</div><div class="line">                IBinder service) &#123;</div><div class="line">            // Connecting to a secondary interface is the same as any</div><div class="line">            // other interface.</div><div class="line">            mSecondaryService = ISecondary.Stub.asInterface(service);</div><div class="line">            mKillButton.setEnabled(true);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        public void onServiceDisconnected(ComponentName className) &#123;</div><div class="line">            mSecondaryService = null;</div><div class="line">            mKillButton.setEnabled(false);</div><div class="line">        &#125;</div><div class="line">    &#125;;</div><div class="line"></div><div class="line">    private OnClickListener mBindListener = new OnClickListener() &#123;</div><div class="line">        public void onClick(View v) &#123;</div><div class="line">            // Establish a couple connections with the service, binding</div><div class="line">            // by interface names.  This allows other applications to be</div><div class="line">            // installed that replace the remote service by implementing</div><div class="line">            // the same interface.</div><div class="line">            Intent intent = new Intent(Binding.this, RemoteService.class);</div><div class="line">            intent.setAction(IRemoteService.class.getName());</div><div class="line">            bindService(intent, mConnection, Context.BIND_AUTO_CREATE);</div><div class="line">            intent.setAction(ISecondary.class.getName());</div><div class="line">            bindService(intent, mSecondaryConnection, Context.BIND_AUTO_CREATE);</div><div class="line">            mIsBound = true;</div><div class="line">            mCallbackText.setText(&quot;Binding.&quot;);</div><div class="line">        &#125;</div><div class="line">    &#125;;</div><div class="line"></div><div class="line">    private OnClickListener mUnbindListener = new OnClickListener() &#123;</div><div class="line">        public void onClick(View v) &#123;</div><div class="line">            if (mIsBound) &#123;</div><div class="line">                // If we have received the service, and hence registered with</div><div class="line">                // it, then now is the time to unregister.</div><div class="line">                if (mService != null) &#123;</div><div class="line">                    try &#123;</div><div class="line">                        mService.unregisterCallback(mCallback);</div><div class="line">                    &#125; catch (RemoteException e) &#123;</div><div class="line">                        // There is nothing special we need to do if the service</div><div class="line">                        // has crashed.</div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line"></div><div class="line">                // Detach our existing connection.</div><div class="line">                unbindService(mConnection);</div><div class="line">                unbindService(mSecondaryConnection);</div><div class="line">                mKillButton.setEnabled(false);</div><div class="line">                mIsBound = false;</div><div class="line">                mCallbackText.setText(&quot;Unbinding.&quot;);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;;</div><div class="line"></div><div class="line">    private OnClickListener mKillListener = new OnClickListener() &#123;</div><div class="line">        public void onClick(View v) &#123;</div><div class="line">            // To kill the process hosting our service, we need to know its</div><div class="line">            // PID.  Conveniently our service has a call that will return</div><div class="line">            // to us that information.</div><div class="line">            if (mSecondaryService != null) &#123;</div><div class="line">                try &#123;</div><div class="line">                    int pid = mSecondaryService.getPid();</div><div class="line">                    // Note that, though this API allows us to request to</div><div class="line">                    // kill any process based on its PID, the kernel will</div><div class="line">                    // still impose standard restrictions on which PIDs you</div><div class="line">                    // are actually able to kill.  Typically this means only</div><div class="line">                    // the process running your application and any additional</div><div class="line">                    // processes created by that app as shown here; packages</div><div class="line">                    // sharing a common UID will also be able to kill each</div><div class="line">                    // other&apos;s processes.</div><div class="line">                    Process.killProcess(pid);</div><div class="line">                    mCallbackText.setText(&quot;Killed service process.&quot;);</div><div class="line">                &#125; catch (RemoteException ex) &#123;</div><div class="line">                    // Recover gracefully from the process hosting the</div><div class="line">                    // server dying.</div><div class="line">                    // Just for purposes of the sample, put up a notification.</div><div class="line">                    Toast.makeText(Binding.this,</div><div class="line">                            R.string.remote_call_failed,</div><div class="line">                            Toast.LENGTH_SHORT).show();</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;;</div><div class="line"></div><div class="line">    // ----------------------------------------------------------------------</div><div class="line">    // Code showing how to deal with callbacks.</div><div class="line">    // ----------------------------------------------------------------------</div><div class="line"></div><div class="line">    /**</div><div class="line">     * This implementation is used to receive callbacks from the remote</div><div class="line">     * service.</div><div class="line">     */</div><div class="line">    private IRemoteServiceCallback mCallback = new IRemoteServiceCallback.Stub() &#123;</div><div class="line">        /**</div><div class="line">         * This is called by the remote service regularly to tell us about</div><div class="line">         * new values.  Note that IPC calls are dispatched through a thread</div><div class="line">         * pool running in each process, so the code executing here will</div><div class="line">         * NOT be running in our main thread like most other things -- so,</div><div class="line">         * to update the UI, we need to use a Handler to hop over there.</div><div class="line">         */</div><div class="line">        public void valueChanged(int value) &#123;</div><div class="line">            mHandler.sendMessage(mHandler.obtainMessage(BUMP_MSG, value, 0));</div><div class="line">        &#125;</div><div class="line">    &#125;;</div><div class="line"></div><div class="line">    private static final int BUMP_MSG = 1;</div><div class="line"></div><div class="line">    private Handler mHandler = new Handler() &#123;</div><div class="line">        @Override public void handleMessage(Message msg) &#123;</div><div class="line">            switch (msg.what) &#123;</div><div class="line">                case BUMP_MSG:</div><div class="line">                    mCallbackText.setText(&quot;Received from service: &quot; + msg.arg1);</div><div class="line">                    break;</div><div class="line">                default:</div><div class="line">                    super.handleMessage(msg);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">    &#125;;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 
-        </div>
-
-        <blockquote class="post-copyright">
-    <div class="content">
-        
-<span class="post-time">
-    最后更新时间：<time datetime="2017-05-25T18:16:29.915Z" itemprop="dateUpdated">2017年5月26日 2:16</time>
-</span><br>
-
-
-        这里写留言或版权声明：<a href="/2017/05/26/android-aidl/" target="_blank" rel="external">http://linzhs.cm/2017/05/26/android-aidl/</a>
+      
     </div>
-    <footer>
-        <a href="http://linzhs.cm">
-            <img src="/img/linzh.jpg" alt="Linzh">
-            Linzh
-        </a>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag"># Android</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/05/26/android-message/" rel="next" title="Android的异步消息处理机制">
+                <i class="fa fa-chevron-left"></i> Android的异步消息处理机制
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/05/26/java-generic/" rel="prev" title="Java随笔 - 泛型">
+                Java随笔 - 泛型 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
     </footer>
-</blockquote>
-
-        
-<div class="page-reward">
-    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
-</div>
-
-
-
-        <div class="post-footer">
-            
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li></ul>
-
-
-            
-<div class="page-share-wrap">
-    
-
-<div class="page-share" id="pageShare">
-    <ul class="reset share-icons">
-      <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://linzhs.cm/2017/05/26/android-aidl/&title=《Android接口定义语言（AIDL）》 — Linzh's Blog&pic=http://linzhs.cm/img/linzh.jpg" data-title="微博">
-          <i class="icon icon-weibo"></i>
-        </a>
-      </li>
-      <li>
-        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
-          <i class="icon icon-weixin"></i>
-        </a>
-      </li>
-      <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://linzhs.cm/2017/05/26/android-aidl/&title=《Android接口定义语言（AIDL）》 — Linzh's Blog&source=Standing on Shoulders of Giants" data-title=" QQ">
-          <i class="icon icon-qq"></i>
-        </a>
-      </li>
-      <li>
-        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://linzhs.cm/2017/05/26/android-aidl/" data-title=" Facebook">
-          <i class="icon icon-facebook"></i>
-        </a>
-      </li>
-      <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Android接口定义语言（AIDL）》 — Linzh's Blog&url=http://linzhs.cm/2017/05/26/android-aidl/&via=http://linzhs.cm" data-title=" Twitter">
-          <i class="icon icon-twitter"></i>
-        </a>
-      </li>
-      <li>
-        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://linzhs.cm/2017/05/26/android-aidl/" data-title=" Google+">
-          <i class="icon icon-google-plus"></i>
-        </a>
-      </li>
-    </ul>
- </div>
+  </div>
+  
+  
+  
+  </article>
 
 
 
-    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
-        <i class="icon icon-share-alt icon-lg"></i>
-    </a>
-</div>
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
 
 
 
         </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
     </div>
+  </div>
 
+  <aside id="sidebar" class="sidebar">
     
-<nav class="post-nav flex-row flex-justify-between">
-  
-    <div class="waves-block waves-effect prev">
-      <a href="/2017/05/26/java-generic/" id="post-prev" class="post-nav-link">
-        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
-        <h4 class="title">Java随笔 - 泛型</h4>
-      </a>
-    </div>
-  
+    <div class="sidebar-inner">
 
-  
-    <div class="waves-block waves-effect next">
-      <a href="/2017/05/26/android-message/" id="post-next" class="post-nav-link">
-        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
-        <h4 class="title">Android的异步消息处理机制</h4>
-      </a>
-    </div>
-  
-</nav>
+      
 
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Übersicht
+          </li>
+        </ul>
+      
 
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Linzh</p>
+              <p class="site-description motion-element" itemprop="description">Standing on Shoulders of Giants</p>
+          </div>
 
-    
+          <nav class="site-state motion-element">
 
-<div class="comments" id="comments">
-    <div class="ds-thread" data-thread-key="android-aidl" data-title="Android接口定义语言（AIDL）" data-url="http://linzhs.cm/2017/05/26/android-aidl/"></div>
-</div>
-<script>
-lazyScripts.push('//cdn.bootcss.com/marked/0.3.6/marked.min.js');
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-name">Artikel</span>
+                </a>
+              </div>
+            
 
-var duoshuoQuery = {short_name:'ysblog', theme: 'none'};
-lazyScripts.push('/js/embed.min.js?v=1.4.8');
+            
 
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">Tags</span>
+                
+              </div>
+            
 
-</script>
+          </nav>
 
-
-
-
-
-
-
-</article>
-
-<div id="reward" class="page-modal reward-lay">
-    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
-    <h3 class="reward-title">
-        <i class="icon icon-quote-left"></i>
-        �Thanks
-        <i class="icon icon-quote-right"></i>
-    </h3>
-    <ul class="reward-items">
-        
-        <li>
-            <img src="/img/wechat.jpg" title="微信打赏二维码" alt="微信打赏二维码">
-            <p>微信</p>
-        </li>
-        
-
-        
-        <li>
-            <img src="/img/alipay.jpg" title="支付宝打赏二维码" alt="支付宝打赏二维码">
-            <p>支付宝</p>
-        </li>
-        
-    </ul>
-</div>
-
-
-
-</div>
-
-        <footer class="footer">
-    <div class="top">
-        
-<p>
-    <span id="busuanzi_container_site_uv" style='display:none'>
-        站点总访客数：<span id="busuanzi_value_site_uv"></span>
-    </span>
-    <span id="busuanzi_container_site_pv" style='display:none'>
-        站点总访问量：<span id="busuanzi_value_site_pv"></span>
-    </span>
-</p>
-
-
-        <p>
-            <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
-            <span>博客内容遵循 <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">知识共享 署名 - 非商业性 - 相同方式共享 4.0协议</a></span>
-        </p>
-    </div>
-    <div class="bottom">
-        <p>
-            <span>Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a></span>
-            <span>Linzh's Blog &copy; 2017</span>
-        </p>
-    </div>
-</footer>
-
-    </main>
-    <div class="mask" id="mask"></div>
-<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
-
-
-
-<div class="global-share" id="globalShare">
-    <ul class="reset share-icons">
-      <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://linzhs.cm/2017/05/26/android-aidl/&title=《Android接口定义语言（AIDL）》 — Linzh's Blog&pic=http://linzhs.cm/img/linzh.jpg" data-title="微博">
-          <i class="icon icon-weibo"></i>
-        </a>
-      </li>
-      <li>
-        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
-          <i class="icon icon-weixin"></i>
-        </a>
-      </li>
-      <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://linzhs.cm/2017/05/26/android-aidl/&title=《Android接口定义语言（AIDL）》 — Linzh's Blog&source=Standing on Shoulders of Giants" data-title=" QQ">
-          <i class="icon icon-qq"></i>
-        </a>
-      </li>
-      <li>
-        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://linzhs.cm/2017/05/26/android-aidl/" data-title=" Facebook">
-          <i class="icon icon-facebook"></i>
-        </a>
-      </li>
-      <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Android接口定义语言（AIDL）》 — Linzh's Blog&url=http://linzhs.cm/2017/05/26/android-aidl/&via=http://linzhs.cm" data-title=" Twitter">
-          <i class="icon icon-twitter"></i>
-        </a>
-      </li>
-      <li>
-        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://linzhs.cm/2017/05/26/android-aidl/" data-title=" Google+">
-          <i class="icon icon-google-plus"></i>
-        </a>
-      </li>
-    </ul>
- </div>
-
-
-<div class="page-modal wx-share" id="wxShare">
-    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
-    <p>扫一扫，分享到微信</p>
-    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAK4AAACuCAAAAACKZ2kyAAABwklEQVR42u3ay47CMAwFUP7/p5ktEkO5tpu0MzpZISjNaRdW/Hg84vV8Wa/fvP/66crjb05euLi4Y+7zcFVB74jjh8wNuLi4+7mfIsbxNUlgmtwfFxf3r3CPQ1X+ALi4uP+bOzkw4eLi3pmbbHCc6vRSpoW5Gi4u7oCbVynXfV5S38XFxW1xn8V1VqrT3B0XF3cLNw8oyZZJ6lINZLi4uNdye8WLvNXaC3xRroaLi3sqNx+b6DVUeqGwcCLDxcXdws1LltUS6nzwCxcX9ypuPlTRK5Tk9/zlPri4uBu5efpRbZdWhy2+HKRwcXG3cPMNeuHsrBfxsTiCi4u7jDsZ3JyHueoIFy4u7h5utfTZOx5NDkO4uLhXcfMN8uJpL/n58lJwcXFvwE0OOnmBIz8YNQMZLi7uqdxkg0nTtDqKESU/uLi427nzcmeeMhWuwcXFXcztBal8nKLXVin8ARcXdwE3X5OWalKWTcqvuLi4O7l5MlNtyp5VEMHFxb2KOw9DvWtGuRouLu7NuHnykw9qFDI2XFzcm3Hz0kkv0yqPbOLi4i7j5k3TPKUptE7zMIqLi7uFmweX/ICSoHuvCRcXdzH3B5nmkJ9HSN4pAAAAAElFTkSuQmCC" alt="微信分享二维码">
-</div>
-
-
-
-
-    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
-<script>
-var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
-
-
-
-</script>
-
-<script src="/js/main.min.js?v=1.4.8"></script>
-
-
-<div class="search-panel" id="search-panel">
-    <ul class="search-result" id="search-result"></ul>
-</div>
-<template id="search-tpl">
-<li class="item">
-    <a href="{path}" class="waves-block waves-effect">
-        <div class="title ellipsis" title="{title}">{title}</div>
-        <div class="flex-row flex-middle">
-            <div class="tags ellipsis">
-                {tags}
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
             </div>
-            <time class="flex-col time">{date}</time>
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
         </div>
-    </a>
-</li>
-</template>
+      </section>
 
-<script src="/js/search.min.js?v=1.4.8" async></script>
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Android-接口定义语言-AIDL"><span class="nav-number">1.</span> <span class="nav-text">Android 接口定义语言 (AIDL)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#定义AIDL接口"><span class="nav-number">1.1.</span> <span class="nav-text">定义AIDL接口</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建-aidl文件"><span class="nav-number">1.1.1.</span> <span class="nav-text">创建.aidl文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实现接口"><span class="nav-number">1.1.2.</span> <span class="nav-text">实现接口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#向客户端公开该接口"><span class="nav-number">1.1.3.</span> <span class="nav-text">向客户端公开该接口</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#通过IPC传递对象"><span class="nav-number">1.2.</span> <span class="nav-text">通过IPC传递对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#调用IPC方法"><span class="nav-number">1.3.</span> <span class="nav-text">调用IPC方法</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Linzh</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Erstellt mit  <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
 
 
 
 
 
 
-<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
 
 </body>
 </html>

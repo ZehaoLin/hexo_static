@@ -513,13 +513,7 @@
     <updated>2017-05-25T18:12:37.311Z</updated>
     
     <content type="html"><![CDATA[<h1 id="Android的Context及其子类"><a href="#Android的Context及其子类" class="headerlink" title="Android的Context及其子类"></a>Android的Context及其子类</h1><p>Android的系统组件很多，Activity、Service、BroadcastReceiver等都是很常用的，这些组件的创建都不能是凭空的，都需要借助Context这个核心功能类或者其子类。</p>
-<h2 id="Context继承结构"><a href="#Context继承结构" class="headerlink" title="Context继承结构"></a>Context继承结构</h2><figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="http://img.blog.csdn.net/20151022212109519?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQv/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="image" title="">
-                </div>
-                <div class="image-caption">image</div>
-            </figure>
+<h2 id="Context继承结构"><a href="#Context继承结构" class="headerlink" title="Context继承结构"></a>Context继承结构</h2><p><img src="http://img.blog.csdn.net/20151022212109519?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQv/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="image"></p>
 <p>Context（android.content）是一个抽象类，它有两个继承类，分别是上下文封装的封装类ContextWrapper和上下文功能的实现类ContextImpl（可以从命名看出，Wrapper和Implments）。</p>
 <p>ContextWrapper有三个子类，分别是Application，Service，ContextThemeWrapper，ContextThemeWrapper是一个带主题的封装类，而它有一个直接子类就是Activity。</p>
 <p>从以上的继承关系上总结，Context有三种类型，分别是Apllication、Activity、Service。三个类分别承担着不同的任务，而他们具体的Context功能有ContextImpl去实现。</p>
@@ -1370,13 +1364,7 @@ return;
     <content type="html"><![CDATA[<h1 id="BLE协议栈简析"><a href="#BLE协议栈简析" class="headerlink" title="BLE协议栈简析"></a>BLE协议栈简析</h1><blockquote>
 <p>本文针对蓝牙4.0，也就是低功耗蓝牙BLE的协议栈进行简单分析。</p>
 </blockquote>
-<h2 id="Arch图"><a href="#Arch图" class="headerlink" title="Arch图"></a>Arch图</h2><p>以下为蓝牙协议栈架构图：<br><figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="http://7rf9ir.com1.z0.glb.clouddn.com/Android-BLE-in-Action.005.jpeg" alt="" title="">
-                </div>
-                <div class="image-caption"></div>
-            </figure></p>
+<h2 id="Arch图"><a href="#Arch图" class="headerlink" title="Arch图"></a>Arch图</h2><p>以下为蓝牙协议栈架构图：<br><img src="http://7rf9ir.com1.z0.glb.clouddn.com/Android-BLE-in-Action.005.jpeg" alt=""></p>
 <p>蓝牙协议栈分为三个层次，从底层到顶层的名字和其所起到的作用分别如下：</p>
 <ul>
 <li><p>Controller</p>
@@ -1394,13 +1382,7 @@ return;
 <p>  基于连接的需要通过GATT连接来收发数据。这里的BLE也存在两种角色，分别是中心主机设备Central，和被连接的从机外设Peripheral。</p>
 </li>
 </ul>
-<h2 id="GATT内部层次"><a href="#GATT内部层次" class="headerlink" title="GATT内部层次"></a>GATT内部层次</h2><p>GATT内部抽象图：<br><figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="http://7rf9ir.com1.z0.glb.clouddn.com/Android-BLE-in-Action.008.jpeg" alt="image" title="">
-                </div>
-                <div class="image-caption">image</div>
-            </figure><br>GATT最外层是Profile配置文件，里面又包含了服务（service）、特征（Characteristic）、描述（Descriptor），他们之间的关系是一个 Service 包含若干个 Characteristic，一个 Characteristic 可以包含若干 Descriptor。而 Characteristic 定义了数值和操作。Characteristic 的操作这几种权限：读、写、通知等权限。我们说的 BLE 通信，其实就是对 Characteristic 的读写或者订阅通知。</p>
+<h2 id="GATT内部层次"><a href="#GATT内部层次" class="headerlink" title="GATT内部层次"></a>GATT内部层次</h2><p>GATT内部抽象图：<br><img src="http://7rf9ir.com1.z0.glb.clouddn.com/Android-BLE-in-Action.008.jpeg" alt="image"><br>GATT最外层是Profile配置文件，里面又包含了服务（service）、特征（Characteristic）、描述（Descriptor），他们之间的关系是一个 Service 包含若干个 Characteristic，一个 Characteristic 可以包含若干 Descriptor。而 Characteristic 定义了数值和操作。Characteristic 的操作这几种权限：读、写、通知等权限。我们说的 BLE 通信，其实就是对 Characteristic 的读写或者订阅通知。</p>
 <h2 id="UUID"><a href="#UUID" class="headerlink" title="UUID"></a>UUID</h2><p>Service、Characteristic 还有 Descriptor 之间都是使用 UUID 唯一标识来区分的。</p>
 <p>UID 是全球唯一标识符，它是 128bit 的值，为了便于识别和阅读，一般写成8-4-4-12 的16进制形式。如123e4567-e89b-12d3-a456-426655440000。</p>
 <p>16-bit的蓝牙基本UUID形式为 0000XXXX-0000-1000-8000-00805f9b34fb。实际UUID为18位，但是除了XXXX部分需要更改，其他的基本一致，这样对于BLE的数据非常受限的设备使用起来更加方便。</p>
@@ -1971,13 +1953,7 @@ return;
 </tr>
 </tbody>
 </table>
-<p>类之间的关系：<br><figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="http://images2015.cnblogs.com/blog/950883/201608/950883-20160820155327312-1227516581.png" alt="iamge" title="">
-                </div>
-                <div class="image-caption">iamge</div>
-            </figure></p>
+<p>类之间的关系：<br><img src="http://images2015.cnblogs.com/blog/950883/201608/950883-20160820155327312-1227516581.png" alt="iamge"></p>
 <p>接下来用几个例子来学习一下怎么使用属性动画，注意，==xml文件必须放在/res/animator中==。</p>
 <ul>
 <li>ObjectAnimation（用属性动画实现视图动画的淡入淡出效果，缩放、移动、旋转等类似）</li>
